@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import NavbarPage from '../Layout/Navbar'
-import Part1 from '../Layout/Part1'
-import Part2 from '../Layout/Part2'
+import SectionTop from '../Layout/SectionTop'
+import Product from '../Layout/Product'
 
 class Home extends Component {
 
@@ -10,8 +10,8 @@ class Home extends Component {
         return (
             <div>
                 <NavbarPage />
-                <Part1 />
-                <Part2 />
+                <SectionTop />
+                <Product />
             </div>
         )
     }
