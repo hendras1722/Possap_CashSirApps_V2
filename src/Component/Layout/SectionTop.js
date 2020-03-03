@@ -6,21 +6,44 @@ import Dropdown from 'react-bootstrap/Dropdown'
 import LogCat from '../img/list.png'
 import { searchProduct } from "../redux/actions/Product";
 import { connect } from 'react-redux';
+import { getCategory } from '../redux/actions/Category'
+import logocart from '../img/order.png'
+import { sortCategory } from '../redux/actions/Category'
 
 class SectionTop extends Component {
+    state = {
+        categorys: [],
+        microcontroller: '',
+        komponen: ''
+    }
+
+    sortCategory = (event) => {
+        console.log(event.target.value)
+        this.props.dispatch(sortCategory(event.target.value));
+    }
 
     searchProduct = (event) => {
-        console.log(event.target.value)
+        // console.log(event.target.value)
         this.props.dispatch(searchProduct(event.target.value));
     }
 
+    getCategory = async () => {
+        await this.props.dispatch(getCategory())
+    }
+
+    componentDidMount() {
+        this.getCategory();
+    }
+
     render() {
-        console.log('render');
+        const { categorys } = this.props;
+        console.log(categorys);
         return (
             <Row>
                 <Col sm={8} className="p-4">
                     <Row>
                         <Col>
+
                             <Dropdown>
                                 <Dropdown.Toggle variant="white" id="dropdown-basic" style={{ border: "1px solid rgba(0, 0, 0, 0.3)", boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)", boxSizing: "border-box", width: "150px" }}>
                                     <img src={LogCat} style={{ position: "absolute", width: "20px", height: "20px", boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.5)", marginLeft: "-25px", marginTop: "2px" }} />
@@ -28,10 +51,13 @@ class SectionTop extends Component {
   </Dropdown.Toggle>
 
                                 <Dropdown.Menu>
-                                    <Dropdown.Item href="#/action-1">Microcontroller</Dropdown.Item>
-                                    <Dropdown.Item href="#/action-2">Component</Dropdown.Item>
+                                    {categorys.map((category, index) =>
+                                        <Dropdown.Item onClick={this.sortCategory} key={index} value={category.id}>{category.name}</Dropdown.Item>
+                                    )}
                                 </Dropdown.Menu>
+
                             </Dropdown>
+
                         </Col>
                         <Col>
                             <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" style={{ border: "1px solid #000000", borderRadius: "20px", boxSizing: "border-box", boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)", marginLeft: "-30px", marginTop: "5px" }} onChange={this.searchProduct} />
@@ -39,15 +65,22 @@ class SectionTop extends Component {
                     </Row>
 
                 </Col>
-                <Col sm={4} style={{ marginLeft: "-14px", width: "15px", backgroundColor: "#FFFFFF", padding: "5px", marginTop: "10px" }} >sm=4</Col>
+                <Col sm={4} style={{ marginLeft: "-14px", width: "15px", backgroundColor: "#FFFFFF", padding: "5px", marginTop: "10px" }} ><img src={logocart} style={{ width: "50px", height: "50px", marginLeft: "200px" }} /></Col>
             </Row>
         )
     }
 }
+// const categoryget = (state) => {
+//     // console.log(state)
+//     return {
+//         categorys: state.categorys.categorys
+//     }
+// }
+
 const searchStateToProps = (state) => {
-    //console.log(state)
     return {
-        products: state.products.products
+        products: state.products.products,
+        categorys: state.categorys.categorys
     }
 }
 

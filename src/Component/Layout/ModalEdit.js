@@ -6,82 +6,94 @@ import { updateProduct } from '../redux/actions/Product';
 
 class ModalEdit extends Component {
     state = {
+        id_category: 0,
         name: '',
-        description: '',
-        image: '',
         price: 0,
         stock: 0,
-        id_category: ''
+        description: '',
+        image: ''
     }
 
-    componentWillReceiveProps({ product }) {
-        this.onSetValue(product);
-    }
-
-    onSetValue = (product) => {
-
+    onChangeImageHandler = (event) => {
         this.setState({
-            name: product.name,
-            description: product.description,
-            image: product.image,
-            price: product.price,
-            stock: product.stock,
-            id_category: product.id_category
+            image: event.target.files[0]
         })
     }
 
     onChange = (e) => {
+        console.log(e.target.value)
         this.setState({
             [e.target.name]: e.target.value
         })
     }
 
-    onSubmit = async (e) => {
+    onSubmit = (e) => {
         e.preventDefault();
-        const id = this.props.product.id;
-        await this.props.dispatch(updateProduct(id, this.state));
-        await this.props.onHide();
+        console.log(this.state)
+        // console.log(this.props)
+        const product = this.props
+        console.log(this.props.idProduct)
+        const idGet = this.props.idProduct;
+        let data = new FormData();
+        data.append("name", this.state.name);
+        data.append("description", this.state.description);
+        data.append("image", this.state.image);
+        data.append("price", this.state.price);
+        data.append("stock", this.state.stock);
+        data.append("id_category", this.state.id_category);
+
+        this.props.dispatch(updateProduct(idGet, data));
+        this.props.onHide()
+
+        // console.log(idGet)
     }
+
     render() {
-        const { show, onHide } = this.props;
+        // console.log(this.props)
+        const { show, onHide, ...product } = this.props;
         return (
             <Modal show={show} onHide={onHide} variant="lg">
                 <Modal.Header>
-                    <p>Edit Book</p>
+                    <p>Edit Product</p>
                 </Modal.Header>
                 <Modal.Body>
-                    <form onSubmit={this.onSubmit}>
-                        <div class="form-group">
-                            <input type="text" class="form-control" name="name" id="exampleInputName1" placeholder="Enter Name Product" onChange={this.onChange} required />
-                            <Form.Control.Feedback type="invalid">
-                                Please choose a username.
-            </Form.Control.Feedback>
-                        </div>
-                        <div class="form-group">
-                            <input type="text" class="form-control" name="description" id="exampleInputDesctiption" placeholder="Enter Description Product" onChange={this.onChange} required />
-                        </div>
-                        <div class="form-group">
-                            <input type="file" class="form-control-file" name="image" id="exampleFormControlFile1" onChange={this.onChangeImageHandler} required />
-                        </div>
-                        <div class="form-group">
-                            <input type="number" class="form-control" name="price" id="exampleInputPrice" placeholder="Enter Price Product" onChange={this.onChange} pattern="\d*" title="Numbers only, please." required />
-                        </div>
-                        <div class="form-group">
-                            <input type="number" class="form-control" name="stock" id="exampleInputStock" placeholder="Enter Stock Product" onChange={this.onChange} pattern="\d*" title="Numbers only, please." required />
-                        </div>
-                        <div class="form-group">
-                            <select onChange={this.onChangeHandler} name="id_category" className="custom-select" id="inputGroupSelect01" value={this.state.id_category}>
-                                <option selected value={0} disabled>Choose...</option>
-                                <option value={1}>Microcontroller</option>
-                                <option value={2}>Komponen</option>
-                            </select>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </form>
+                    <Form onSubmit={this.onSubmit}>
+                        <Form.Group>
+
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>Name</Form.Label>
+                            <Form.Control type="text" name="name" onChange={this.onChange} />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>Description</Form.Label>
+                            <Form.Control type="text" name="description" onChange={this.onChange} />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>Image</Form.Label>
+                            <Form.Control type="file" name="image" onChange={this.onChangeImageHandler} />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>Price</Form.Label>
+                            <Form.Control type="number" name="price" onChange={this.onChange} />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>Stock</Form.Label>
+                            <Form.Control type="number" name="stock" onChange={this.onChange} />
+                        </Form.Group>
+
+                        <select id="inputState" class="form-control" name="id_category" onChange={this.onChange} >
+                            <option value={0} disabled>Choose...</option>
+                            <option value={1}>microcontroller</option>
+                            <option value={2}>komponen</option>
+                        </select>
+                        <Button variant="primary" size="sm" type="submit">Save</Button>
+                    </Form>
                 </Modal.Body>
             </Modal>
         )
     }
+
 }
 
 export default connect()(ModalEdit);

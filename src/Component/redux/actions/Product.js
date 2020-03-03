@@ -10,7 +10,6 @@ export const getProducts = () => {
     }
 }
 
-
 export const postProducts = (data) => {
     return {
         type: 'CREATE_PRODUCTS',
@@ -32,22 +31,23 @@ export const searchProduct = (data) => {
     }
 }
 
-export const deleteProducts = (produkId) => {
+export const deleteProducts = (productId) => {
     return {
         type: "DELETE_PRODUCTS",
         payload: axios({
             method: "DELETE",
-            url: `http://localhost:4000/pos/${produkId}`
+            url: `http://localhost:4000/pos/${productId}`
         })
     }
 }
 
-export const updateProduct = (productId, data) => {
+export const updateProduct = (idGet, data) => {
+    console.log(data)
     return {
         type: "UPDATE_PRODUCT",
         payload: axios({
-            method: "put",
-            url: `http://localhost:4000/pos/${productId}`,
+            method: "PATCH",
+            url: `http://localhost:4000/pos/${idGet}`,
             data: data
         })
     }

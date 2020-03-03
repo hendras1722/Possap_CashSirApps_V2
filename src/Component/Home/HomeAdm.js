@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import NavbarPage from '../Layout/Navbar'
 import SectionTop from '../Layout/SectionTop'
-import Product from '../Layout/Product'
-
+import ProductAdm from '../Layout/ProductAdministrator'
 
 class Home extends Component {
 
@@ -12,7 +11,7 @@ class Home extends Component {
             <div>
                 <NavbarPage />
                 <SectionTop />
-                <Product />
+                <ProductAdm />
             </div>
         )
     }

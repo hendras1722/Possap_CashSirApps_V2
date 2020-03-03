@@ -8,19 +8,21 @@ import { postProducts } from '../redux/actions/Product'
 import { connect } from 'react-redux';
 import { Form, Row, Col, Button } from 'react-bootstrap'
 import ModalDelete from './ModalDelete'
-// import ModalDel from './ModalDel'
+import ModalEdit from './ModalEdit'
 
 class Product extends Component {
     state = {
+        products: [],
         id: '',
         name: '',
         description: '',
         image: '',
-        price: 0,
-        stock: 0,
+        price: 1,
+        stock: 1,
         id_category: '0',
-        show: false,
-        selectProduct: null,
+        showEdit: false,
+        showDelete: false,
+        selectProductEdit: null,
         selectProductDelete: null
     }
 
@@ -37,7 +39,7 @@ class Product extends Component {
 
     onSubmit = (e) => {
         e.preventDefault();
-        console.log("lqwekqwlje")
+        // console.log("lqwekqwlje")
 
         let data = new FormData()
 
@@ -47,7 +49,7 @@ class Product extends Component {
         data.append("price", this.state.price)
         data.append("stock", this.state.stock)
         data.append("id_category", this.state.id_category)
-        console.log(this.state.id_category)
+        // console.log(this.state.id_category)
         // console.log(formData.append)
 
         this.props.dispatch(postProducts(data));
@@ -64,21 +66,46 @@ class Product extends Component {
     }
 
     // modal
-    handleShow = (id) => {
-        console.log(id)
+    handleShowEdit = (e) => {
+        // console.log(e)
         this.setState({
-            id: id,
-            show: true
+            idProduct: e.target.value,
+            showEdit: true
         })
     }
 
-    handleClose = () => {
+    handleCloseEdit = () => {
         this.setState({
-            show: false
+            showEdit: false
         })
     }
+
+
+    // delete
+    onSelectProductEdit = (e) => {
+        // console.log("kelqwk")
+        // console.log(e.target.value)
+        this.setState({
+            // selectProductEdit: product,
+            showEdit: true
+        })
+    }
+
 
     // modal
+    handleShowDelete = (id) => {
+        // console.log(e.target.value)
+        this.setState({
+            id: id,
+            showDelete: true
+        })
+    }
+
+    handleCloseDelete = () => {
+        this.setState({
+            showDelete: false
+        })
+    }
 
 
     // delete
@@ -90,8 +117,8 @@ class Product extends Component {
     }
 
     render() {
-        const { products } = this.props;
-        console.log(products);
+        const { products, categorys } = this.props;
+        // console.log(products);
         return (
             <Row>
                 <Col sm={8} className="p-4">
@@ -118,10 +145,12 @@ class Product extends Component {
                                             </Row>
                                             <h6 style={{ marginLeft: "30px", marginTop: "2px" }}>{product.id_category}</h6>
 
-                                            <Button onClick={() => this.handleShow(product.id)} style={{ marginLeft: "5px", backgroundColor: "#F52929", marginTop: "8px" }}><img src={rmv} style={{ width: "15px", height: "15px" }} /></Button>
+                                            <Button onClick={() => this.handleShowDelete(product.id)} style={{ marginLeft: "5px", backgroundColor: "#F52929", marginTop: "8px" }}><img src={rmv} style={{ width: "15px", height: "15px" }} /></Button>
+
+                                            {/* EDit */}
+                                            <Button onClick={this.handleShowEdit} value={product.id} style={{ marginLeft: "12px", backgroundColor: "#F0F429", marginTop: "8px" }}><img src={edt} style={{ width: "15px", height: "15px" }} /></Button>
 
 
-                                            <Button style={{ marginLeft: "12px", backgroundColor: "#F0F429", marginTop: "8px" }}><img src={edt} style={{ width: "15px", height: "15px" }} /></Button>
                                             <Button style={{ backgroundColor: "#28F555", marginLeft: "12px", marginTop: "8px" }}><img src={ord} style={{ width: "15px", height: "15px" }} /></Button>
                                         </div>
                                     )}
@@ -129,16 +158,19 @@ class Product extends Component {
                             </div>
                         </Col>
 
-                        <ModalDelete show={this.state.show} onHide={this.handleClose} onClick={this.onSelectProductDelete} id={this.state.id} />
-                        {/* <ModalDel show={this.state.show} onHide={this.handle} product={this.onSelectProductDelete} /> */}
+                        <ModalDelete show={this.state.showDelete} onHide={this.handleCloseDelete} onClick={this.onSelectProductDelete} id={this.state.id} />
+
+
+                        {/* modal edit */}
+                        <ModalEdit show={this.state.showEdit} onHide={this.handleCloseEdit} onClick={this.onSelectProductEdit} idProduct={this.state.idProduct} />
 
                         <Col style={{ marginLeft: "-80px" }}>
                             <form onSubmit={this.onSubmit}>
                                 <div class="form-group">
                                     <input type="text" class="form-control" name="name" id="exampleInputName1" placeholder="Enter Name Product" onChange={this.onChange} required />
                                     <Form.Control.Feedback type="invalid">
-                                        Please choose a username.
-            </Form.Control.Feedback>
+
+                                    </Form.Control.Feedback>
                                 </div>
                                 <div class="form-group">
                                     <input type="text" class="form-control" name="description" id="exampleInputDesctiption" placeholder="Enter Description Product" onChange={this.onChange} required />
@@ -147,65 +179,25 @@ class Product extends Component {
                                     <input type="file" class="form-control-file" name="image" id="exampleFormControlFile1" onChange={this.onChangeImageHandler} required />
                                 </div>
                                 <div class="form-group">
-                                    <input type="number" class="form-control" name="price" id="exampleInputPrice" placeholder="Enter Price Product" onChange={this.onChange} pattern="\d*" title="Numbers only, please." required />
+                                    <input type="number" class="form-control" name="price" id="exampleInputPrice" placeholder="Enter Price Product" onChange={this.onChange} pattern="\d*" title="Numbers only, please." min="1" max="1000000" required />
                                 </div>
                                 <div class="form-group">
-                                    <input type="number" class="form-control" name="stock" id="exampleInputStock" placeholder="Enter Stock Product" onChange={this.onChange} pattern="\d*" title="Numbers only, please." required />
+                                    <input type="number" class="form-control" name="stock" id="exampleInputStock" placeholder="Enter Stock Product" onChange={this.onChange} pattern="\d*" title="Numbers only, please." min="1" max="300" required />
                                 </div>
                                 <div class="form-group">
+
                                     <select class="custom-select mr-sm-2" name="id_category" id="inlineFormCustomSelect" onChange={this.onChange} value={this.state.id_category} required>
-                                        <option value={0} disabled>Choose...</option>
-                                        <option value={1}>Microcontroller</option>
-                                        <option value={2}>Component</option>
+
+                                        <option >Choose...</option>
+                                        {categorys.map((category, index) =>
+                                            <option key={index} value={category.id}>{category.name}</option>
+                                        )}
                                     </select>
+
                                 </div>
                                 <button type="submit" class="btn btn-primary">Submit</button>
                             </form>
 
-                            {/* <Form class="needs-validation" onSubmit={this.onSubmit} novalidate>
-
-
-                                <input type="text" class="form-control" name="name" id="validationCustom01" placeholder="Name Product" style={{ marginTop: "10px" }} onChange={this.onChangeValue} required />
-                                <div class="invalid-feedback">
-                                    Name is not valid
-      </div>
-
-
-                                <input type="text" class="form-control" name="description" id="validationCustom02" placeholder="Description" style={{ marginTop: "10px" }} onChange={this.onChangeValue} required />
-                                <div class="invalid-feedback">
-                                    Description is not valid
-      </div>
-
-
-                                <input type="file" class="form-control-file" name="image" id="exampleFormControlFile1" style={{ marginTop: "10px" }} onChange={this.onChangeValue} data-max-file-size="2M" />
-                                <div class="invalid-feedback">
-                                    Image is not valid
-      </div>
-
-
-                                <input type="number" name="price" class="form-control" id="validationCustom03" placeholder="Price" style={{ marginTop: "10px" }} onChange={this.onChangeValue} required />
-                                <div class="invalid-feedback">
-                                    Price is not valid
-      </div>
-
-
-                                <input type="number" name="stock" class="form-control" id="validationCustom01" placeholder="Stock" style={{ marginTop: "10px" }} onChange={this.onChangeValue} required />
-                                <div class="invalid-feedback">
-                                    Stock is not valid
-      </div>
-
-
-                                <select class="custom-select mr-sm-2" name="id_category" id="inlineFormCustomSelect" style={{ marginTop: "10px" }} onChange={this.onChangeValue} required >
-                                    <option selected>Choose...</option>
-                                    <option value={1}>One</option>
-                                    <option value={2}>Two</option>
-                                </select>
-                                <div class="invalid-feedback">
-                                    Category is not valid
-      </div>
-
-                                <button type="button" class="btn btn-primary">Primary</button>
-                            </Form> */}
                         </Col>
                     </Row>
                 </Col >
@@ -217,7 +209,8 @@ class Product extends Component {
 const mapStateToProps = (state) => {
     // console.log(state)
     return {
-        products: state.products.products
+        products: state.products.products,
+        categorys: state.categorys.categorys
     }
 }
 

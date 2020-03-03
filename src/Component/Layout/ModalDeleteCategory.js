@@ -2,7 +2,7 @@ import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
 import { connect } from 'react-redux';
-import { deleteProducts } from '../redux/actions/Product';
+import { deleteCategory } from '../redux/actions/Category';
 
 const ModalDelete = (props) => {
     const { show, onHide, dispatch, id } = props;
@@ -18,7 +18,7 @@ const ModalDelete = (props) => {
         event.preventDefault();
         // console.log(this.state.value)
 
-        await dispatch(deleteProducts(id));
+        await dispatch(deleteCategory(id));
         onHide();
         // console.log(deleteProducts)
     }

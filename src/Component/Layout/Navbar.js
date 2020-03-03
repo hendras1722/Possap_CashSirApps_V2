@@ -2,8 +2,10 @@ import React from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Navbar from 'react-bootstrap/Navbar'
 import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
+import { Col, Button } from 'react-bootstrap'
 import logout from '../img/login.png'
+import logocat from '../img/admin.png'
+import { Link } from 'react-router-dom'
 
 const NavbarPage = () => {
     // console.log(product.id)
@@ -14,6 +16,8 @@ const NavbarPage = () => {
                 <div>
                     <Navbar style={{ backgroundColor: "#3346A8", height: "60px", boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.5)" }}>
                         <Navbar.Brand className="text-white text-center">Brand link</Navbar.Brand>
+
+                        <Link to="/Table"><button style={{ backgroundColor: "#3346A8", border: "none" }}> <img src={logocat} style={{ width: "30px", height: "30px" }} /></button></Link>
                     </Navbar>
                 </div>
             </Col>

@@ -102,6 +102,7 @@ const product = (state = initialState, action) => {
                 products: newProductAfterUpdate
             }
 
+        // console.log(action.payload)
         default:
             return state;
     }
