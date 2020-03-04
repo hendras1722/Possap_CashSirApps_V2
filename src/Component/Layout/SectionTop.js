@@ -8,7 +8,7 @@ import { searchProduct } from "../redux/actions/Product";
 import { connect } from 'react-redux';
 import { getCategory } from '../redux/actions/Category'
 import logocart from '../img/order.png'
-import { sortCategory } from '../redux/actions/Category'
+import { sortProduct } from '../redux/actions/Product'
 
 class SectionTop extends Component {
     state = {
@@ -17,9 +17,9 @@ class SectionTop extends Component {
         komponen: ''
     }
 
-    sortCategory = (event) => {
-        console.log(event.target.value)
-        this.props.dispatch(sortCategory(event.target.value));
+    sortProduct = (event) => {
+        console.log(event)
+        this.props.dispatch(sortProduct(event));
     }
 
     searchProduct = (event) => {
@@ -37,14 +37,14 @@ class SectionTop extends Component {
 
     render() {
         const { categorys } = this.props;
-        console.log(categorys);
+        // console.log(categorys);
         return (
             <Row>
                 <Col sm={8} className="p-4">
                     <Row>
                         <Col>
 
-                            <Dropdown>
+                            <Dropdown style={{ marginLeft: "20px" }}>
                                 <Dropdown.Toggle variant="white" id="dropdown-basic" style={{ border: "1px solid rgba(0, 0, 0, 0.3)", boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)", boxSizing: "border-box", width: "150px" }}>
                                     <img src={LogCat} style={{ position: "absolute", width: "20px", height: "20px", boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.5)", marginLeft: "-25px", marginTop: "2px" }} />
                                     Category
@@ -52,7 +52,7 @@ class SectionTop extends Component {
 
                                 <Dropdown.Menu>
                                     {categorys.map((category, index) =>
-                                        <Dropdown.Item onClick={this.sortCategory} key={index} value={category.id}>{category.name}</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => this.sortProduct(category.id)} key={index} value={category.id}>{category.name}</Dropdown.Item>
                                     )}
                                 </Dropdown.Menu>
 

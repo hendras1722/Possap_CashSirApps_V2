@@ -31,6 +31,16 @@ export const searchProduct = (data) => {
     }
 }
 
+export const sortProduct = (data) => {
+    return {
+        type: 'GET_SORTPRODUCTS',
+        payload: axios({
+            method: "GET",
+            url: `http://localhost:4000/pos?idCat=${data}`,
+        })
+    }
+}
+
 export const deleteProducts = (productId) => {
     return {
         type: "DELETE_PRODUCTS",

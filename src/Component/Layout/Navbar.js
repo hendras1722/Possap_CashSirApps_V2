@@ -15,7 +15,7 @@ const NavbarPage = () => {
             <Col sm={8}>
                 <div>
                     <Navbar style={{ backgroundColor: "#3346A8", height: "60px", boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.5)" }}>
-                        <Navbar.Brand className="text-white text-center">Brand link</Navbar.Brand>
+                        <Navbar.Brand className="text-white text-center">Admin</Navbar.Brand>
 
                         <Link to="/Table"><button style={{ backgroundColor: "#3346A8", border: "none" }}> <img src={logocat} style={{ width: "30px", height: "30px" }} /></button></Link>
                     </Navbar>

@@ -23,6 +23,22 @@ const product = (state = initialState, action) => {
                 ...state,
                 products: action.payload.data.result
             }
+
+        case 'GET_SORTPRODUCTS_PENDING':
+            return {
+                ...state
+            }
+        case 'GET_SORTPRODUCTS_REJECTED':
+            return {
+                ...state
+            }
+        case 'GET_SORTPRODUCTS_FULFILLED':
+            // console.log(action.payload.data.result);
+            return {
+                ...state,
+                products: action.payload.data.result
+            }
+
         case 'GET_PRODUCTS_PENDING':
             return {
                 ...state
