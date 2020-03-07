@@ -2,6 +2,7 @@
 const initialState = {
     products: [],
     productId: null,
+    pagination: [],
     isLoading: false
 
 }
@@ -9,6 +10,12 @@ const initialState = {
 const product = (state = initialState, action) => {
     // console.log(action.type);
     switch (action.type) {
+        case 'PAGINATION_FULFILLED':
+            return {
+                ...state,
+                products: action.payload.data.result
+            }
+
         case 'GET_SEARCHPRODUCTS_PENDING':
             return {
                 ...state
@@ -18,6 +25,21 @@ const product = (state = initialState, action) => {
                 ...state
             }
         case 'GET_SEARCHPRODUCTS_FULFILLED':
+            // console.log(action.payload.data.result);
+            return {
+                ...state,
+                products: action.payload.data.result,
+                pagination: action.payload.data.totalPages
+            }
+        case 'GET_ORDERPRODUCTS_PENDING':
+            return {
+                ...state
+            }
+        case 'GET_ORDERPRODUCTS_REJECTED':
+            return {
+                ...state
+            }
+        case 'GET_ORDERPRODUCTS_FULFILLED':
             // console.log(action.payload.data.result);
             return {
                 ...state,
@@ -73,6 +95,7 @@ const product = (state = initialState, action) => {
                 isLoading: false,
                 products: DataProduct
             }
+
         case 'DELETE_PRODUCTS_PENDING':
             return {
                 ...state,
@@ -86,7 +109,8 @@ const product = (state = initialState, action) => {
             }
 
         case 'DELETE_PRODUCTS_FULFILLED':
-            const newProductAfterDelete = state.products.filter(product => product.id !== action.payload.data.result);
+            const newProductAfterDelete = state.products.filter(product => product.id !== action.payload.data.result.id);
+            console.log(action.payload.data)
             return {
                 ...state,
                 isLoading: false,

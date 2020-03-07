@@ -1,11 +1,19 @@
 import axios from 'axios';
 
+
 export const getProducts = () => {
+    const authorization = localStorage.getItem('token');
+    const userId = localStorage.getItem("user-id");
     return {
         type: 'GET_PRODUCTS',
         payload: axios({
             method: "GET",
-            url: "http://localhost:4000/pos"
+            url: (`http://localhost:4000/pos`, {
+                headers: {
+                    "authorization": authorization,
+                    "user-id": userId
+                }
+            })
         })
     }
 }
@@ -21,22 +29,32 @@ export const postProducts = (data) => {
     }
 }
 
-export const searchProduct = (data) => {
+export const searchProduct = (name, idCategory, page) => {
+    console.log(searchProduct)
     return {
         type: 'GET_SEARCHPRODUCTS',
         payload: axios({
             method: "GET",
-            url: `http://localhost:4000/pos/?name=${data}`,
+            url: `http://localhost:4000/pos?name=${name}&idCat=${idCategory}&orderBy=ASC`,
         })
     }
 }
-
 export const sortProduct = (data) => {
     return {
         type: 'GET_SORTPRODUCTS',
         payload: axios({
             method: "GET",
-            url: `http://localhost:4000/pos?idCat=${data}`,
+            url: `http://localhost:4000/pos?idCat=${data}&orderBy=ASC`,
+        })
+    }
+}
+
+export const orderBy = (data) => {
+    return {
+        type: 'GET_ORDERPRODUCTS',
+        payload: axios({
+            method: "GET",
+            url: `http://localhost:4000/pos?orderBy=${data}`
         })
     }
 }
@@ -59,6 +77,16 @@ export const updateProduct = (idGet, data) => {
             method: "PATCH",
             url: `http://localhost:4000/pos/${idGet}`,
             data: data
+        })
+    }
+}
+
+export const paginationProduct = (page) => {
+    return {
+        type: 'PAGINATION',
+        payload: axios({
+            method: 'GET',
+            url: `http://localhost:4000/pos?page=${page}`,
         })
     }
 }

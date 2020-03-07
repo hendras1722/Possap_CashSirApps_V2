@@ -78,7 +78,7 @@ const category = (state = initialState, action) => {
             }
 
         case 'DELETE_CATEGORY_FULFILLED':
-            const newCategoryAfterDelete = state.categorys.filter(category => category.id !== action.payload.data.result);
+            const newCategoryAfterDelete = state.categorys.filter(category => category.id !== action.payload.data.result.id);
             return {
                 ...state,
                 isLoading: false,

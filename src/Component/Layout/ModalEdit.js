@@ -34,6 +34,7 @@ class ModalEdit extends Component {
         const product = this.props
         console.log(this.props.idProduct)
         const idGet = this.props.idProduct;
+
         let data = new FormData();
         data.append("name", this.state.name);
         data.append("description", this.state.description);
@@ -45,10 +46,11 @@ class ModalEdit extends Component {
         this.props.dispatch(updateProduct(idGet, data));
         this.props.onHide()
 
-        // console.log(idGet)
+        console.log(data)
     }
 
     render() {
+        const { categorys } = this.props;
         // console.log(this.props)
         const { show, onHide, ...product } = this.props;
         return (
@@ -57,10 +59,7 @@ class ModalEdit extends Component {
                     <p>Edit Product</p>
                 </Modal.Header>
                 <Modal.Body>
-                    <Form onSubmit={this.onSubmit}>
-                        <Form.Group>
-
-                        </Form.Group>
+                    <Form >
                         <Form.Group>
                             <Form.Label>Name</Form.Label>
                             <Form.Control type="text" name="name" onChange={this.onChange} />
@@ -81,13 +80,14 @@ class ModalEdit extends Component {
                             <Form.Label>Stock</Form.Label>
                             <Form.Control type="number" name="stock" onChange={this.onChange} />
                         </Form.Group>
+                        <select class="custom-select mr-sm-2" name="id_category" id="inlineFormCustomSelect" onChange={this.onChange} value={this.state.id_category} required>
 
-                        <select id="inputState" class="form-control" name="id_category" onChange={this.onChange} >
-                            <option value={0} disabled>Choose...</option>
-                            <option value={1}>microcontroller</option>
-                            <option value={2}>komponen</option>
+                            <option >Choose...</option>
+                            {categorys.map((category, index) =>
+                                <option key={index} value={category.id}>{category.name}</option>
+                            )}
                         </select>
-                        <Button variant="primary" size="sm" type="submit">Save</Button>
+                        <Button variant="primary" size="sm" type="submit" className="mt-3" onClick={this.onSubmit}>Save</Button>
                     </Form>
                 </Modal.Body>
             </Modal>
@@ -96,4 +96,11 @@ class ModalEdit extends Component {
 
 }
 
-export default connect()(ModalEdit);
+const mapStateToProps = (state) => {
+    // console.log(state)
+    return {
+        categorys: state.categorys.categorys
+    }
+}
+
+export default connect(mapStateToProps)(ModalEdit);

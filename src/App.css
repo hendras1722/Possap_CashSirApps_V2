@@ -2,6 +2,11 @@
   text-align: center;
 }
 
+@import url('https://fonts.googleapis.com/css2?family=Amiri&display=swap');
+
+*{
+  font-family: 'Amiri', serif;
+}
 .scrollbar {
 margin-left: 30px;
 float: left;

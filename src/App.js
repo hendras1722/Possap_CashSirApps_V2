@@ -8,6 +8,7 @@ import store from './Component/redux/store'
 // import modalBook from './Component/modal/Category';
 import HomeAdm from './Component/Home/HomeAdm'
 import Category from '../src/Component/Home/Category'
+import Login from '../src/Component/auth/Login'
 
 function App() {
   return (
@@ -15,9 +16,9 @@ function App() {
 
       <Router>
         <Route exact path="/" component={Home} />
-        <Route path="/Cashier" component={HomeAdm} />
-        <Route path="/Table" component={Category} />
-        {/* <Route path="/AdminCategory" component={modalBook} /> */}
+        <Route path="/cashier" component={HomeAdm} />
+        <Route path="/settings" component={Category} />
+        <Route path="/login" component={Login} />
       </Router>
 
     </Provider>

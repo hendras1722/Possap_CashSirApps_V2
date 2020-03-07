@@ -6,8 +6,12 @@ import { connect } from 'react-redux';
 import { searchCategory } from '../redux/actions/Category'
 import { postCategory } from '../redux/actions/Category'
 import { getUser } from '../redux/actions/user'
+import { updateUser } from '../redux/actions/user'
+import ModalDeleteUser from '../Layout/ModalDeleteUser'
+import ModalEditUser from '../Layout/ModalEditUser'
 import ModalDeleteCategory from '../Layout/ModalDeleteCategory'
 import ModalEditCategory from '../Layout/ModalEditCategory'
+
 
 class TableCategory extends Component {
     state = {
@@ -22,6 +26,7 @@ class TableCategory extends Component {
         })
     }
 
+    // add category
     onSubmit = (e) => {
         e.preventDefault();
 
@@ -32,6 +37,23 @@ class TableCategory extends Component {
         console.log(this.state)
         this.props.dispatch(postCategory(data));
     }
+
+
+    // add User
+    onSubmitUser = (e) => {
+        e.preventDefault();
+
+        let data = {
+            name: this.state.name,
+            email: this.state.email,
+            level: this.state.level,
+            password: this.state.password
+        }
+
+        console.log(this.state)
+        this.props.dispatch(updateUser(data));
+    }
+
 
     getCategory = async () => {
         await this.props.dispatch(getCategory())
@@ -48,7 +70,7 @@ class TableCategory extends Component {
         this.props.dispatch(searchCategory(event.target.value));
     }
 
-    // modal edit
+    // modal delete
     handleShowDelete = (id) => {
         console.log("sadas")
         this.setState({
@@ -65,12 +87,28 @@ class TableCategory extends Component {
 
 
     // delete
-    onSelectProductDelete = (category) => {
+    onSelectProductDeleteUser = (category) => {
         this.setState({
             selectProductDelete: category,
             showDelete: true
         })
     }
+
+    // modal delete user
+    handleShowDeleteUser = (id) => {
+        console.log("sadas")
+        this.setState({
+            id: id,
+            showDeleteUser: true
+        })
+    }
+
+    handleCloseDeleteUser = () => {
+        this.setState({
+            showDeleteUser: false
+        })
+    }
+
 
     //edit
     // modal
@@ -90,7 +128,6 @@ class TableCategory extends Component {
     }
 
 
-    // delete
     onSelectProductEdit = (e) => {
         // console.log("kelqwk")
         // console.log(e.target.value)
@@ -101,10 +138,62 @@ class TableCategory extends Component {
     }
     //edit
 
+    // modal
+    handleShowDelete = (id) => {
+        // console.log(e.target.value)
+        this.setState({
+            id: id,
+            showDelete: true
+        })
+    }
+
+    handleCloseDelete = () => {
+        this.setState({
+            showDelete: false
+        })
+    }
+
+
+    // delete
+    onSelectProductDelete = (product) => {
+        this.setState({
+            selectProductDelete: product,
+            showDelete: true
+        })
+    }
+
     componentDidMount() {
         this.getCategory();
         this.getUser();
     }
+
+    //update
+
+    // modal
+    handleShowUpdate = (e) => {
+        console.log(e.target.value)
+        this.setState({
+            idUser: e.target.value,
+            showUpdate: true
+        })
+    }
+
+    handleCloseUpdate = () => {
+        this.setState({
+            showUpdate: false
+        })
+    }
+
+
+    // update
+    onSelectProductUpdate = (product) => {
+        this.setState({
+            selectProductUpdate: product,
+            showUpdate: true
+        })
+    }
+
+
 
     render() {
         const { categorys, users } = this.props;
@@ -128,7 +217,7 @@ class TableCategory extends Component {
                                     </thead>
                                     <tbody>
                                         {categorys.map((category, index) =>
-                                            <tr>
+                                            <tr key={index}>
                                                 <td>{category.id}</td>
                                                 <td>{category.name}</td>
                                                 <td><div style={{ marginLeft: "50px" }}><Button variant="warning" size="sm" onClick={this.handleShowEdit} value={category.id}>Edit</Button> - <Button variant="danger" size="sm" onClick={() => this.handleShowDelete(category.id)} >Delete</Button></div></td>
@@ -179,24 +268,34 @@ class TableCategory extends Component {
                                                 <td>{user.name}</td>
                                                 <td>{user.email}</td>
                                                 <td>{user.level}</td>
-                                                <td><div style={{ marginLeft: "50px" }}><Button variant="warning" size="sm">Edit</Button> - <Button variant="danger" size="sm" >Delete</Button></div></td>
+                                                <td><div style={{ marginLeft: "50px" }}><Button variant="warning" size="sm" onClick={this.handleShowUpdate} value={user.id}>Edit</Button> - <Button variant="danger" size="sm" onClick={() => this.handleShowDeleteUser(user.id)} >Delete</Button></div></td>
                                             </tr>
                                         )}
                                     </tbody>
                                 </Table>
                             </Col>
 
-                            <ModalDeleteCategory show={this.state.showDelete} onHide={this.handleCloseDelete} onClick={this.onSelectProductDelete} id={this.state.id} />
+                            <ModalDeleteUser show={this.state.showDeleteUser} onHide={this.handleCloseDeleteUser} onClick={this.onSelectProductDeleteUser} id={this.state.id} />
 
                             {/* //edit */}
-                            <ModalEditCategory show={this.state.showEdit} onHide={this.handleCloseEdit} onClick={this.onSelectProductEdit} idCategory={this.state.idCategory} />
+                            <ModalEditUser show={this.state.showUpdate} onHide={this.handleCloseUpdate} onClick={this.onSelectProductUpdate} idUser={this.state.idUser} />
 
                             <Col>
                                 <h3 style={{ marginLeft: "150px", marginTop: "10px" }}>ADD USER</h3>
                                 <br />
-                                <form onSubmit={this.onSubmit}>
+                                <form onSubmit={this.onSubmitUser}>
                                     <div class="form-group">
-                                        <input type="text" class="form-control" name="name" id="exampleInputName1" placeholder="Enter Category" onChange={this.onChange} style={{ width: "400px" }} required />
+                                        <input type="text" class="form-control" name="name" id="exampleInputName1" placeholder="Enter Name" onChange={this.onChange} style={{ width: "400px" }} required />
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" name="email" id="exampleInputName1" placeholder="Enter email" onChange={this.onChange} style={{ width: "400px" }} required />
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" name="level" id="exampleInputName1" placeholder="Enter level" onChange={this.onChange} style={{ width: "400px" }} required />
+                                    </div>
+
+                                    <div class="form-group">
+                                        <input type="password" class="form-control" name="password" id="exampleInputName1" placeholder="Enter password" onChange={this.onChange} style={{ width: "400px" }} required />
                                     </div>
                                     <button type="submit" class="btn btn-primary" style={{ width: "400px" }}>Submit</button>
                                 </form>

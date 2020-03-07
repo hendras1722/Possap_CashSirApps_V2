@@ -1,18 +1,21 @@
 import React, { Component } from 'react';
-import NavbarPage from '../Layout/Navbar'
+import NavbarAdm from '../Layout/NavbarAdm'
 import SectionTop from '../Layout/SectionTop'
 import ProductAdm from '../Layout/ProductAdministrator'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 class Home extends Component {
 
     render() {
         console.log('render');
         return (
-            <div>
-                <NavbarPage />
-                <SectionTop />
-                <ProductAdm />
-            </div>
+            <Router>
+                <div>
+                    <NavbarAdm />
+                    <SectionTop />
+                    <ProductAdm />
+                </div>
+            </Router>
         )
     }
 }

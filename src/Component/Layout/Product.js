@@ -9,6 +9,8 @@ import { connect } from 'react-redux';
 import { Form, Row, Col, Button } from 'react-bootstrap'
 import ModalDelete from './ModalDelete'
 import ModalEdit from './ModalEdit'
+import { addCart } from '../redux/actions/carts'
+import { paginationProduct } from '../redux/actions/Product'
 
 class Product extends Component {
     state = {
@@ -24,6 +26,11 @@ class Product extends Component {
         showDelete: false,
         selectProductEdit: null,
         selectProductDelete: null
+    }
+    onAddChart = (product) => {
+
+        product.qty = 1
+        this.props.dispatch(addCart(product))
     }
 
     onChange = (e) => {
@@ -55,6 +62,11 @@ class Product extends Component {
         this.props.dispatch(postProducts(data));
     }
 
+    paginationProduct = (event) => {
+        console.log(event.target.id)
+        this.props.dispatch(paginationProduct(event.target.id))
+    }
+
 
     getProducts = async () => {
         await this.props.dispatch(getProducts())
@@ -64,6 +76,7 @@ class Product extends Component {
     componentDidMount() {
         this.getProducts();
     }
+
 
     // modal
     handleShowEdit = (e) => {
@@ -117,31 +130,39 @@ class Product extends Component {
     }
 
     render() {
-        const { products, categorys } = this.props;
-        // console.log(products);
+        const { products, categorys, pagination } = this.props;
+        console.log(this.props);
         return (
-            <Row>
-                <Col sm={8} className="p-4">
+            <Row >
+                <Col sm={10} className="p-4">
                     <Row>
                         <Col>
 
                             <div style={{ maxWidth: "350px" }}>
-
+                                <nav aria-label="Page navigation example">
+                                    <ul className="pagination" style={{ marginLeft: "50px" }}>
+                                        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                                        {pagination.map((pagination) => (
+                                            <li class="page-item" key={pagination}><a class="page-link" onClick={this.paginationProduct} id={pagination}>{pagination}</a></li>
+                                        ))}
+                                        <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                                    </ul>
+                                </nav>
                                 <div class="col-1 col-md-1 scrollbar scrollbar-primary" className="" style={{
-                                    display: "flex", flexWrap: "wrap", padding: "10px", width: "400px", overflowY: "scroll", position: "relative", height: "400px"
+                                    display: "flex", flexWrap: "wrap", width: "600px", position: "relative", height: "400px", overflowY: "scroll"
                                 }}>
 
                                     {products.map((product, index) =>
                                         <div key={index} style={{
-                                            width: "172px",
-                                            height: "300px", backgroundColor: "white", marginTop: "5px", marginLeft: "5px", border: "1px solid rgba(0, 0, 0, 0.5)", boxSizing: "border-box", padding: "5px"
+                                            width: "180px",
+                                            height: "320px", backgroundColor: "white", marginTop: "10px", marginLeft: "10px", border: "1px solid rgba(0, 0, 0, 0.5)", boxSizing: "border-box", padding: "5px", borderRadius: "15px"
                                         }}>
                                             <img src={product.image} style={{ width: "145px", height: "145px", marginLeft: "15px" }} />
                                             <h6 style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{product.name}</h6>
                                             <hr />
                                             <Row>
-                                                <Col style={{ marginLeft: "5px", marginTop: "-15px" }}>RP.{product.price}</Col>
-                                                <Col style={{ fontSize: "10px", marginTop: "-7px" }}>Stock :{product.stock}</Col>
+                                                <Col style={{ marginLeft: "5px", marginTop: "-15px" }}><p style={{ textOverflow: "ellipsis", whiteSpace: "nowrap" }}>Rp.{product.price}</p></Col>
+                                                <Col style={{ fontSize: "10px", marginTop: "-7px" }}><div>Stock :{product.stock} </div></Col>
                                             </Row>
                                             <h6 style={{ marginLeft: "30px", marginTop: "2px" }}>{product.id_category}</h6>
 
@@ -151,11 +172,12 @@ class Product extends Component {
                                             <Button onClick={this.handleShowEdit} value={product.id} style={{ marginLeft: "12px", backgroundColor: "#F0F429", marginTop: "8px" }}><img src={edt} style={{ width: "15px", height: "15px" }} /></Button>
 
 
-                                            <Button style={{ backgroundColor: "#28F555", marginLeft: "12px", marginTop: "8px" }}><img src={ord} style={{ width: "15px", height: "15px" }} /></Button>
+                                            <Button onClick={() => (this.onAddChart(product))} style={{ backgroundColor: "#28F555", marginLeft: "12px", marginTop: "8px" }}><img src={ord} style={{ width: "15px", height: "15px" }} /></Button>
                                         </div>
                                     )}
                                 </div>
                             </div>
+
                         </Col>
 
                         <ModalDelete show={this.state.showDelete} onHide={this.handleCloseDelete} onClick={this.onSelectProductDelete} id={this.state.id} />
@@ -164,40 +186,42 @@ class Product extends Component {
                         {/* modal edit */}
                         <ModalEdit show={this.state.showEdit} onHide={this.handleCloseEdit} onClick={this.onSelectProductEdit} idProduct={this.state.idProduct} />
 
-                        <Col style={{ marginLeft: "-80px" }}>
-                            <form onSubmit={this.onSubmit}>
-                                <div class="form-group">
-                                    <input type="text" class="form-control" name="name" id="exampleInputName1" placeholder="Enter Name Product" onChange={this.onChange} required />
-                                    <Form.Control.Feedback type="invalid">
+                        <Col style={{ marginLeft: "250px", width: "200px" }}>
+                            <div style={{ marginLeft: "-70px" }}>
+                                <h4 style={{ marginLeft: "60px", marginTop: "50px", marginBottom: "20px" }}>Add Product</h4>
+                                <form onSubmit={this.onSubmit}>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" name="name" id="exampleInputName1" placeholder="Enter Name Product" onChange={this.onChange} style={{ width: "400px" }} required />
+                                        <Form.Control.Feedback type="invalid">
 
-                                    </Form.Control.Feedback>
-                                </div>
-                                <div class="form-group">
-                                    <input type="text" class="form-control" name="description" id="exampleInputDesctiption" placeholder="Enter Description Product" onChange={this.onChange} required />
-                                </div>
-                                <div class="form-group">
-                                    <input type="file" class="form-control-file" name="image" id="exampleFormControlFile1" onChange={this.onChangeImageHandler} required />
-                                </div>
-                                <div class="form-group">
-                                    <input type="number" class="form-control" name="price" id="exampleInputPrice" placeholder="Enter Price Product" onChange={this.onChange} pattern="\d*" title="Numbers only, please." min="1" max="1000000" required />
-                                </div>
-                                <div class="form-group">
-                                    <input type="number" class="form-control" name="stock" id="exampleInputStock" placeholder="Enter Stock Product" onChange={this.onChange} pattern="\d*" title="Numbers only, please." min="1" max="300" required />
-                                </div>
-                                <div class="form-group">
+                                        </Form.Control.Feedback>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" name="description" id="exampleInputDesctiption" placeholder="Enter Description Product" onChange={this.onChange} style={{ width: "400px" }} required />
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="file" class="form-control-file" name="image" id="exampleFormControlFile1" onChange={this.onChangeImageHandler} style={{ width: "400px" }} required />
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="number" class="form-control" name="price" id="exampleInputPrice" placeholder="Enter Price Product" onChange={this.onChange} pattern="\d*" title="Numbers only, please." min="1" max="1000000" style={{ width: "400px" }} required />
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="number" class="form-control" name="stock" id="exampleInputStock" placeholder="Enter Stock Product" onChange={this.onChange} pattern="\d*" title="Numbers only, please." min="1" max="300" style={{ width: "400px" }} required />
+                                    </div>
+                                    <div class="form-group">
 
-                                    <select class="custom-select mr-sm-2" name="id_category" id="inlineFormCustomSelect" onChange={this.onChange} value={this.state.id_category} required>
+                                        <select class="custom-select mr-sm-2" name="id_category" id="inlineFormCustomSelect" onChange={this.onChange} value={this.state.id_category} style={{ width: "400px" }} required>
 
-                                        <option >Choose...</option>
-                                        {categorys.map((category, index) =>
-                                            <option key={index} value={category.id}>{category.name}</option>
-                                        )}
-                                    </select>
+                                            <option >Choose...</option>
+                                            {categorys.map((category, index) =>
+                                                <option key={index} value={category.id}>{category.name}</option>
+                                            )}
+                                        </select>
 
-                                </div>
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                            </form>
-
+                                    </div>
+                                    <button type="submit" class="btn btn-primary" style={{ width: "400px" }}>Submit</button>
+                                </form>
+                            </div>
                         </Col>
                     </Row>
                 </Col >
@@ -207,10 +231,12 @@ class Product extends Component {
 }
 
 const mapStateToProps = (state) => {
-    // console.log(state)
+    console.log(mapStateToProps)
     return {
         products: state.products.products,
-        categorys: state.categorys.categorys
+        categorys: state.categorys.categorys,
+        pagination: state.products.pagination
+
     }
 }
 
