@@ -17,7 +17,7 @@ const user = (state = initialState, action) => {
                 ...state
             }
         case 'GET_USER_FULFILLED':
-            // console.log(action.payload.data.result);
+            console.log(action.payload.data.result);
             return {
                 ...state,
                 users: action.payload.data.result

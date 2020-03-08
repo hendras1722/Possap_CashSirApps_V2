@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import background from '../img/backgroundllogin.jpg'
+import { FormCheck, Form } from 'react-bootstrap'
 
 class Login extends Component {
     constructor(props) {
@@ -26,12 +28,13 @@ class Login extends Component {
         console.log('hahaa');
 
         axios
-            .post("http://localhost:8000/user/login", this.state)
+            .post("http://localhost:4000/user/login", this.state)
             .then(res => {
                 console.log(res.data);
                 localStorage.setItem('token', res.data.token);
                 localStorage.setItem('user-id', res.data.id);
                 localStorage.setItem('isAuth', true);
+                localStorage.setItem('Status', res.data.Status)
                 this.props.history.push('/');
             })
             .catch(err => {
@@ -41,21 +44,31 @@ class Login extends Component {
 
     render() {
         return (
-            <div className="container">
-                <h4 style={{ marginTop: '10px' }}>Login</h4>
-                <div className="row justify-content-md-center">
-                    <div className="col-md-8">
-                        <form onSubmit={this.onSubmit}>
-                            <div className="form-group">
-                                <label>Email</label>
-                                <input type="text" className="form-control" placeholder="Enter email" name="email" onChange={this.onChange} />
-                            </div>
-                            <div className="form-group">
-                                <label>Password</label>
-                                <input type="password" className="form-control" placeholder="Enter password" name="password" onChange={this.onChange} />
-                            </div>
-                            <button type="submit" className="btn btn-primary">Login</button>
-                        </form>
+            <div>
+                <img src={background} style={{ position: "absolute", width: "100%", height: "100vh", marginTop: "0px" }} />
+
+                <div className="container">
+                    <div className="row justify-content-md-center">
+                        <div className="col-md-8">
+                            <form onSubmit={this.onSubmit} style={{ marginLeft: "400px", marginTop: "180px" }}>
+                                <div className="form-group">
+                                    {/* <label>Email</label> */}
+                                    <input type="text" className="form-control" placeholder="Enter email" name="email" onChange={this.onChange} style={{ width: "500px" }} required />
+                                </div>
+                                <div className="form-group">
+                                    {/* <label>Password</label> */}
+                                    <input type="password" className="form-control" placeholder="Enter password" name="password" onChange={this.onChange} style={{ width: "500px" }} required />
+                                </div>
+                                <Form.Group>
+                                    <Form.Check
+                                        required
+                                        label="Agree to terms and conditions"
+                                        feedback="You must agree before submitting."
+                                    />
+                                </Form.Group>
+                                <button type="submit" className="btn btn-primary" style={{ width: "500px" }}>Login</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>

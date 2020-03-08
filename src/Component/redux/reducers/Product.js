@@ -10,11 +10,7 @@ const initialState = {
 const product = (state = initialState, action) => {
     // console.log(action.type);
     switch (action.type) {
-        case 'PAGINATION_FULFILLED':
-            return {
-                ...state,
-                products: action.payload.data.result
-            }
+
 
         case 'GET_SEARCHPRODUCTS_PENDING':
             return {
@@ -23,6 +19,11 @@ const product = (state = initialState, action) => {
         case 'GET_SEARCHPRODUCTS_REJECTED':
             return {
                 ...state
+            }
+        case 'PAGINATION_FULFILLED':
+            return {
+                ...state,
+                products: action.payload.data.result
             }
         case 'GET_SEARCHPRODUCTS_FULFILLED':
             // console.log(action.payload.data.result);

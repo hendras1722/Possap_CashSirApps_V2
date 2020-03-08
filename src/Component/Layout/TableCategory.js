@@ -11,12 +11,22 @@ import ModalDeleteUser from '../Layout/ModalDeleteUser'
 import ModalEditUser from '../Layout/ModalEditUser'
 import ModalDeleteCategory from '../Layout/ModalDeleteCategory'
 import ModalEditCategory from '../Layout/ModalEditCategory'
-
+import { postProducts } from '../redux/actions/Product'
 
 class TableCategory extends Component {
     state = {
+        products: [],
+        id: '',
         name: '',
-        id: ''
+        description: '',
+        image: '',
+        price: 1,
+        stock: 1,
+        id_category: '0',
+        showEdit: false,
+        showDelete: false,
+        selectProductEdit: null,
+        selectProductDelete: null
     }
 
     onChange = (e) => {
@@ -193,6 +203,36 @@ class TableCategory extends Component {
         })
     }
 
+    // post
+    onChange = (e) => {
+        this.setState({
+            [e.target.name]: e.target.value
+        })
+    }
+
+    onChangeImageHandler = (e) => {
+        this.setState({ image: e.target.files[0] })
+    }
+
+
+    onSubmit = (e) => {
+        e.preventDefault();
+        // console.log("lqwekqwlje")
+
+        let data = new FormData()
+
+        data.append("name", this.state.name)
+        data.append("description", this.state.description)
+        data.append("image", this.state.image)
+        data.append("price", this.state.price)
+        data.append("stock", this.state.stock)
+        data.append("id_category", this.state.id_category)
+        // console.log(this.state.id_category)
+        // console.log(formData.append)
+
+        this.props.dispatch(postProducts(data));
+    }
+
 
 
     render() {
@@ -244,6 +284,7 @@ class TableCategory extends Component {
                             </Col>
                         </Row>
                     </Tab>
+
                     <Tab eventKey="profile" title="Administrator">
                         <Row>
                             <Col>
@@ -299,6 +340,82 @@ class TableCategory extends Component {
                                     </div>
                                     <button type="submit" class="btn btn-primary" style={{ width: "400px" }}>Submit</button>
                                 </form>
+                            </Col>
+                        </Row>
+                    </Tab>
+
+                    <Tab eventKey="submit" title="Submit">
+                        <Row>
+                            <Col>
+                                <Table striped bordered hover style={{ width: "500px" }}>
+                                    <thead>
+                                        <tr>
+                                            <th>id</th>
+                                            <th>name</th>
+                                            <th>email</th>
+                                            <th>level</th>
+                                            <th>
+                                                <Form inline>
+                                                    <FormControl type="text" placeholder="Search" className="mr-sm-2" onChange={this.searchCategory} />
+                                                </Form>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {users.map((user, index) =>
+                                            <tr>
+                                                <td>{user.id}</td>
+                                                <td>{user.name}</td>
+                                                <td>{user.email}</td>
+                                                <td>{user.level}</td>
+                                                <td><div style={{ marginLeft: "50px" }}><Button variant="warning" size="sm" onClick={this.handleShowUpdate} value={user.id}>Edit</Button> - <Button variant="danger" size="sm" onClick={() => this.handleShowDeleteUser(user.id)} >Delete</Button></div></td>
+                                            </tr>
+                                        )}
+                                    </tbody>
+                                </Table>
+                            </Col>
+
+                            <ModalDeleteUser show={this.state.showDeleteUser} onHide={this.handleCloseDeleteUser} onClick={this.onSelectProductDeleteUser} id={this.state.id} />
+
+                            {/* //edit */}
+                            <ModalEditUser show={this.state.showUpdate} onHide={this.handleCloseUpdate} onClick={this.onSelectProductUpdate} idUser={this.state.idUser} />
+
+                            <Col>
+                                <div style={{ marginLeft: "-70px" }}>
+                                    <h4 style={{ marginLeft: "60px", marginTop: "50px", marginBottom: "20px" }}>Add Product</h4>
+                                    <form onSubmit={this.onSubmit}>
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" name="name" id="exampleInputName1" placeholder="Enter Name Product" onChange={this.onChange} style={{ width: "400px" }} required />
+                                            <Form.Control.Feedback type="invalid">
+
+                                            </Form.Control.Feedback>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" name="description" id="exampleInputDesctiption" placeholder="Enter Description Product" onChange={this.onChange} style={{ width: "400px" }} required />
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="file" class="form-control-file" name="image" id="exampleFormControlFile1" onChange={this.onChangeImageHandler} style={{ width: "400px" }} required />
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="number" class="form-control" name="price" id="exampleInputPrice" placeholder="Enter Price Product" onChange={this.onChange} pattern="\d*" title="Numbers only, please." min="1" max="1000000" style={{ width: "400px" }} required />
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="number" class="form-control" name="stock" id="exampleInputStock" placeholder="Enter Stock Product" onChange={this.onChange} pattern="\d*" title="Numbers only, please." min="1" max="300" style={{ width: "400px" }} required />
+                                        </div>
+                                        <div class="form-group">
+
+                                            <select class="custom-select mr-sm-2" name="id_category" id="inlineFormCustomSelect" onChange={this.onChange} value={this.state.id_category} style={{ width: "400px" }} required>
+
+                                                <option >Choose...</option>
+                                                {categorys.map((category, index) =>
+                                                    <option key={index} value={category.id}>{category.name}</option>
+                                                )}
+                                            </select>
+
+                                        </div>
+                                        <button type="submit" class="btn btn-primary" style={{ width: "400px" }}>Submit</button>
+                                    </form>
+                                </div>
                             </Col>
                         </Row>
                     </Tab>

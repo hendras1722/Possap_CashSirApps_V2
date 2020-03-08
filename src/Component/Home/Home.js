@@ -7,14 +7,13 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 class Home extends Component {
     componentDidMount() {
-        if (!localStorage.getItem('isAuth')) {
-            this.props.history.push('/login');
-        }
+
     }
     onLogout() {
         localStorage.removeItem('user-id');
         localStorage.removeItem('token');
         localStorage.removeItem('isAuth');
+        localStorage.removeItem('Status');
         this.props.history.push('/login');
     }
 
@@ -24,7 +23,7 @@ class Home extends Component {
             <Router>
                 <Switch>
                     <div>
-                        <NavbarPage onClick={this.onLogout.bind(this)} />
+                        <NavbarPage logout={this.onLogout.bind(this)} />
                         <SectionTop />
                         <Product />
                     </div>

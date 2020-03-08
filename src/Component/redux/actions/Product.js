@@ -8,12 +8,11 @@ export const getProducts = () => {
         type: 'GET_PRODUCTS',
         payload: axios({
             method: "GET",
-            url: (`http://localhost:4000/pos`, {
-                headers: {
-                    "authorization": authorization,
-                    "user-id": userId
-                }
-            })
+            url: `http://localhost:4000/pos`,
+            headers: {
+                "authorization": authorization,
+                "user-id": userId
+            }
         })
     }
 }

@@ -7,6 +7,7 @@ import LogCat from '../img/list.png'
 import { searchProduct } from "../redux/actions/Product";
 import { connect } from 'react-redux';
 import { getCategory } from '../redux/actions/Category'
+import { paginationProduct } from '../redux/actions/Product'
 import logocart from '../img/order.png'
 import { sortProduct } from '../redux/actions/Product'
 import { orderBy } from '../redux/actions/Product'
@@ -19,9 +20,21 @@ class SectionTop extends Component {
         komponen: '',
         searchName: '',
         idCategory: '',
-        sortBy: ''
+        sortBy: '',
+        pagination: ''
 
     }
+
+    // paginationProduct = (event) => {
+    //     this.setState({
+    //         pagination: event
+    //     })
+
+    //     this.props.history.push(`/pos?name=${this.state.searchName}&idCat=${event}&page=${event}&orderBy=ASC`);
+    //     console.log(event.target.id)
+    //     this.props.dispatch(searchProduct(this.state.searchName, this.state.idCategory, event));
+    // }
+
     sortProduct = (event) => {
         this.setState({
             idCategory: event
@@ -31,7 +44,7 @@ class SectionTop extends Component {
         console.log(this.state.idCategory)
         console.log(event)
         console.log(`ini state ${this.state.idCategory}`)
-        this.props.dispatch(searchProduct(this.state.searchName, event));
+        this.props.dispatch(searchProduct(this.state.searchName, event, this.state.paginationProduct));
     }
 
     searchProduct = (event) => {
@@ -42,7 +55,7 @@ class SectionTop extends Component {
         this.props.history.push(`/pos?name=${event.target.value}&idCat=${this.state.idCategory}&orderBy=ASC`);
         console.log(event.target.value)
         console.log(`ini state ${this.state.searchName}`)
-        this.props.dispatch(searchProduct(event.target.value, this.state.idCategory));
+        this.props.dispatch(searchProduct(event.target.value, this.state.idCategory, this.state.paginationProduct));
     }
 
     getCategory = async () => {
