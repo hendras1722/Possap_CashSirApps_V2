@@ -20,9 +20,20 @@ export const deleteUser = (userId) => {
     }
 }
 
-export const updateUser = (data) => {
+export const updateUser = (idUsers, data) => {
     return {
-        type: "POST_updateUser",
+        type: "UPDATE_USERS",
+        payload: axios({
+            method: "PATCH",
+            url: `http://localhost:4000/user/${idUsers}`,
+            data: data
+        })
+    }
+}
+
+export const registerUser = (data) => {
+    return {
+        type: "CREATE_USER",
         payload: axios({
             method: "POST",
             url: "http://localhost:4000/user/register",

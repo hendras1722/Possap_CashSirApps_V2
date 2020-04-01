@@ -53,7 +53,7 @@ class Login extends Component {
                             <form onSubmit={this.onSubmit} style={{ marginLeft: "400px", marginTop: "180px" }}>
                                 <div className="form-group">
                                     {/* <label>Email</label> */}
-                                    <input type="text" className="form-control" placeholder="Enter email" name="email" onChange={this.onChange} style={{ width: "500px" }} required />
+                                    <input type="email" className="form-control" placeholder="Enter email" name="email" onChange={this.onChange} style={{ width: "500px" }} required />
                                 </div>
                                 <div className="form-group">
                                     {/* <label>Password</label> */}

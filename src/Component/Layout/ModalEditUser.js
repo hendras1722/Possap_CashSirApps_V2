@@ -19,19 +19,21 @@ class ModalEditCategory extends Component {
         })
     }
 
+
     onSubmit = (e) => {
         e.preventDefault();
         const idUsers = this.props.idUser
         let data = {
             name: this.state.name,
             email: this.state.email,
-            level: this.state.level
+            Status: this.state.Status
         }
 
-        console.log(onsubmit)
+        // console.log(onsubmit)
         console.log(data)
         this.props.dispatch(updateUser(idUsers, data));
     }
+
 
     render() {
         // console.log(this.props)
@@ -56,7 +58,7 @@ class ModalEditCategory extends Component {
                         </Form.Group>
                         <Form.Group>
                             <Form.Label>Level</Form.Label>
-                            <Form.Control type="number" name="level" onChange={this.onChange} />
+                            <Form.Control type="number" name="Status" onChange={this.onChange} />
                         </Form.Group>
 
                         <Button variant="primary" size="sm" type="submit">Save</Button>

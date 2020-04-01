@@ -10,14 +10,13 @@ class Home extends Component {
     render() {
         console.log('render');
         return (
-            <Router>
-                <div>
-                    <NavbarPage />
-                    {/* <NavbarAdm /> */}
-                    <SectionTop />
-                    <ProductAdm />
-                </div>
-            </Router>
+
+            <div>
+                <NavbarPage />
+                {/* <NavbarAdm /> */}
+                <SectionTop />
+                <ProductAdm />
+            </div>
         )
     }
 }

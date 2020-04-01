@@ -23,24 +23,23 @@ const user = (state = initialState, action) => {
                 users: action.payload.data.result
             }
 
-        case 'DELETE_PRODUCTS_PENDING':
+        case 'DELETE_USERS_PENDING':
             return {
                 ...state,
                 isLoading: true
             }
 
-        case 'DELETE_PRODUCTS_REJECTED':
+        case 'DELETE_USERS_REJECTED':
             return {
                 ...state,
                 isLoading: true
             }
 
-        case 'DELETE_PRODUCTS_FULFILLED':
-            const newUserAfterDelete = state.users.filter(user => user.id !== action.payload.data.result.id);
+        case 'DELETE_USERS_FULFILLED':
             return {
                 ...state,
                 isLoading: false,
-                users: newUserAfterDelete
+                users: action.payload.data.result
             }
         case 'UPDATE_USERS_PENDING':
             return {
@@ -55,13 +54,9 @@ const user = (state = initialState, action) => {
             }
 
         case 'UPDATE_USERS_FULFILLED':
-            const newUserAfterUpdate = state.users.map(user => {
-                if (user.id === action.payload.data.result.idUser) {
-                    return action.payload.data.result;
-                }
-
-                return user;
-            })
+            return {
+                users: action.payload.data.result
+            }
 
         case 'CREATE_USER_PENDING':
             return {
@@ -74,13 +69,8 @@ const user = (state = initialState, action) => {
             }
 
         case 'CREATE_USER_FULFILLED':
-            console.log(action.payload.data);
-            console.log(state.products)
-            const DataUser = [...state.users, action.payload.data.result];
             return {
-                ...state,
-                isLoading: false,
-                users: DataUser
+                users: action.payload.data.result
             }
 
         // console.log(action.payload)

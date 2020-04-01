@@ -20,15 +20,12 @@ class Home extends Component {
     render() {
         console.log('render');
         return (
-            <Router>
-                <Switch>
-                    <div>
-                        <NavbarPage logout={this.onLogout.bind(this)} />
-                        <SectionTop />
-                        <Product />
-                    </div>
-                </Switch>
-            </Router>
+
+            < div >
+                <NavbarPage logout={this.onLogout.bind(this)} />
+                <SectionTop />
+                <Product />
+            </div >
         )
     }
 }

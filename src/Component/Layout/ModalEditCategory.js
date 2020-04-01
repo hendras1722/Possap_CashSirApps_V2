@@ -22,7 +22,7 @@ class ModalEditCategory extends Component {
 
         const idCategorys = this.props.idCategory
         let data = {
-            name: this.state.name
+            name_category: this.state.name_category
         }
 
         console.log(this.state)
@@ -44,7 +44,7 @@ class ModalEditCategory extends Component {
                         </Form.Group>
                         <Form.Group>
                             <Form.Label>Name</Form.Label>
-                            <Form.Control type="text" name="name" onChange={this.onChange} />
+                            <Form.Control type="text" name="name_category" onChange={this.onChange} />
                         </Form.Group>
 
                         <Button variant="primary" size="sm" type="submit">Save</Button>

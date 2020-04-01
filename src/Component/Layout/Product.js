@@ -1,8 +1,9 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import rmv from '../img/remove.png'
 import edt from '../img/edit.png'
 import ord from '../img/order.png'
+import re from '../img/empty.png'
 import { getProducts } from '../redux/actions/Product'
 import { postProducts } from '../redux/actions/Product'
 import { connect } from 'react-redux';
@@ -11,6 +12,8 @@ import ModalDelete from './ModalDelete'
 import ModalEdit from './ModalEdit'
 import { addCart } from '../redux/actions/carts'
 import { paginationProduct } from '../redux/actions/Product'
+// var numeral = require('numeral');
+import NumberFormat from 'react-number-format';
 
 class Product extends Component {
     state = {
@@ -21,11 +24,12 @@ class Product extends Component {
         image: '',
         price: 1,
         stock: 1,
-        id_category: '0',
+        name_category: '0',
         showEdit: false,
         showDelete: false,
         selectProductEdit: null,
-        selectProductDelete: null
+        selectProductDelete: null,
+
     }
     onAddChart = (product) => {
 
@@ -55,8 +59,8 @@ class Product extends Component {
         data.append("image", this.state.image)
         data.append("price", this.state.price)
         data.append("stock", this.state.stock)
-        data.append("id_category", this.state.id_category)
-        // console.log(this.state.id_category)
+        data.append("name_category", this.state.name_category)
+        console.log(this.state.name_category)
         // console.log(formData.append)
 
         this.props.dispatch(postProducts(data));
@@ -73,19 +77,19 @@ class Product extends Component {
     }
 
 
-    componentDidMount() {
+    async componentDidMount() {
         if (!localStorage.getItem('isAuth')) {
             this.props.history.push('/login');
         }
-        this.getProducts();
+        await this.getProducts();
     }
 
 
     // modal
     handleShowEdit = (e) => {
-        // console.log(e)
+        console.log(e)
         this.setState({
-            idProduct: e.target.value,
+            idProduct: e,
             showEdit: true
         })
     }
@@ -133,14 +137,14 @@ class Product extends Component {
     }
 
     render() {
-        const { products, categorys, pagination } = this.props;
-        console.log(this.props);
+        const { products, categorys, pagination, hide, cart, total } = this.props;
+        // console.log(this.props.categorys);
+        console.log(cart.name)
         return (
             <Row >
                 <Col sm={10} className="p-4">
                     <Row>
                         <Col>
-
                             <div style={{ maxWidth: "350px" }}>
                                 <nav aria-label="Page navigation example">
                                     <ul className="pagination" style={{ marginLeft: "50px" }}>
@@ -152,80 +156,46 @@ class Product extends Component {
                                     </ul>
                                 </nav>
                                 <div class="col-1 col-md-1 scrollbar scrollbar-primary" className="" style={{
-                                    display: "flex", flexWrap: "wrap", width: "600px", position: "relative", height: "400px", overflowY: "scroll"
+                                    display: "flex", flexWrap: "wrap", width: "1000px", position: "relative", height: "400px", overflowY: "scroll"
                                 }}>
 
                                     {products.map((product, index) =>
-                                        <div key={index} style={{
-                                            width: "180px",
-                                            height: "320px", backgroundColor: "white", marginTop: "10px", marginLeft: "10px", border: "1px solid rgba(0, 0, 0, 0.5)", boxSizing: "border-box", padding: "5px", borderRadius: "15px"
-                                        }}>
+                                        <div key={index} style={{ width: "180px", height: "320px", backgroundColor: "white", marginTop: "10px", marginLeft: "10px", border: "1px solid rgba(0, 0, 0, 0.5)", boxSizing: "border-box", padding: "5px", borderRadius: "15px", display: 'inline' }}>
+                                            <img src={rmv} onClick={() => this.handleShowDelete(product.id)} style={{ width: "15px", height: "15px", position: 'absolute' }} hidden={hide} />
+                                            <img src={edt} onClick={() => this.handleShowEdit(product.id)} value={product.id} style={{ width: "15px", height: "15px", position: 'absolute', marginLeft: "150px" }} hidden={hide} />
                                             <img src={product.image} style={{ width: "145px", height: "145px", marginLeft: "15px" }} />
                                             <h6 style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{product.name}</h6>
+                                            <div><p style={{ fontSize: 10, position: 'absolute', marginLeft: 120, marginTop: -10 }}>
+                                                Stock :{product.stock}
+                                            </p> </div>
                                             <hr />
                                             <Row>
-                                                <Col style={{ marginLeft: "5px", marginTop: "-15px" }}><p style={{ textOverflow: "ellipsis", whiteSpace: "nowrap" }}>Rp.{product.price}</p></Col>
-                                                <Col style={{ fontSize: "10px", marginTop: "-7px" }}><div>Stock :{product.stock} </div></Col>
+                                                <Col style={{ marginLeft: "5px", marginTop: "-15px" }}><p style={{ textOverflow: "ellipsis", whiteSpace: "nowrap" }} > <NumberFormat value={product.price} displayType={'text'} thousandSeparator={true} prefix={'Rp'} />,-</p>
+                                                </Col>
+
+                                                <Col style={{ fontSize: "10px", marginTop: "-7px" }}></Col>
                                             </Row>
-                                            <h6 style={{ marginLeft: "30px", marginTop: "2px" }}>{product.id_category}</h6>
-
-                                            <Button onClick={() => this.handleShowDelete(product.id)} style={{ marginLeft: "5px", backgroundColor: "#F52929", marginTop: "8px" }}><img src={rmv} style={{ width: "15px", height: "15px" }} /></Button>
-
-                                            {/* EDit */}
-                                            <Button onClick={this.handleShowEdit} value={product.id} style={{ marginLeft: "12px", backgroundColor: "#F0F429", marginTop: "8px" }}><img src={edt} style={{ width: "15px", height: "15px" }} /></Button>
+                                            <h6 style={{ marginLeft: "30px", marginTop: "2px" }}>{product.name_category}</h6>
 
 
-                                            <Button onClick={() => (this.onAddChart(product))} style={{ backgroundColor: "#28F555", marginLeft: "12px", marginTop: "8px" }}><img src={ord} style={{ width: "15px", height: "15px" }} /></Button>
+                                            <Button onClick={() => (this.onAddChart(product))} style={{ backgroundColor: "#28F555", marginLeft: "12px", marginTop: "8px", width: "140px" }}><img src={ord} style={{ width: "15px", height: "15px" }} /></Button>
                                         </div>
                                     )}
+
                                 </div>
                             </div>
 
                         </Col>
-
+                        <Col style={{ marginLeft: 660 }} >
+                            <img src={re} style={{ marginLeft: -20, width: "300px", height: "250px", position: 'absolute' }} />
+                        </Col>
                         <ModalDelete show={this.state.showDelete} onHide={this.handleCloseDelete} onClick={this.onSelectProductDelete} id={this.state.id} />
 
 
                         {/* modal edit */}
                         <ModalEdit show={this.state.showEdit} onHide={this.handleCloseEdit} onClick={this.onSelectProductEdit} idProduct={this.state.idProduct} />
 
-                        <Col style={{ marginLeft: "250px", width: "200px" }}>
-                            <div style={{ marginLeft: "-70px" }}>
-                                <h4 style={{ marginLeft: "60px", marginTop: "50px", marginBottom: "20px" }}>Add Product</h4>
-                                <form onSubmit={this.onSubmit}>
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" name="name" id="exampleInputName1" placeholder="Enter Name Product" onChange={this.onChange} style={{ width: "400px" }} required />
-                                        <Form.Control.Feedback type="invalid">
 
-                                        </Form.Control.Feedback>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" name="description" id="exampleInputDesctiption" placeholder="Enter Description Product" onChange={this.onChange} style={{ width: "400px" }} required />
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="file" class="form-control-file" name="image" id="exampleFormControlFile1" onChange={this.onChangeImageHandler} style={{ width: "400px" }} required />
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="number" class="form-control" name="price" id="exampleInputPrice" placeholder="Enter Price Product" onChange={this.onChange} pattern="\d*" title="Numbers only, please." min="1" max="1000000" style={{ width: "400px" }} required />
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="number" class="form-control" name="stock" id="exampleInputStock" placeholder="Enter Stock Product" onChange={this.onChange} pattern="\d*" title="Numbers only, please." min="1" max="300" style={{ width: "400px" }} required />
-                                    </div>
-                                    <div class="form-group">
-
-                                        <select class="custom-select mr-sm-2" name="id_category" id="inlineFormCustomSelect" onChange={this.onChange} value={this.state.id_category} style={{ width: "400px" }} required>
-
-                                            <option >Choose...</option>
-                                            {categorys.map((category, index) =>
-                                                <option key={index} value={category.id}>{category.name}</option>
-                                            )}
-                                        </select>
-
-                                    </div>
-                                    <button type="submit" class="btn btn-primary" style={{ width: "400px" }}>Submit</button>
-                                </form>
-                            </div>
-                        </Col>
                     </Row>
                 </Col >
             </Row >
@@ -236,9 +206,12 @@ class Product extends Component {
 const mapStateToProps = (state) => {
     console.log(mapStateToProps)
     return {
+        hide: state.products.hide,
         products: state.products.products,
         categorys: state.categorys.categorys,
-        pagination: state.products.pagination
+        pagination: state.products.pagination,
+        cart: state.cart.cart,
+        total: state.cart.total
 
     }
 }

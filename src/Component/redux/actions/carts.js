@@ -18,3 +18,10 @@ export const reduceQty = (id) => {
         payload: id
     }
 }
+
+export const deleteCart = (data) => {
+    return {
+        type: 'DELETE_CART_DATA',
+        payload: data
+    }
+}

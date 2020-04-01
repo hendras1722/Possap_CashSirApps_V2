@@ -6,7 +6,7 @@ import { updateProduct } from '../redux/actions/Product';
 
 class ModalEdit extends Component {
     state = {
-        id_category: 0,
+        name_category: 0,
         name: '',
         price: 0,
         stock: 0,
@@ -30,7 +30,7 @@ class ModalEdit extends Component {
     onSubmit = (e) => {
         e.preventDefault();
         console.log(this.state)
-        // console.log(this.props)
+
         const product = this.props
         console.log(this.props.idProduct)
         const idGet = this.props.idProduct;
@@ -41,7 +41,7 @@ class ModalEdit extends Component {
         data.append("image", this.state.image);
         data.append("price", this.state.price);
         data.append("stock", this.state.stock);
-        data.append("id_category", this.state.id_category);
+        data.append("name_category", this.state.name_category);
 
         this.props.dispatch(updateProduct(idGet, data));
         this.props.onHide()
@@ -51,7 +51,7 @@ class ModalEdit extends Component {
 
     render() {
         const { categorys } = this.props;
-        // console.log(this.props)
+        console.log(this.state.name_category)
         const { show, onHide, ...product } = this.props;
         return (
             <Modal show={show} onHide={onHide} variant="lg">
@@ -80,11 +80,11 @@ class ModalEdit extends Component {
                             <Form.Label>Stock</Form.Label>
                             <Form.Control type="number" name="stock" onChange={this.onChange} />
                         </Form.Group>
-                        <select class="custom-select mr-sm-2" name="id_category" id="inlineFormCustomSelect" onChange={this.onChange} value={this.state.id_category} required>
+                        <select class="custom-select mr-sm-2" name="name_category" id="inlineFormCustomSelect" onChange={this.onChange} value={this.state.name_category} required>
 
                             <option >Choose...</option>
                             {categorys.map((category, index) =>
-                                <option key={index} value={category.id}>{category.name}</option>
+                                <option key={index} value={category.id}>{category.name_category}</option>
                             )}
                         </select>
                         <Button variant="primary" size="sm" type="submit" className="mt-3" onClick={this.onSubmit}>Save</Button>
@@ -99,6 +99,7 @@ class ModalEdit extends Component {
 const mapStateToProps = (state) => {
     // console.log(state)
     return {
+        products: state.products.products,
         categorys: state.categorys.categorys
     }
 }

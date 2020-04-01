@@ -3,7 +3,8 @@ const initialState = {
     products: [],
     productId: null,
     pagination: [],
-    isLoading: false
+    isLoading: false,
+    hide: false
 
 }
 
@@ -72,10 +73,23 @@ const product = (state = initialState, action) => {
             }
         case 'GET_PRODUCTS_FULFILLED':
             // console.log(action.payload.data.result);
-            return {
-                ...state,
-                products: action.payload.data.result
+            if (localStorage.getItem('Status') == '1') {
+                return {
+                    ...state,
+                    products: action.payload.data.result,
+                    hide: false
+                }
+            } else if (localStorage.getItem('Status') == '2') {
+                return {
+                    ...state,
+                    products: action.payload.data.result,
+                    hide: true
+                }
             }
+        // return {
+        //     ...state,
+        //     products: action.payload.data.result
+        // }
 
         case 'CREATE_PRODUCTS_PENDING':
             return {
@@ -88,13 +102,8 @@ const product = (state = initialState, action) => {
             }
 
         case 'CREATE_PRODUCTS_FULFILLED':
-            console.log(action.payload.data);
-            console.log(state.products)
-            const DataProduct = [...state.products, action.payload.data.result];
             return {
-                ...state,
-                isLoading: false,
-                products: DataProduct
+                products: action.payload.data.result
             }
 
         case 'DELETE_PRODUCTS_PENDING':
@@ -130,17 +139,8 @@ const product = (state = initialState, action) => {
             }
 
         case 'UPDATE_PRODUCTS_FULFILLED':
-            const newProductAfterUpdate = state.products.map(product => {
-                if (product.id === action.payload.data.result.id) {
-                    return action.payload.data.result;
-                }
-
-                return product;
-            })
             return {
-                ...state,
-                isLoading: false,
-                products: newProductAfterUpdate
+                products: action.payload.data.result
             }
 
         // console.log(action.payload)

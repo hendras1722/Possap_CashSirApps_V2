@@ -1,5 +1,5 @@
 import axios from 'axios';
-
+require('dotenv').config()
 
 export const getProducts = () => {
     const authorization = localStorage.getItem('token');
@@ -8,7 +8,7 @@ export const getProducts = () => {
         type: 'GET_PRODUCTS',
         payload: axios({
             method: "GET",
-            url: `http://localhost:4000/pos`,
+            url: `${process.env.REACT_APP_API_URL}/pos`,
             headers: {
                 "authorization": authorization,
                 "user-id": userId
@@ -22,7 +22,7 @@ export const postProducts = (data) => {
         type: 'CREATE_PRODUCTS',
         payload: axios({
             method: "POST",
-            url: "http://localhost:4000/pos",
+            url: `${process.env.REACT_APP_API_URL}/pos`,
             data: data
         })
     }
@@ -30,20 +30,32 @@ export const postProducts = (data) => {
 
 export const searchProduct = (name, idCategory, page) => {
     console.log(searchProduct)
+    const authorization = localStorage.getItem('token');
+    const userId = localStorage.getItem("user-id");
     return {
         type: 'GET_SEARCHPRODUCTS',
         payload: axios({
             method: "GET",
-            url: `http://localhost:4000/pos?name=${name}&idCat=${idCategory}&orderBy=ASC`,
+            url: `${process.env.REACT_APP_API_URL}/pos?name=${name}&idCat=${idCategory}&orderBy=ASC`,
+            headers: {
+                "authorization": authorization,
+                "user-id": userId
+            }
         })
     }
 }
 export const sortProduct = (data) => {
+    const authorization = localStorage.getItem('token');
+    const userId = localStorage.getItem("user-id");
     return {
         type: 'GET_SORTPRODUCTS',
         payload: axios({
             method: "GET",
-            url: `http://localhost:4000/pos?idCat=${data}&orderBy=ASC`,
+            url: `${process.env.REACT_APP_API_URL}/pos?idCat=${data}&orderBy=ASC`,
+            headers: {
+                "authorization": authorization,
+                "user-id": userId
+            }
         })
     }
 }
@@ -53,7 +65,7 @@ export const orderBy = (data) => {
         type: 'GET_ORDERPRODUCTS',
         payload: axios({
             method: "GET",
-            url: `http://localhost:4000/pos?orderBy=${data}`
+            url: `${process.env.REACT_APP_API_URL}/pos?orderBy=${data}`
         })
     }
 }
@@ -63,18 +75,18 @@ export const deleteProducts = (productId) => {
         type: "DELETE_PRODUCTS",
         payload: axios({
             method: "DELETE",
-            url: `http://localhost:4000/pos/${productId}`
+            url: `${process.env.REACT_APP_API_URL}/pos/${productId}`
         })
     }
 }
 
 export const updateProduct = (idGet, data) => {
-    console.log(data)
+    console.log(idGet)
     return {
-        type: "UPDATE_PRODUCT",
+        type: "UPDATE_PRODUCTS",
         payload: axios({
             method: "PATCH",
-            url: `http://localhost:4000/pos/${idGet}`,
+            url: `${process.env.REACT_APP_API_URL}/pos/${idGet}`,
             data: data
         })
     }
@@ -85,7 +97,7 @@ export const paginationProduct = (page) => {
         type: 'PAGINATION',
         payload: axios({
             method: 'GET',
-            url: `http://localhost:4000/pos?page=${page}`,
+            url: `${process.env.REACT_APP_API_URL}/pos?page=${page}`,
         })
     }
 }

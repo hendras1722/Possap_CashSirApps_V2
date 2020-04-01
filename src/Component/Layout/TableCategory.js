@@ -6,28 +6,30 @@ import { connect } from 'react-redux';
 import { searchCategory } from '../redux/actions/Category'
 import { postCategory } from '../redux/actions/Category'
 import { getUser } from '../redux/actions/user'
-import { updateUser } from '../redux/actions/user'
+import { readCheckout } from '../redux/actions/order'
+import { registerUser } from '../redux/actions/user'
 import ModalDeleteUser from '../Layout/ModalDeleteUser'
 import ModalEditUser from '../Layout/ModalEditUser'
 import ModalDeleteCategory from '../Layout/ModalDeleteCategory'
 import ModalEditCategory from '../Layout/ModalEditCategory'
-import { postProducts } from '../redux/actions/Product'
+import { Line } from 'react-chartjs-2'
+import NumberFormat from 'react-number-format';
 
 class TableCategory extends Component {
     state = {
-        products: [],
         id: '',
         name: '',
-        description: '',
-        image: '',
-        price: 1,
-        stock: 1,
-        id_category: '0',
+        email: '',
+        Status: '',
+        password: '',
+        name_category: '',
         showEdit: false,
         showDelete: false,
         selectProductEdit: null,
-        selectProductDelete: null
+        selectProductDelete: null,
+        products: []
     }
+
 
     onChange = (e) => {
         console.log(e.target.value)
@@ -37,33 +39,36 @@ class TableCategory extends Component {
     }
 
     // add category
-    onSubmit = (e) => {
+    onSubmitCategory = (e) => {
         e.preventDefault();
 
         let data = {
-            name: this.state.name
+            name_category: this.state.name_category
         }
 
-        console.log(this.state)
+        console.log(data)
         this.props.dispatch(postCategory(data));
     }
 
 
     // add User
-    onSubmitUser = (e) => {
+    onSubmitUser = async (e) => {
         e.preventDefault();
 
         let data = {
             name: this.state.name,
             email: this.state.email,
-            level: this.state.level,
+            Status: this.state.Status,
             password: this.state.password
         }
 
-        console.log(this.state)
-        this.props.dispatch(updateUser(data));
+        // console.log(this.state)
+        await this.props.dispatch(registerUser(data));
     }
 
+    readCheckout = async () => {
+        await this.props.dispatch(readCheckout())
+    }
 
     getCategory = async () => {
         await this.props.dispatch(getCategory())
@@ -172,9 +177,10 @@ class TableCategory extends Component {
         })
     }
 
-    componentDidMount() {
-        this.getCategory();
-        this.getUser();
+    async componentDidMount() {
+        await this.getCategory();
+        await this.getUser();
+        await this.readCheckout();
     }
 
     //update
@@ -215,28 +221,10 @@ class TableCategory extends Component {
     }
 
 
-    onSubmit = (e) => {
-        e.preventDefault();
-        // console.log("lqwekqwlje")
-
-        let data = new FormData()
-
-        data.append("name", this.state.name)
-        data.append("description", this.state.description)
-        data.append("image", this.state.image)
-        data.append("price", this.state.price)
-        data.append("stock", this.state.stock)
-        data.append("id_category", this.state.id_category)
-        // console.log(this.state.id_category)
-        // console.log(formData.append)
-
-        this.props.dispatch(postProducts(data));
-    }
-
-
 
     render() {
-        const { categorys, users } = this.props;
+        const { categorys, users, orders } = this.props;
+        console.log(this.props.orders)
         return (
             <div className="container p-5">
                 <Tabs defaultActiveKey="profile" id="uncontrolled-tab-example">
@@ -250,7 +238,8 @@ class TableCategory extends Component {
                                             <th>Category</th>
                                             <th>
                                                 <Form inline>
-                                                    <FormControl type="text" placeholder="Search" className="mr-sm-2" onChange={this.searchCategory} />
+                                                    <FormControl type="text" placeholder="Search" className="mr-sm-2" onChange={this.searchCategory} style=
+                                                        {{ width: 200 }} />
                                                 </Form>
                                             </th>
                                         </tr>
@@ -259,7 +248,7 @@ class TableCategory extends Component {
                                         {categorys.map((category, index) =>
                                             <tr key={index}>
                                                 <td>{category.id}</td>
-                                                <td>{category.name}</td>
+                                                <td>{category.name_category}</td>
                                                 <td><div style={{ marginLeft: "50px" }}><Button variant="warning" size="sm" onClick={this.handleShowEdit} value={category.id}>Edit</Button> - <Button variant="danger" size="sm" onClick={() => this.handleShowDelete(category.id)} >Delete</Button></div></td>
                                             </tr>
                                         )}
@@ -275,11 +264,11 @@ class TableCategory extends Component {
                             <Col>
                                 <h3 style={{ marginLeft: "150px", marginTop: "10px" }}>ADD Category</h3>
                                 <br />
-                                <form onSubmit={this.onSubmit}>
+                                <form onSubmit={this.onSubmitCategory}>
                                     <div class="form-group">
-                                        <input type="text" class="form-control" name="name" id="exampleInputName1" placeholder="Enter Category" onChange={this.onChange} required />
+                                        <input type="text" class="form-control" name="name_category" id="exampleInputName1" placeholder="Enter Category" onChange={this.onChange} style={{ width: "450px" }} required />
                                     </div>
-                                    <button type="submit" class="btn btn-primary" style={{ width: "507px" }}>Submit</button>
+                                    <button type="submit" class="btn btn-primary" style={{ width: "450px" }}>Submit</button>
                                 </form>
                             </Col>
                         </Row>
@@ -291,13 +280,14 @@ class TableCategory extends Component {
                                 <Table striped bordered hover style={{ width: "500px" }}>
                                     <thead>
                                         <tr>
-                                            <th>id</th>
-                                            <th>name</th>
-                                            <th>email</th>
-                                            <th>level</th>
+                                            <th>Id</th>
+                                            <th>Name</th>
+                                            <th>Email</th>
+                                            <th>Status</th>
                                             <th>
                                                 <Form inline>
-                                                    <FormControl type="text" placeholder="Search" className="mr-sm-2" onChange={this.searchCategory} />
+                                                    <FormControl type="text" placeholder="Search" className="mr-sm-2" onChange={this.searchCategory} style=
+                                                        {{ width: 200 }} />
                                                 </Form>
                                             </th>
                                         </tr>
@@ -308,7 +298,7 @@ class TableCategory extends Component {
                                                 <td>{user.id}</td>
                                                 <td>{user.name}</td>
                                                 <td>{user.email}</td>
-                                                <td>{user.level}</td>
+                                                <td>{user.name_level}</td>
                                                 <td><div style={{ marginLeft: "50px" }}><Button variant="warning" size="sm" onClick={this.handleShowUpdate} value={user.id}>Edit</Button> - <Button variant="danger" size="sm" onClick={() => this.handleShowDeleteUser(user.id)} >Delete</Button></div></td>
                                             </tr>
                                         )}
@@ -332,7 +322,7 @@ class TableCategory extends Component {
                                         <input type="text" class="form-control" name="email" id="exampleInputName1" placeholder="Enter email" onChange={this.onChange} style={{ width: "400px" }} required />
                                     </div>
                                     <div class="form-group">
-                                        <input type="text" class="form-control" name="level" id="exampleInputName1" placeholder="Enter level" onChange={this.onChange} style={{ width: "400px" }} required />
+                                        <input type="text" class="form-control" name="Status" id="exampleInputName1" placeholder="Enter level" onChange={this.onChange} style={{ width: "400px" }} required />
                                     </div>
 
                                     <div class="form-group">
@@ -344,31 +334,36 @@ class TableCategory extends Component {
                         </Row>
                     </Tab>
 
-                    <Tab eventKey="submit" title="Submit">
+                    <Tab eventKey="History" title="History Cart">
                         <Row>
                             <Col>
                                 <Table striped bordered hover style={{ width: "500px" }}>
                                     <thead>
                                         <tr>
                                             <th>id</th>
-                                            <th>name</th>
-                                            <th>email</th>
-                                            <th>level</th>
-                                            <th>
+                                            <th>Nama Product</th>
+                                            <th>Quantity</th>
+                                            <th>Price</th>
+                                            <th>Tanggal</th>
+                                            {/* <th>
                                                 <Form inline>
-                                                    <FormControl type="text" placeholder="Search" className="mr-sm-2" onChange={this.searchCategory} />
+                                                    <FormControl type="text" placeholder="Search" className="mr-sm-2" onChange={this.searchCategory} style=
+                                                        {{ width: 200 }} />
                                                 </Form>
-                                            </th>
+                                            </th> */}
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {users.map((user, index) =>
-                                            <tr>
-                                                <td>{user.id}</td>
-                                                <td>{user.name}</td>
-                                                <td>{user.email}</td>
-                                                <td>{user.level}</td>
-                                                <td><div style={{ marginLeft: "50px" }}><Button variant="warning" size="sm" onClick={this.handleShowUpdate} value={user.id}>Edit</Button> - <Button variant="danger" size="sm" onClick={() => this.handleShowDeleteUser(user.id)} >Delete</Button></div></td>
+                                        {orders.map((order, index) =>
+                                            <tr key={index}>
+                                                <td>{order.idBuyer}</td>
+                                                <td>{order.name}</td>
+                                                <td>{order.stock}</td>
+                                                <td>{order.price}</td>
+                                                <td>{order.date_added.slice(0, 10)}</td>
+                                                {/* <td><div style={{ marginLeft: "50px" }}> */}
+                                                {/* <Button variant="warning" size="sm" onClick={this.handleShowUpdate} value={orders.id}>Edit</Button> - <Button variant="danger" size="sm" onClick={() => this.handleShowDeleteUser(orders.id)} >Delete</Button> */}
+                                                {/* </div></td> */}
                                             </tr>
                                         )}
                                     </tbody>
@@ -381,46 +376,19 @@ class TableCategory extends Component {
                             <ModalEditUser show={this.state.showUpdate} onHide={this.handleCloseUpdate} onClick={this.onSelectProductUpdate} idUser={this.state.idUser} />
 
                             <Col>
-                                <div style={{ marginLeft: "-70px" }}>
-                                    <h4 style={{ marginLeft: "60px", marginTop: "50px", marginBottom: "20px" }}>Add Product</h4>
-                                    <form onSubmit={this.onSubmit}>
-                                        <div class="form-group">
-                                            <input type="text" class="form-control" name="name" id="exampleInputName1" placeholder="Enter Name Product" onChange={this.onChange} style={{ width: "400px" }} required />
-                                            <Form.Control.Feedback type="invalid">
+                                {/* tambah disini */}
+                                <div>
+                                    {/* <Line
 
-                                            </Form.Control.Feedback>
-                                        </div>
-                                        <div class="form-group">
-                                            <input type="text" class="form-control" name="description" id="exampleInputDesctiption" placeholder="Enter Description Product" onChange={this.onChange} style={{ width: "400px" }} required />
-                                        </div>
-                                        <div class="form-group">
-                                            <input type="file" class="form-control-file" name="image" id="exampleFormControlFile1" onChange={this.onChangeImageHandler} style={{ width: "400px" }} required />
-                                        </div>
-                                        <div class="form-group">
-                                            <input type="number" class="form-control" name="price" id="exampleInputPrice" placeholder="Enter Price Product" onChange={this.onChange} pattern="\d*" title="Numbers only, please." min="1" max="1000000" style={{ width: "400px" }} required />
-                                        </div>
-                                        <div class="form-group">
-                                            <input type="number" class="form-control" name="stock" id="exampleInputStock" placeholder="Enter Stock Product" onChange={this.onChange} pattern="\d*" title="Numbers only, please." min="1" max="300" style={{ width: "400px" }} required />
-                                        </div>
-                                        <div class="form-group">
-
-                                            <select class="custom-select mr-sm-2" name="id_category" id="inlineFormCustomSelect" onChange={this.onChange} value={this.state.id_category} style={{ width: "400px" }} required>
-
-                                                <option >Choose...</option>
-                                                {categorys.map((category, index) =>
-                                                    <option key={index} value={category.id}>{category.name}</option>
-                                                )}
-                                            </select>
-
-                                        </div>
-                                        <button type="submit" class="btn btn-primary" style={{ width: "400px" }}>Submit</button>
-                                    </form>
+                                        width={100}
+                                        height={50}
+                                        options={{ maintainAspectRatio: false }}
+                                    /> */}
                                 </div>
                             </Col>
                         </Row>
                     </Tab>
                 </Tabs>
-
             </div>
         )
     }
@@ -428,9 +396,11 @@ class TableCategory extends Component {
 
 
 const searchStateToProps = (state) => {
+    console.log(state)
     return {
         categorys: state.categorys.categorys,
-        users: state.users.users
+        users: state.users.users,
+        orders: state.order.order
     }
 }
 
