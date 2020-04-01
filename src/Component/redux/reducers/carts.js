@@ -56,21 +56,19 @@ const cart = (state = initialState, action) => {
                 return cart
             })
             let existedCartReduce = state.cart.find(product => product.id === action.payload)
-            if (existedCartReduce.qty <= 1) {
+            if (existedCartReduce.qty <= 0) {
                 existedCartReduce.qty = 1
-            }
-            if (state.total <= existedCartReduce.price) {
                 return {
-                    total: existedCartReduce.price + state.total
+                    ...state,
                 }
-            }
-            if (existedCartReduce) {
+            } else {
                 return {
                     ...state,
                     cart: newQty,
                     total: state.total - existedCartReduce.price
                 }
             }
+
 
         case 'DELETE_CART_DATA':
             const filterCartIdForDelete = state.cart.filter(product => product.id !== action.payload)

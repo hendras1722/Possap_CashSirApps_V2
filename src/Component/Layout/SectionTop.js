@@ -153,6 +153,7 @@ class SectionTop extends Component {
 
                                     <div style={{ marginLeft: "230px", marginTop: "-120px" }}>
                                         <button className="btn btn-outline-primary" style={{ borderRadius: 100, display: 'inline' }} onClick={() => (this.reduceQuantity(cart.id))}> - </button>
+
                                         <p style={{ marginLeft: "10px", marginTop: "15px", display: 'absolute' }}>{cart.qty}</p>
 
                                         <button className="btn btn-outline-primary" style={{ display: 'inline', borderRadius: 100 }} onClick={() => (this.addQuantity(cart.id))}>+</button>
