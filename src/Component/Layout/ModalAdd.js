@@ -6,7 +6,7 @@ import { postProducts } from '../redux/actions/Product';
 
 class ModalEdit extends Component {
     state = {
-        name_category: 0,
+        id_category: 0,
         name: '',
         price: 0,
         stock: 0,
@@ -42,7 +42,7 @@ class ModalEdit extends Component {
         })
     }
 
-    onSubmit = (e) => {
+    onSubmit = async (e) => {
         e.preventDefault();
         // console.log("lqwekqwlje")
 
@@ -53,11 +53,11 @@ class ModalEdit extends Component {
         data.append("image", this.state.image)
         data.append("price", this.state.price)
         data.append("stock", this.state.stock)
-        data.append("name_category", this.state.name_category)
+        data.append("id_category", this.state.id_category)
         console.log(this.state.name_category)
         // console.log(formData.append)
 
-        this.props.dispatch(postProducts(data));
+        await this.props.dispatch(postProducts(data));
     }
 
 
@@ -91,7 +91,7 @@ class ModalEdit extends Component {
                             <input type="number" class="form-control" name="stock" id="exampleInputStock" placeholder="Enter Stock Product" onChange={this.onChange} pattern="\d*" title="Numbers only, please." min="1" max="300" style={{ width: "400px" }} required />
                         </div>
                         <div class="form-group">
-                            <select class="custom-select mr-sm-2" name="name_category" id="inlineFormCustomSelect" onChange={this.onChange} value={this.state.name_category} style={{ width: "400px" }} required>
+                            <select class="custom-select mr-sm-2" name="id_category" id="inlineFormCustomSelect" onChange={this.onChange} value={this.state.name_category} style={{ width: "400px" }} required>
                                 <option >Choose...</option>
                                 {categorys.map((category, index) =>
                                     <option key={index} value={category.id}>{category.name_category}</option>

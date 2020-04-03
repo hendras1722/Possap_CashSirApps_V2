@@ -5,7 +5,7 @@ export const getUser = () => {
         type: 'GET_USER',
         payload: axios({
             method: "GET",
-            url: "http://localhost:4000/user/"
+            url: "http://18.232.100.68/user/"
         })
     }
 }
@@ -15,7 +15,7 @@ export const deleteUser = (userId) => {
         type: "DELETE_USERS",
         payload: axios({
             method: "DELETE",
-            url: `http://localhost:4000/user/${userId}`
+            url: `http://18.232.100.68/user/${userId}`
         })
     }
 }
@@ -25,7 +25,7 @@ export const updateUser = (idUsers, data) => {
         type: "UPDATE_USERS",
         payload: axios({
             method: "PATCH",
-            url: `http://localhost:4000/user/${idUsers}`,
+            url: `http://18.232.100.68/user/${idUsers}`,
             data: data
         })
     }
@@ -36,7 +36,7 @@ export const registerUser = (data) => {
         type: "CREATE_USER",
         payload: axios({
             method: "POST",
-            url: "http://localhost:4000/user/register",
+            url: "http://18.232.100.68/user/register",
             data: data
         })
     }

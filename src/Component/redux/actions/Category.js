@@ -5,7 +5,7 @@ export const getCategory = () => {
         type: "GET_CATEGORY",
         payload: axios({
             method: "GET",
-            url: `http://localhost:4000/category`
+            url: `http://18.232.100.68/category`
         })
     }
 }
@@ -15,7 +15,7 @@ export const searchCategory = (id) => {
         type: "GET_SEARCHCATEGORY",
         payload: axios({
             method: "GET",
-            url: `http://localhost:4000/category/?name=${id}`
+            url: `http://18.232.100.68/category/?name=${id}`
         })
     }
 }
@@ -25,7 +25,7 @@ export const postCategory = (data) => {
         type: "POST_POSTCATEGORY",
         payload: axios({
             method: "POST",
-            url: "http://localhost:4000/category",
+            url: "http://18.232.100.68/category",
             data: data
         })
     }
@@ -36,7 +36,7 @@ export const deleteCategory = (categoryId) => {
         type: "DELETE_CATEGORY",
         payload: axios({
             method: "DELETE",
-            url: `http://localhost:4000/category/${categoryId}`
+            url: `http://18.232.100.68/category/${categoryId}`
         })
     }
 }
@@ -46,7 +46,7 @@ export const updateCategory = (idCategorys, data) => {
         type: "UPDATE_CATEGORY",
         payload: axios({
             method: "PATCH",
-            url: `http://localhost:4000/category/${idCategorys}`,
+            url: `http://18.232.100.68/category/${idCategorys}`,
             data: data
         })
     }
@@ -58,7 +58,7 @@ export const sortCategory = (productId) => {
         type: "GET_SORTPRODUCTS",
         payload: axios({
             method: "GET",
-            url: `http://localhost:4000/pos?id_category=${productId}`
+            url: `http://18.232.100.68/pos?id_category=${productId}`
         })
     }
 }

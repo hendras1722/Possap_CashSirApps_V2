@@ -66,9 +66,9 @@ class Product extends Component {
         this.props.dispatch(postProducts(data));
     }
 
-    paginationProduct = (event) => {
+    paginationProduct = async (event) => {
         console.log(event.target.id)
-        this.props.dispatch(paginationProduct(event.target.id))
+        await this.props.dispatch(paginationProduct(event.target.id))
     }
 
 
@@ -148,11 +148,11 @@ class Product extends Component {
                             <div style={{ maxWidth: "350px" }}>
                                 <nav aria-label="Page navigation example">
                                     <ul className="pagination" style={{ marginLeft: "50px" }}>
-                                        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                                        {pagination.map((pagination) => (
+                                        {/* <li class="page-item"><a class="page-link" href="#">Previous</a></li> */}
+                                        {/* {pagination.map((pagination) => (
                                             <li class="page-item" key={pagination}><a class="page-link" onClick={this.paginationProduct} id={pagination}>{pagination}</a></li>
-                                        ))}
-                                        <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                                        ))} */}
+                                        {/* <li class="page-item"><a class="page-link" href="#">Next</a></li> */}
                                     </ul>
                                 </nav>
                                 <div class="col-1 col-md-1 scrollbar scrollbar-primary" className="" style={{

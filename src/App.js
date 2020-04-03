@@ -14,6 +14,7 @@ function App() {
   return (
     <Provider store={store}>
       <Router>
+        <Route path="/login" component={Login} />
         <Route exact path="/" component={Home} />
         <Route path="/1" component={CobaLagi} />
         <Route path="/settings" component={Category} />

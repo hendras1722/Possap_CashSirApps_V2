@@ -86,10 +86,7 @@ const product = (state = initialState, action) => {
                     hide: true
                 }
             }
-        // return {
-        //     ...state,
-        //     products: action.payload.data.result
-        // }
+
 
         case 'CREATE_PRODUCTS_PENDING':
             return {

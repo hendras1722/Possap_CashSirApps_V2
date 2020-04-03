@@ -63,7 +63,7 @@ class NavbarPage extends Component {
                     </div>
                 </Col>
                 <Col sm={4}>
-                    <Navbar style={{ backgroundColor: "#3346A8", height: "60px", marginLeft: "110px", width: "335px", boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.5)" }}>
+                    <Navbar style={{ backgroundColor: "#3346A8", height: "60px", marginLeft: "99px", width: "335px", boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.5)" }}>
                         <Navbar.Brand className="text-white" style={{ marginLeft: "50px" }} >
 
                         </Navbar.Brand>
