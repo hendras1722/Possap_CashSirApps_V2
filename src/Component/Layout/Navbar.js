@@ -43,6 +43,11 @@ class NavbarPage extends Component {
                     </Fragment>
                 )
             }
+            else {
+                return (
+                    <Fragment></Fragment>
+                )
+            }
         }
 
         const { logout, cart, total } = this.props

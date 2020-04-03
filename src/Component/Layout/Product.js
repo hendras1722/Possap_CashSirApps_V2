@@ -78,9 +78,9 @@ class Product extends Component {
 
 
     async componentDidMount() {
-        if (!localStorage.getItem('isAuth')) {
-            this.props.history.push('/login');
-        }
+        // if (!localStorage.getItem('isAuth')) {
+        //     this.props.history.push('/login');
+        // }
         await this.getProducts();
     }
 

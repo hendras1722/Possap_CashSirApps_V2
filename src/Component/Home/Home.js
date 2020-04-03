@@ -6,10 +6,17 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 
 class Home extends Component {
-    componentDidMount() {
+    // componentDidMount() {
 
+    // }
+    async componentDidMount() {
+        if (!localStorage.getItem('isAuth')) {
+            this.props.history.push('/login');
+        }
     }
+
     onLogout() {
+        console.log('logout')
         localStorage.removeItem('user-id');
         localStorage.removeItem('token');
         localStorage.removeItem('isAuth');
