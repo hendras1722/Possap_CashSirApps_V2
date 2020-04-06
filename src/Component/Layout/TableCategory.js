@@ -27,8 +27,26 @@ class TableCategory extends Component {
         showDelete: false,
         selectProductEdit: null,
         selectProductDelete: null,
-        products: []
+        products: [],
+        Data: {
+            labels: ["januari", "february"],
+            datasets: [
+                {
+                    label: 'Payment',
+                    // data: playerscore,
+                    backgroundColor: [
+                        'rgba(255,105,145,0.6)',
+                        'rgba(155,100,210,0.6)',
+                        'rgba(90,178,255,0.6)',
+                        'rgba(240,134,67,0.6)',
+                        'rgba(120,120,120,0.6)',
+                        'rgba(250,55,197,0.6)'
+                    ]
+                }
+            ]
+        }
     }
+
 
 
     onChange = (e) => {
@@ -389,6 +407,12 @@ class TableCategory extends Component {
                         </Row>
                     </Tab>
                 </Tabs>
+                <div>
+                    <Line
+                        data={this.state.Data}
+                        options={{ maintainAspectRatio: false }}
+                    />
+                </div>
             </div>
         )
     }

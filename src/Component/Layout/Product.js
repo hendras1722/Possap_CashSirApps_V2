@@ -14,6 +14,8 @@ import { addCart } from '../redux/actions/carts'
 import { paginationProduct } from '../redux/actions/Product'
 // var numeral = require('numeral');
 import NumberFormat from 'react-number-format';
+import numeral from 'numeral'
+
 
 class Product extends Component {
     state = {
@@ -170,7 +172,10 @@ class Product extends Component {
                                             </p> </div>
                                             <hr />
                                             <Row>
-                                                <Col style={{ marginLeft: "5px", marginTop: "-15px" }}><p style={{ textOverflow: "ellipsis", whiteSpace: "nowrap" }} > <NumberFormat value={product.price} displayType={'text'} thousandSeparator={true} prefix={'Rp'} />,-</p>
+                                                <Col style={{ marginLeft: "5px", marginTop: "-15px" }}><p style={{ textOverflow: "ellipsis", whiteSpace: "nowrap" }} >
+                                                    {/* <NumberFormat value={product.price} displayType={'text'} thousandSeparator={` . `} prefix={'Rp. '} />,- */}
+                                                    <p>{numeral(`${product.price}`).format('0a')}</p>
+                                                </p>
                                                 </Col>
 
                                                 <Col style={{ fontSize: "10px", marginTop: "-7px" }}></Col>
