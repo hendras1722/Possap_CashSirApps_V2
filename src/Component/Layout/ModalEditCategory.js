@@ -31,7 +31,7 @@ class ModalEditCategory extends Component {
 
     render() {
         // console.log(this.props)
-        const { show, onHide, ...product } = this.props;
+        const { show, onHide } = this.props;
         return (
             <Modal show={show} onHide={onHide} variant="lg">
                 <Modal.Header>

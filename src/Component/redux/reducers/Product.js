@@ -73,21 +73,22 @@ const product = (state = initialState, action) => {
             }
         case 'GET_PRODUCTS_FULFILLED':
             // console.log(action.payload.data.result);
-            if (localStorage.getItem('Status') == '1') {
+            if (localStorage.getItem('Status') === '1') {
                 return {
                     ...state,
                     products: action.payload.data.result,
+                    pagination: action.payload.data.totalPages,
                     hide: false
                 }
-            } else if (localStorage.getItem('Status') == '2') {
+            } else if (localStorage.getItem('Status') === '2') {
                 return {
                     ...state,
                     products: action.payload.data.result,
+                    pagination: action.payload.data.totalPages,
                     hide: true
                 }
             }
-
-
+        /* falls through */
         case 'CREATE_PRODUCTS_PENDING':
             return {
                 ...state

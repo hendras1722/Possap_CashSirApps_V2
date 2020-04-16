@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import background from '../img/backgroundllogin.jpg'
-import { FormCheck, Form } from 'react-bootstrap'
+import background from '../img/user.png'
+// import backlog from '../img/189.jpg'
+import './login.css'
 
 class Login extends Component {
     constructor(props) {
@@ -44,30 +45,45 @@ class Login extends Component {
 
     render() {
         return (
-            <div>
-                <img src={background} style={{ position: "absolute", width: "100%", height: "100vh", marginTop: "0px" }} />
+            <div >
+                <div >
+                    {/* <img src={background} style={{ position: "absolute", width: "100%", height: "100vh", marginTop: "0px" }} /> */}
+                    {/* <img src={backlog} style={{ width: 1366, height: '100vh', position: 'absolute', zIndex: -1, padding: 0 }} /> */}
 
-                <div className="container">
-                    <div className="row justify-content-md-center">
-                        <div className="col-md-8">
-                            <form onSubmit={this.onSubmit} style={{ marginLeft: "400px", marginTop: "180px" }}>
-                                <div className="form-group">
-                                    {/* <label>Email</label> */}
-                                    <input type="email" className="form-control" placeholder="Enter email" name="email" onChange={this.onChange} style={{ width: "500px" }} required />
+                    <div >
+                        <div className="row justify-content-center" style={{ marginTop: 80 }}>
+                            <div style={{ backgroundColor: 'white', padding: 50, borderRadius: 10, justifyContent: 'center', alignItems: 'center', border: '1px double black', boxShadow: '1px 1px 5px 1px rgba(0, 0, 0, 0.75)' }}>
+                                <div style={{ justifyContent: 'center ', alignContent: 'center', flex: 0, display: 'flex ', padding: 10, marginTop: -20 }}>
+                                    <div style={{
+                                        backgroundColor: '#a6a6b7', padding: 20, borderRadius
+                                            : 100, marginBottom: 20
+                                    }}>
+                                        <img src={background} style={{ width: 80, height: 80 }} />
+                                    </div>
                                 </div>
-                                <div className="form-group">
-                                    {/* <label>Password</label> */}
-                                    <input type="password" className="form-control" placeholder="Enter password" name="password" onChange={this.onChange} style={{ width: "500px" }} required />
+                                <div style={{ justifyContent: 'center', alignItems: 'center', display: 'flex' }}>
+                                    <h4>Selamat Datang di Cash Sir</h4>
                                 </div>
-                                <Form.Group>
-                                    <Form.Check
-                                        required
-                                        label="Agree to terms and conditions"
-                                        feedback="You must agree before submitting."
-                                    />
-                                </Form.Group>
-                                <button type="submit" className="btn btn-primary" style={{ width: "500px" }}>Login</button>
-                            </form>
+                                <div style={{ top: 50 }}>
+                                    <form onSubmit={this.onSubmit} >
+                                        <div className="form-group">
+                                            {/* <label>Email</label> */}
+                                            <input type="email" className="form-control" placeholder="Enter email" name="email" onChange={this.onChange} style={{ width: "300px" }} required />
+                                        </div>
+                                        <div className="form-group">
+                                            {/* <label>Password</label> */}
+                                            <input type="password" className="form-control" placeholder="Enter password" name="password" onChange={this.onChange} style={{ width: "300px" }} required />
+                                        </div>
+                                        <button type="submit" className="btn btn-primary" style={{ width: "300px" }}>Login</button>
+                                    </form>
+                                    <div style={{ marginTop: 30, marginBottom: -50, justifyContent: 'center', alignItems: 'center', display: 'flex' }}>
+                                        <p>Versi 1.01</p>
+                                    </div>
+                                    <div style={{ marginTop: 30, marginBottom: -50, justifyContent: 'center', alignItems: 'center', display: 'flex' }}>
+                                        <p style={{ fontSize: 12, marginTop: 5 }}>Cash Sir</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

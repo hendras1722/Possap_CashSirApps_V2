@@ -47,7 +47,7 @@ const cart = (state = initialState, action) => {
                     total: state.total + existedCartAdd.price
                 }
             }
-
+        /* falls through */
         case 'REDUCE_QTY':
             const newQty = state.cart.map(cart => {
                 if (cart.id === action.payload) {
@@ -81,7 +81,7 @@ const cart = (state = initialState, action) => {
                 }
             }
 
-
+        /* falls through */
         default:
             return state
     }

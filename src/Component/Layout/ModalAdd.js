@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal, Form, Button } from 'react-bootstrap';
+import { Modal, Form } from 'react-bootstrap';
 
 import { connect } from 'react-redux';
 import { postProducts } from '../redux/actions/Product';

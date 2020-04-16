@@ -27,6 +27,25 @@ const order = (state = initialState, action) => {
                 orders: action.payload.data.result
             }
 
+        case 'GET_ORDERCHECKOUT_PENDING':
+            return {
+                ...state,
+                isLoading: true
+            }
+
+        case 'GET_ORDERCHECKOUT_REJECTED':
+            return {
+                ...state,
+                isLoading: true
+            }
+
+        case 'GET_ORDERCHECKOUT_FULFILLED':
+            // console.log(this.state.orders)
+            return {
+                ...state,
+                orders: action.payload.data.result
+            }
+
         case 'GET_ORDER_PENDING':
             return {
                 ...state,

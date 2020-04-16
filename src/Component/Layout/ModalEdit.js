@@ -21,7 +21,7 @@ class ModalEdit extends Component {
     }
 
     onChange = (e) => {
-        console.log(e.target.value)
+        // console.log(e.target.value)
         this.setState({
             [e.target.name]: e.target.value
         })
@@ -29,10 +29,8 @@ class ModalEdit extends Component {
 
     onSubmit = (e) => {
         e.preventDefault();
-        console.log(this.state)
+        // console.log(this.state)
 
-        const product = this.props
-        console.log(this.props.idProduct)
         const idGet = this.props.idProduct;
 
         let data = new FormData();
@@ -51,8 +49,8 @@ class ModalEdit extends Component {
 
     render() {
         const { categorys } = this.props;
-        console.log(this.state.name_category)
-        const { show, onHide, ...product } = this.props;
+        // console.log(this.state.name_category)
+        const { show, onHide } = this.props;
         return (
             <Modal show={show} onHide={onHide} variant="lg">
                 <Modal.Header>

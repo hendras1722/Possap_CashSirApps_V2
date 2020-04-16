@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { searchCategory } from '../redux/actions/Category'
 import { postCategory } from '../redux/actions/Category'
 import { getUser } from '../redux/actions/user'
-import { readCheckout } from '../redux/actions/order'
+import { readCheckout, readHistory } from '../redux/actions/order'
 import { registerUser } from '../redux/actions/user'
 import ModalDeleteUser from '../Layout/ModalDeleteUser'
 import ModalEditUser from '../Layout/ModalEditUser'
@@ -84,8 +84,16 @@ class TableCategory extends Component {
         await this.props.dispatch(registerUser(data));
     }
 
-    readCheckout = async () => {
-        await this.props.dispatch(readCheckout())
+    readCheckout = async (event) => {
+        this.setState({
+            id: event
+        })
+        console.log(this.state.id)
+        await this.props.dispatch(readCheckout(this.state.id))
+    }
+
+    readHistory = async () => {
+        await this.props.dispatch(readHistory())
     }
 
     getCategory = async () => {
@@ -199,6 +207,7 @@ class TableCategory extends Component {
         await this.getCategory();
         await this.getUser();
         await this.readCheckout();
+        await this.readHistory();
     }
 
     //update
@@ -242,7 +251,7 @@ class TableCategory extends Component {
 
     render() {
         const { categorys, users, orders } = this.props;
-        console.log(this.props.orders)
+        // console.log(this.props.orders)
         return (
             <div className="container p-5">
                 <Tabs defaultActiveKey="profile" id="uncontrolled-tab-example">
@@ -359,35 +368,57 @@ class TableCategory extends Component {
                                     <thead>
                                         <tr>
                                             <th>id</th>
-                                            <th>Nama Product</th>
-                                            <th>Quantity</th>
-                                            <th>Price</th>
+                                            <th>Total Payment</th>
                                             <th>Tanggal</th>
-                                            {/* <th>
-                                                <Form inline>
-                                                    <FormControl type="text" placeholder="Search" className="mr-sm-2" onChange={this.searchCategory} style=
-                                                        {{ width: 200 }} />
-                                                </Form>
-                                            </th> */}
+                                            <th>Laporan</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {orders.map((order, index) =>
                                             <tr key={index}>
                                                 <td>{order.idBuyer}</td>
-                                                <td>{order.name}</td>
-                                                <td>{order.stock}</td>
-                                                <td>{order.price}</td>
+                                                <td>{order.totalPayment}</td>
                                                 <td>{order.date_added.slice(0, 10)}</td>
-                                                {/* <td><div style={{ marginLeft: "50px" }}> */}
-                                                {/* <Button variant="warning" size="sm" onClick={this.handleShowUpdate} value={orders.id}>Edit</Button> - <Button variant="danger" size="sm" onClick={() => this.handleShowDeleteUser(orders.id)} >Delete</Button> */}
-                                                {/* </div></td> */}
+                                                <td><div style={{ marginLeft: "50px" }}>
+                                                    <Button variant="warning" size="sm" data-toggle="modal" data-target="#history" onClick={() => this.readCheckout(order.id)}>Lihat</Button>
+
+                                                    <div class="modal fade" id="history" tabindex="-1" role="dialog" aria-labelledby="history" aria-hidden="true">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="history">CheckOut</h5>
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    {/* {cart.map((cart) =>
+                                                                        <div className="row">
+                                                                            <div className="col-4" style={{ display: 'inline' }}>
+                                                                                <p style={{ display: 'inline' }}>| {cart.name}</p>
+                                                                            </div>
+                                                                            <div className="col-4" style={{ display: 'inline' }}>
+                                                                                <p style={{ display: 'inline' }}>   <NumberFormat value={cart.price} displayType={'text'} thousandSeparator={true} prefix={'Rp'} />,-</p>
+                                                                                <p style={{ display: 'inline' }}>  x{cart.qty}</p>
+
+                                                                            </div>
+                                                                        </div>
+                                                                    )} */}
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div></td>
                                             </tr>
                                         )}
                                     </tbody>
                                 </Table>
                             </Col>
-
+                            {/* 
                             <ModalDeleteUser show={this.state.showDeleteUser} onHide={this.handleCloseDeleteUser} onClick={this.onSelectProductDeleteUser} id={this.state.id} />
 
                             {/* //edit */}
@@ -424,7 +455,7 @@ const searchStateToProps = (state) => {
     return {
         categorys: state.categorys.categorys,
         users: state.users.users,
-        orders: state.order.order
+        orders: state.order.orders
     }
 }
 
