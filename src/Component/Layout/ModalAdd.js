@@ -68,7 +68,6 @@ class ModalEdit extends Component {
         await this.props.dispatch(postProducts(data));
     }
 
-
     render() {
         const { categorys } = this.props;
         // console.log(this.props)
@@ -106,7 +105,7 @@ class ModalEdit extends Component {
                                 )}
                             </select>
                         </div>
-                        <button type="submit" class="btn btn-primary" style={{ width: "400px" }} >Submit</button>
+                        <button type="submit" class="btn btn-primary" style={{ width: "400px" }} onHide={this.handleCloseAdd}>Submit</button>
                     </form>
                 </Modal.Body>
             </Modal>

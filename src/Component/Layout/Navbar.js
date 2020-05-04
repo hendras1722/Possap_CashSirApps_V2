@@ -53,17 +53,17 @@ class NavbarPage extends Component {
         const { logout, cart, total } = this.props
         console.log(this.props)
         return (
-            <>
+            <div className="container-fluid">
                 <div className="row">
-                    <div className="col-sm-8 p-0">
-                        <Navbar className="ml-2" style={{ backgroundColor: "#3346A8", height: "60px", boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.5)" }}>
+                    <div className="col-lg-8 p-0" style={{ backgroundColor: '#3346A8' }}>
+                        <Navbar className="ml-2" style={{ backgroundColor: "#3346A8", height: "60px", boxShadow: "0px 19px 8px -13px rgba(0,0,0,1)" }}>
                             <ValidasiFrom />
                             <Link to="/login" onClick={logout}><button style={{ backgroundColor: "#3346A8", border: "none" }}> <img src={log_out} style={{ width: "30px", height: "30px" }} alt="logout" /></button></Link>
                         </Navbar>
                     </div>
-                    <div className="col-sm-4 p-0">
+                    <div className="col-lg-4 p-0">
 
-                        <Navbar style={{ backgroundColor: "#3346A8", height: "60px", boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.5)" }}>
+                        <Navbar style={{ backgroundColor: "#3346A8", height: "60px", boxShadow: "0px 19px 8px -13px rgba(0,0,0,1)" }}>
                             <div>
                                 <Button data-toggle="modal" data-target="#exampleModal">CheckOut  < span className="badge badge-primary">{this.props.cart.length}</span></Button>
                             </div>
@@ -109,7 +109,7 @@ class NavbarPage extends Component {
                     </div>
                 </div>
 
-            </>
+            </div>
         )
     }
 }

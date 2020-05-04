@@ -199,6 +199,7 @@ class TableCategory extends Component {
     }
 
     async componentDidMount() {
+
         await this.getCategory();
         await this.getUser();
         await this.readCheckout();

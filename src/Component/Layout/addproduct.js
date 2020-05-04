@@ -170,20 +170,21 @@ class AddProduct extends Component {
                             </tr>
                         )}
                     </tbody>
-                    <ul className="pagination" style={{ marginLeft: "50px" }}>
 
-                        {this.props.pagination && pagination.map((pagination) => (
-                            <li className="page-item" key={pagination}>
-                                <Link className="page-link" onClick={this.paginationProduct} id={pagination}>{pagination}</Link>
-                            </li>
-                        ))}
-
-                    </ul>
                     <ModalDelete show={this.state.showDelete} onHide={this.handleCloseDelete} onClick={this.onSelectProductDelete} id={this.state.id} />
                     <ModalAdd show={this.state.showAdd} onHide={this.handleCloseAdd} />
                     {/* modal edit */}
                     <ModalEdit show={this.state.showEdit} onHide={this.handleCloseEdit} onClick={this.selectProductEdit} idProduct={this.state.idProduct} products={this.selectProductEdit} />
                 </Table>
+                <ul className="pagination" style={{ marginLeft: "50px" }}>
+
+                    {this.props.pagination && pagination.map((pagination) => (
+                        <li className="page-item" key={pagination}>
+                            <Link className="page-link" onClick={this.paginationProduct} id={pagination}>{pagination}</Link>
+                        </li>
+                    ))}
+
+                </ul>
             </div>
         )
     }

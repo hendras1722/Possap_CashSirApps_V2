@@ -96,9 +96,8 @@ class SectionTop extends Component {
         const { categorys, cart, total, hide } = this.props;
         // console.log(categorys);
         return (
-            <>
+            <div className="container-fluid">
                 <div className="row p-4">
-
                     <div className="col-sm-8">
                         <Dropdown style={{ marginLeft: "20px", display: "inline" }}>
                             <Dropdown.Toggle variant="white" id="dropdown-basic" style={{ border: "1px solid rgba(0, 0, 0, 0.3)", boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)", boxSizing: "border-box", width: "150px" }}>
@@ -113,7 +112,7 @@ class SectionTop extends Component {
                             </Dropdown.Menu>
                         </Dropdown>
                         <div className='col-7 d-inline-block'>
-                            <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" style={{ border: "1px solid #000000", borderRadius: "5px", boxSizing: "border-box", boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)", display: 'inline' }} onChange={this.searchProduct} />
+                            <input className="form-control mr-sm-2 bg-white" type="search" placeholder="Search" aria-label="Search" style={{ border: "1px solid #000000", borderRadius: "5px", boxSizing: "border-box", boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)", display: 'inline' }} onChange={this.searchProduct} />
                         </div>
 
                     </div>
@@ -147,7 +146,7 @@ class SectionTop extends Component {
                         </Dropdown>
                     </div>
                 </div>
-            </>
+            </div>
         )
     }
 }

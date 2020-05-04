@@ -132,51 +132,54 @@ class Product extends Component {
     render() {
         const { products, pagination, hide } = this.props;
         return (
-            <div className="row">
-                <div className="col-lg-12">
-                    <div >
-                        <nav aria-label="Page navigation example">
-                            <ul className="pagination" style={{ marginLeft: "50px" }}>
+            <div className="container-fluid">
 
-                                {this.props.pagination && pagination.map((pagination) => (
-                                    <li className="page-item" key={pagination}>
-                                        <Link className="page-link" onClick={this.paginationProduct} id={pagination}>{pagination}</Link>
-                                    </li>
-                                ))}
+                <div className="row">
+                    <div className="col-lg-12">
+                        <div >
+                            <nav aria-label="Page navigation example">
+                                <ul className="pagination" style={{ marginLeft: "50px" }}>
 
-                            </ul>
-                        </nav>
-                        <div style={{
-                            display: "flex", flexWrap: "wrap", position: "relative", height: "350px", width: '90%'
-                        }}>
+                                    {this.props.pagination && pagination.map((pagination) => (
+                                        <li className="page-item" key={pagination}>
+                                            <Link className="page-link" onClick={this.paginationProduct} id={pagination}>{pagination}</Link>
+                                        </li>
+                                    ))}
 
-                            {products.map((product, index) =>
-                                <div key={index} style={{ width: "180px", height: "320px", backgroundColor: "white", marginTop: "10px", marginLeft: "10px", border: "1px solid rgba(0, 0, 0, 0.5)", boxSizing: "border-box", padding: "5px", borderRadius: "15px", display: 'inline' }}>
-                                    <img alt="prduct" src={product.image} style={{ width: "145px", height: "145px", marginLeft: "15px" }} />
-                                    <h6 style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{product.name}</h6>
-                                    <div><p style={{ fontSize: 10, position: 'absolute', marginLeft: 120, marginTop: -10 }}>
-                                        Stock :{product.stock}
-                                    </p> </div>
-                                    <hr />
-                                    <Row>
-                                        <Col style={{ marginLeft: "5px", marginTop: "-15px" }}><p style={{ textOverflow: "ellipsis", whiteSpace: "nowrap" }} />
-                                            <p style={{ textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{numeral(`${product.price}`).format('0a')}</p>
-                                        </Col>
+                                </ul>
+                            </nav>
+                            <div style={{
+                                display: "flex", flexWrap: "wrap", position: "relative", height: "350px", width: '90%'
+                            }}>
 
-                                        <Col style={{ fontSize: "10px", marginTop: "-7px" }}></Col>
-                                    </Row>
-                                    <h6 style={{ marginLeft: "30px", marginTop: "2px" }}>{product.name_category}</h6>
+                                {products.map((product, index) =>
+                                    <div key={index} style={{ width: "180px", height: "320px", backgroundColor: "white", marginTop: "10px", marginLeft: "10px", border: "1px solid rgba(0, 0, 0, 0.5)", boxSizing: "border-box", padding: "5px", borderRadius: "15px", display: 'inline' }}>
+                                        <img alt="prduct" src={product.image} style={{ width: "145px", height: "145px", marginLeft: "15px" }} />
+                                        <h6 style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{product.name}</h6>
+                                        <div><p style={{ fontSize: 10, position: 'absolute', marginLeft: 120, marginTop: -10 }}>
+                                            Stock :{product.stock}
+                                        </p> </div>
+                                        <hr />
+                                        <Row>
+                                            <Col style={{ marginLeft: "5px", marginTop: "-15px" }}><p style={{ textOverflow: "ellipsis", whiteSpace: "nowrap" }} />
+                                                <p style={{ textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{numeral(`${product.price}`).format('0a')}</p>
+                                            </Col>
+
+                                            <Col style={{ fontSize: "10px", marginTop: "-7px" }}></Col>
+                                        </Row>
+                                        <h6 style={{ marginLeft: "30px", marginTop: "2px" }}>{product.name_category}</h6>
 
 
-                                    <Button onClick={() => (this.onAddChart(product))} style={{ backgroundColor: "#28F555", marginLeft: "12px", marginTop: "8px", width: "140px" }}><img alt="orderIcon" src={ord} style={{ width: "15px", height: "15px" }} /></Button>
-                                </div>
-                            )}
+                                        <Button onClick={() => (this.onAddChart(product))} style={{ backgroundColor: "#28F555", marginLeft: "12px", marginTop: "8px", width: "140px" }}><img alt="orderIcon" src={ord} style={{ width: "15px", height: "15px" }} /></Button>
+                                    </div>
+                                )}
 
-                            <ModalDelete show={this.state.showDelete} onHide={this.handleCloseDelete} onClick={this.onSelectProductDelete} id={this.state.id} />
+                                <ModalDelete show={this.state.showDelete} onHide={this.handleCloseDelete} onClick={this.onSelectProductDelete} id={this.state.id} />
 
-                            {/* modal edit */}
-                            <ModalEdit show={this.state.showEdit} onHide={this.handleCloseEdit} onClick={this.selectProductEdit} idProduct={this.state.idProduct} products={this.selectProductEdit} />
+                                {/* modal edit */}
+                                <ModalEdit show={this.state.showEdit} onHide={this.handleCloseEdit} onClick={this.selectProductEdit} idProduct={this.state.idProduct} products={this.selectProductEdit} />
 
+                            </div>
                         </div>
                     </div>
                 </div>
