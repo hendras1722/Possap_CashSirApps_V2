@@ -1,11 +1,9 @@
-
 const initialState = {
     products: [],
     productId: null,
     pagination: [],
     isLoading: false,
     hide: false
-
 }
 
 const product = (state = initialState, action) => {
@@ -16,6 +14,7 @@ const product = (state = initialState, action) => {
         case 'GET_SEARCHPRODUCTS_PENDING':
             return {
                 ...state
+
             }
         case 'GET_SEARCHPRODUCTS_REJECTED':
             return {
@@ -24,7 +23,8 @@ const product = (state = initialState, action) => {
         case 'PAGINATION_FULFILLED':
             return {
                 ...state,
-                products: action.payload.data.result
+                products: action.payload.data.result,
+                pagination: action.payload.data.totalPages
             }
         case 'GET_SEARCHPRODUCTS_FULFILLED':
             // console.log(action.payload.data.result);
@@ -101,7 +101,7 @@ const product = (state = initialState, action) => {
 
         case 'CREATE_PRODUCTS_FULFILLED':
             return {
-                products: action.payload.data.result
+                products: action.payload.data.result,
             }
 
         case 'DELETE_PRODUCTS_PENDING':
@@ -118,12 +118,13 @@ const product = (state = initialState, action) => {
 
         case 'DELETE_PRODUCTS_FULFILLED':
             const newProductAfterDelete = state.products.filter(product => product.id !== action.payload.data.result.id);
-            console.log(action.payload.data)
             return {
                 ...state,
+                pagination: action.payload.data.totalPages,
                 isLoading: false,
-                products: newProductAfterDelete
+                products: newProductAfterDelete,
             }
+
         case 'UPDATE_PRODUCTS_PENDING':
             return {
                 ...state,

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Modal, Form } from 'react-bootstrap';
 
+import { paginationProduct } from '../redux/actions/Product'
 import { connect } from 'react-redux';
 import { postProducts } from '../redux/actions/Product';
 
@@ -21,6 +22,15 @@ class ModalEdit extends Component {
             idProduct: e.target.value,
             showAdd: true
         })
+    }
+
+    componentDidMount() {
+        this.paginationProduct()
+    }
+
+    paginationProduct = async (event) => {
+        // console.log('hello', event.target.id)
+        await this.props.dispatch(paginationProduct(event))
     }
 
     handleCloseAdd = () => {
@@ -44,7 +54,6 @@ class ModalEdit extends Component {
 
     onSubmit = async (e) => {
         e.preventDefault();
-        // console.log("lqwekqwlje")
 
         let data = new FormData()
 
@@ -55,7 +64,6 @@ class ModalEdit extends Component {
         data.append("stock", this.state.stock)
         data.append("id_category", this.state.id_category)
         console.log(this.state.name_category)
-        // console.log(formData.append)
 
         await this.props.dispatch(postProducts(data));
     }
@@ -110,7 +118,8 @@ class ModalEdit extends Component {
 const mapStateToProps = (state) => {
     // console.log(state)
     return {
-        categorys: state.categorys.categorys
+        categorys: state.categorys.categorys,
+        pagination: state.products.pagination,
     }
 }
 

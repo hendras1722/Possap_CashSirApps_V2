@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import background from '../img/user.png'
-// import backlog from '../img/189.jpg'
 import './login.css'
 
 class Login extends Component {
@@ -13,6 +12,7 @@ class Login extends Component {
             password: ''
         };
     }
+
 
     componentDidMount() {
         if (localStorage.getItem('token')) {
@@ -26,12 +26,10 @@ class Login extends Component {
 
     onSubmit = (e) => {
         e.preventDefault();
-        console.log('hahaa');
 
         axios
             .post("http://18.232.100.68/user/login", this.state)
             .then(res => {
-                console.log(res.data);
                 localStorage.setItem('token', res.data.token);
                 localStorage.setItem('user-id', res.data.id);
                 localStorage.setItem('isAuth', true);
@@ -47,9 +45,6 @@ class Login extends Component {
         return (
             <div >
                 <div >
-                    {/* <img src={background} style={{ position: "absolute", width: "100%", height: "100vh", marginTop: "0px" }} /> */}
-                    {/* <img src={backlog} style={{ width: 1366, height: '100vh', position: 'absolute', zIndex: -1, padding: 0 }} /> */}
-
                     <div >
                         <div className="row justify-content-center" style={{ marginTop: 80 }}>
                             <div style={{ backgroundColor: 'white', padding: 50, borderRadius: 10, justifyContent: 'center', alignItems: 'center', border: '1px double black', boxShadow: '1px 1px 5px 1px rgba(0, 0, 0, 0.75)' }}>
@@ -58,7 +53,7 @@ class Login extends Component {
                                         backgroundColor: '#a6a6b7', padding: 20, borderRadius
                                             : 100, marginBottom: 20
                                     }}>
-                                        <img src={background} style={{ width: 80, height: 80 }} />
+                                        <img alt="profile" src={background} style={{ width: 80, height: 80 }} />
                                     </div>
                                 </div>
                                 <div style={{ justifyContent: 'center', alignItems: 'center', display: 'flex' }}>

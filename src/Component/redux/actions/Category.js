@@ -1,11 +1,17 @@
 import axios from 'axios';
 
 export const getCategory = () => {
+    const authorization = localStorage.getItem('token');
+    const userId = localStorage.getItem("user-id");
     return {
         type: "GET_CATEGORY",
         payload: axios({
             method: "GET",
-            url: `http://18.232.100.68/category`
+            url: `http://18.232.100.68/category`,
+            headers: {
+                "authorization": authorization,
+                "user-id": userId
+            }
         })
     }
 }

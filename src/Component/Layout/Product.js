@@ -1,9 +1,6 @@
 import React, { Component } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import rmv from '../img/remove.png'
-import edt from '../img/edit.png'
 import ord from '../img/order.png'
-import re from '../img/empty.png'
 import { getProducts } from '../redux/actions/Product'
 import { postProducts } from '../redux/actions/Product'
 import { connect } from 'react-redux';
@@ -12,7 +9,7 @@ import ModalDelete from './ModalDelete'
 import ModalEdit from './ModalEdit'
 import { addCart } from '../redux/actions/carts'
 import { paginationProduct } from '../redux/actions/Product'
-// var numeral = require('numeral');
+import { Link } from 'react-router-dom';
 import numeral from 'numeral'
 
 
@@ -28,7 +25,7 @@ class Product extends Component {
         name_category: '0',
         showEdit: false,
         showDelete: false,
-        selectProductEdit: null,
+        selectProductEdit: [],
         selectProductDelete: null,
 
     }
@@ -68,7 +65,6 @@ class Product extends Component {
     }
 
     paginationProduct = async (event) => {
-        console.log('hello', event.target.id)
         await this.props.dispatch(paginationProduct(event.target.id))
     }
 
@@ -79,16 +75,13 @@ class Product extends Component {
 
 
     async componentDidMount() {
-        // if (!localStorage.getItem('isAuth')) {
-        //     this.props.history.push('/login');
-        // }
         await this.getProducts();
     }
 
 
     // modal
     handleShowEdit = (e) => {
-        console.log(e)
+        // console.log(e)
         this.setState({
             idProduct: e,
             showEdit: true
@@ -103,11 +96,10 @@ class Product extends Component {
 
 
     // delete
-    onSelectProductEdit = (e) => {
-        // console.log("kelqwk")
-        // console.log(e.target.value)
+    onSelectProductEdit = (product) => {
+        console.log("woy", product)
         this.setState({
-            // selectProductEdit: product,
+            selectProductEdit: product,
             showEdit: true
         })
     }
@@ -138,40 +130,37 @@ class Product extends Component {
     }
 
     render() {
-        const { products, pagination, hide, cart } = this.props;
+        const { products, pagination, hide } = this.props;
         return (
-            <div class="row">
-                <div class="col-sm-12">
+            <div className="row">
+                <div className="col-lg-12">
                     <div >
                         <nav aria-label="Page navigation example">
                             <ul className="pagination" style={{ marginLeft: "50px" }}>
-                                <li class="page-item">
-                                    <a class="page-link" href="#">Previous</a></li>
-                                {pagination.map((pagination) => (
-                                    <li class="page-item" key={pagination}><a class="page-link" onClick={this.paginationProduct} id={pagination}>{pagination}</a></li>
+
+                                {this.props.pagination && pagination.map((pagination) => (
+                                    <li className="page-item" key={pagination}>
+                                        <Link className="page-link" onClick={this.paginationProduct} id={pagination}>{pagination}</Link>
+                                    </li>
                                 ))}
-                                <li class="page-item"><a class="page-link" href="#">Next</a></li>
+
                             </ul>
                         </nav>
-                        <div class="scrollbar scrollbar-primary" className="" style={{
-                            display: "flex", flexWrap: "wrap", position: "relative", height: "400px", overflowY: "scroll"
+                        <div style={{
+                            display: "flex", flexWrap: "wrap", position: "relative", height: "350px", width: '90%'
                         }}>
 
                             {products.map((product, index) =>
                                 <div key={index} style={{ width: "180px", height: "320px", backgroundColor: "white", marginTop: "10px", marginLeft: "10px", border: "1px solid rgba(0, 0, 0, 0.5)", boxSizing: "border-box", padding: "5px", borderRadius: "15px", display: 'inline' }}>
-                                    <img src={rmv} onClick={() => this.handleShowDelete(product.id)} style={{ width: "15px", height: "15px", position: 'absolute' }} hidden={hide} />
-                                    <img src={edt} onClick={() => this.handleShowEdit(product.id)} value={product.id} style={{ width: "15px", height: "15px", position: 'absolute', marginLeft: "150px" }} hidden={hide} />
-                                    <img src={product.image} style={{ width: "145px", height: "145px", marginLeft: "15px" }} />
+                                    <img alt="prduct" src={product.image} style={{ width: "145px", height: "145px", marginLeft: "15px" }} />
                                     <h6 style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{product.name}</h6>
                                     <div><p style={{ fontSize: 10, position: 'absolute', marginLeft: 120, marginTop: -10 }}>
                                         Stock :{product.stock}
                                     </p> </div>
                                     <hr />
                                     <Row>
-                                        <Col style={{ marginLeft: "5px", marginTop: "-15px" }}><p style={{ textOverflow: "ellipsis", whiteSpace: "nowrap" }} >
-                                            {/* <NumberFormat value={product.price} displayType={'text'} thousandSeparator={` . `} prefix={'Rp. '} />,- */}
-                                            <p>{numeral(`${product.price}`).format('0a')}</p>
-                                        </p>
+                                        <Col style={{ marginLeft: "5px", marginTop: "-15px" }}><p style={{ textOverflow: "ellipsis", whiteSpace: "nowrap" }} />
+                                            <p style={{ textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{numeral(`${product.price}`).format('0a')}</p>
                                         </Col>
 
                                         <Col style={{ fontSize: "10px", marginTop: "-7px" }}></Col>
@@ -179,14 +168,14 @@ class Product extends Component {
                                     <h6 style={{ marginLeft: "30px", marginTop: "2px" }}>{product.name_category}</h6>
 
 
-                                    <Button onClick={() => (this.onAddChart(product))} style={{ backgroundColor: "#28F555", marginLeft: "12px", marginTop: "8px", width: "140px" }}><img src={ord} style={{ width: "15px", height: "15px" }} /></Button>
+                                    <Button onClick={() => (this.onAddChart(product))} style={{ backgroundColor: "#28F555", marginLeft: "12px", marginTop: "8px", width: "140px" }}><img alt="orderIcon" src={ord} style={{ width: "15px", height: "15px" }} /></Button>
                                 </div>
                             )}
 
                             <ModalDelete show={this.state.showDelete} onHide={this.handleCloseDelete} onClick={this.onSelectProductDelete} id={this.state.id} />
 
                             {/* modal edit */}
-                            <ModalEdit show={this.state.showEdit} onHide={this.handleCloseEdit} onClick={this.onSelectProductEdit} idProduct={this.state.idProduct} />
+                            <ModalEdit show={this.state.showEdit} onHide={this.handleCloseEdit} onClick={this.selectProductEdit} idProduct={this.state.idProduct} products={this.selectProductEdit} />
 
                         </div>
                     </div>
@@ -198,7 +187,7 @@ class Product extends Component {
 }
 
 const mapStateToProps = (state) => {
-    console.log(mapStateToProps)
+    console.log("woy", state)
     return {
         hide: state.products.hide,
         products: state.products.products,

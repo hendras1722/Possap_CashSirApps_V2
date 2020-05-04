@@ -19,7 +19,6 @@ function App() {
         <Route path="/settings" component={Category} />
         <Route path="/login" component={Login} />
       </Router>
-
     </Provider>
   );
 }

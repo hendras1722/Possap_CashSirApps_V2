@@ -5,17 +5,16 @@ import Product from '../Layout/Product'
 
 
 class Home extends Component {
-    // componentDidMount() {
-
-    // }
     async componentDidMount() {
-        if (!localStorage.getItem('isAuth')) {
+        if (!localStorage.getItem('token')) {
             this.props.history.push('/login');
+        } else if (localStorage.getItem('token') === "undefined") {
+            this.onLogout();
         }
+
     }
 
     onLogout() {
-        console.log('logout')
         localStorage.removeItem('user-id');
         localStorage.removeItem('token');
         localStorage.removeItem('isAuth');

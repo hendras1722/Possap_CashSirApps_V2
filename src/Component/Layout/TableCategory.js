@@ -1,19 +1,15 @@
 import React, { Component } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Table, Col, Row, Button, Form, FormControl, Tab, Tabs } from 'react-bootstrap'
-import { getCategory } from '../redux/actions/Category'
 import { connect } from 'react-redux';
-import { searchCategory } from '../redux/actions/Category'
-import { postCategory } from '../redux/actions/Category'
-import { getUser } from '../redux/actions/user'
+import { searchCategory, postCategory, getCategory } from '../redux/actions/Category'
+import { getUser, registerUser } from '../redux/actions/user'
 import { readCheckout, readHistory } from '../redux/actions/order'
-import { registerUser } from '../redux/actions/user'
 import ModalDeleteUser from '../Layout/ModalDeleteUser'
 import ModalEditUser from '../Layout/ModalEditUser'
 import ModalDeleteCategory from '../Layout/ModalDeleteCategory'
 import ModalEditCategory from '../Layout/ModalEditCategory'
-import { Line } from 'react-chartjs-2'
-import NumberFormat from 'react-number-format';
+import AddProduct from '../Layout/addproduct'
 
 class TableCategory extends Component {
     state = {
@@ -88,7 +84,6 @@ class TableCategory extends Component {
         this.setState({
             id: event
         })
-        console.log(this.state.id)
         await this.props.dispatch(readCheckout(this.state.id))
     }
 
@@ -228,6 +223,7 @@ class TableCategory extends Component {
     }
 
 
+
     // update
     onSelectProductUpdate = (product) => {
         this.setState({
@@ -251,10 +247,14 @@ class TableCategory extends Component {
 
     render() {
         const { categorys, users, orders } = this.props;
-        // console.log(this.props.orders)
         return (
             <div className="container p-5">
                 <Tabs defaultActiveKey="profile" id="uncontrolled-tab-example">
+                    <Tab eventKey="Product" title="Products">
+
+                        <AddProduct />
+
+                    </Tab>
                     <Tab eventKey="home" title="Category">
                         <Row>
                             <Col>
@@ -438,12 +438,6 @@ class TableCategory extends Component {
                         </Row>
                     </Tab>
                 </Tabs>
-                <div>
-                    <Line
-                        data={this.state.Data}
-                        options={{ maintainAspectRatio: false }}
-                    />
-                </div>
             </div>
         )
     }
