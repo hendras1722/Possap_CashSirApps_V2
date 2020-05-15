@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ord from '../img/order.png'
 import { getProducts } from '../redux/actions/Product'
@@ -11,7 +11,7 @@ import { addCart } from '../redux/actions/carts'
 import { paginationProduct } from '../redux/actions/Product'
 import { Link } from 'react-router-dom';
 import numeral from 'numeral'
-
+import ContactSkeletonLoading from './loading';
 
 class Product extends Component {
     state = {
@@ -73,11 +73,11 @@ class Product extends Component {
         await this.props.dispatch(getProducts())
     }
 
-
-    async componentDidMount() {
+    async componentWillMount() {
+        // console.log(this.props.products === [0])
         await this.getProducts();
-    }
 
+    }
 
     // modal
     handleShowEdit = (e) => {
@@ -97,17 +97,14 @@ class Product extends Component {
 
     // delete
     onSelectProductEdit = (product) => {
-        console.log("woy", product)
         this.setState({
             selectProductEdit: product,
             showEdit: true
         })
     }
 
-
     // modal
     handleShowDelete = (id) => {
-        // console.log(e.target.value)
         this.setState({
             id: id,
             showDelete: true
@@ -130,7 +127,40 @@ class Product extends Component {
     }
 
     render() {
-        const { products, pagination, hide } = this.props;
+        const { products, pagination } = this.props;
+        const Loading = () => {
+            if (this.props.products === []) {
+                return (
+                    <ContactSkeletonLoading />
+                )
+            } else {
+                return (
+                    <Fragment>
+                        {products.map((product, index) =>
+                            <div key={index} style={{ width: "180px", height: "320px", backgroundColor: "white", marginTop: "10px", marginLeft: "10px", border: "1px solid rgba(0, 0, 0, 0.5)", boxSizing: "border-box", padding: "5px", borderRadius: "15px", display: 'inline' }}>
+                                <img alt="prduct" src={product.image} style={{ width: "145px", height: "145px", marginLeft: "15px" }} />
+                                <h6 style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{product.name}</h6>
+                                <div><p style={{ fontSize: 10, position: 'absolute', marginLeft: 120, marginTop: -10 }}>
+                                    Stock :{product.stock}
+                                </p> </div>
+                                <hr />
+                                <Row>
+                                    <Col style={{ marginLeft: "5px", marginTop: "-15px" }}><p style={{ textOverflow: "ellipsis", whiteSpace: "nowrap" }} />
+                                        <p style={{ textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{numeral(`${product.price}`).format('0a')}</p>
+                                    </Col>
+
+                                    <Col style={{ fontSize: "10px", marginTop: "-7px" }}></Col>
+                                </Row>
+                                <h6 style={{ marginLeft: "30px", marginTop: "2px" }}>{product.name_category}</h6>
+
+
+                                <Button onClick={() => (this.onAddChart(product))} style={{ backgroundColor: "#28F555", marginLeft: "12px", marginTop: "8px", width: "140px" }}><img alt="orderIcon" src={ord} style={{ width: "15px", height: "15px" }} /></Button>
+                            </div>
+                        )}
+                    </Fragment>
+                )
+            }
+        }
         return (
             <div className="container-fluid">
 
@@ -151,8 +181,8 @@ class Product extends Component {
                             <div style={{
                                 display: "flex", flexWrap: "wrap", position: "relative", height: "350px", width: '90%'
                             }}>
-
-                                {products.map((product, index) =>
+                                <Loading />
+                                {/* {products.map((product, index) =>
                                     <div key={index} style={{ width: "180px", height: "320px", backgroundColor: "white", marginTop: "10px", marginLeft: "10px", border: "1px solid rgba(0, 0, 0, 0.5)", boxSizing: "border-box", padding: "5px", borderRadius: "15px", display: 'inline' }}>
                                         <img alt="prduct" src={product.image} style={{ width: "145px", height: "145px", marginLeft: "15px" }} />
                                         <h6 style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{product.name}</h6>
@@ -172,7 +202,8 @@ class Product extends Component {
 
                                         <Button onClick={() => (this.onAddChart(product))} style={{ backgroundColor: "#28F555", marginLeft: "12px", marginTop: "8px", width: "140px" }}><img alt="orderIcon" src={ord} style={{ width: "15px", height: "15px" }} /></Button>
                                     </div>
-                                )}
+                                )} */}
+
 
                                 <ModalDelete show={this.state.showDelete} onHide={this.handleCloseDelete} onClick={this.onSelectProductDelete} id={this.state.id} />
 

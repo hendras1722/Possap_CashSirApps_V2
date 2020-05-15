@@ -1,13 +1,10 @@
 import React, { Component } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Button } from 'react-bootstrap'
 import Dropdown from 'react-bootstrap/Dropdown'
 import { searchProduct } from "../redux/actions/Product";
 import { connect } from 'react-redux';
 import { getCategory } from '../redux/actions/Category'
 import { withRouter } from "react-router";
-import plus from '../img/icons.png'
-import ModalAdd from '../Layout/ModalAdd'
 import { addQty, reduceQty, deleteCart } from '../redux/actions/carts'
 import rmv from '../img/remove.png'
 import NumberFormat from 'react-number-format';
@@ -93,8 +90,7 @@ class SectionTop extends Component {
 
 
     render() {
-        const { categorys, cart, total, hide } = this.props;
-        // console.log(categorys);
+        const { categorys, cart, total } = this.props;
         return (
             <div className="container-fluid">
                 <div className="row p-4">

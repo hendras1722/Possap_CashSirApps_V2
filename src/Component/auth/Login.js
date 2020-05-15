@@ -3,6 +3,7 @@ import axios from 'axios';
 import background from '../img/user.png'
 import './login.css'
 
+
 class Login extends Component {
     constructor(props) {
         super(props);
@@ -41,9 +42,10 @@ class Login extends Component {
             })
     }
 
+
     render() {
         return (
-            <div >
+            <div className="container-fluid" >
                 <div >
                     <div >
                         <div className="row justify-content-center" style={{ marginTop: 80 }}>
@@ -67,7 +69,7 @@ class Login extends Component {
                                         </div>
                                         <div className="form-group">
                                             {/* <label>Password</label> */}
-                                            <input type="password" className="form-control" placeholder="Enter password" name="password" onChange={this.onChange} style={{ width: "300px" }} required />
+                                            <input type="password" className="form-control" id="password-field" placeholder="Enter password" name="password" onChange={this.onChange} style={{ width: "300px" }} required />
                                         </div>
                                         <button type="submit" className="btn btn-primary" style={{ width: "300px" }}>Login</button>
                                     </form>

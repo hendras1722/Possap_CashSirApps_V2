@@ -24,6 +24,7 @@ class NavbarPage extends Component {
 
     render() {
         // console.log(this.props.cart.length === 1, "dsakdasld")
+
         const ValidasiFrom = () => {
             if (localStorage.getItem('Status') === '1') {
                 return (
@@ -32,7 +33,6 @@ class NavbarPage extends Component {
                         <Link to="/settings"><button style={{ backgroundColor: "#3346A8", border: "none" }}>
                             <img src={logocat} style={{ width: "30px", height: "30px" }} alt="admin" /></button>
                         </Link>
-
                     </Fragment>
                 )
             }

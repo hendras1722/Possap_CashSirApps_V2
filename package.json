@@ -21,7 +21,9 @@
     "react-image-crop": "^8.5.0",
     "react-image-filter": "^0.1.2",
     "react-images-upload": "^1.2.8",
+    "react-infinite-scroller": "^1.2.4",
     "react-js-pagination": "^3.0.3",
+    "react-loading-skeleton": "^2.0.1",
     "react-native-canvas": "^0.1.37",
     "react-native-dotenv": "^0.2.0",
     "react-number-format": "^4.4.1",
@@ -31,7 +33,8 @@
     "redux": "^4.0.5",
     "redux-logger": "^3.0.6",
     "redux-persist": "^6.0.0",
-    "redux-promise-middleware": "^6.1.2"
+    "redux-promise-middleware": "^6.1.2",
+    "serve": "^11.3.0"
   },
   "scripts": {
     "start": "react-scripts start",

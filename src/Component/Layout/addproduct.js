@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Table, Col, Row, Button, Form, FormControl, Tab, Tabs } from 'react-bootstrap'
+import { Table, Button, Form, FormControl } from 'react-bootstrap'
 import { getProducts, postProducts } from '../redux/actions/Product'
 import { connect } from 'react-redux';
 import ModalEdit from '../Layout/ModalEdit'
@@ -159,7 +159,7 @@ class AddProduct extends Component {
                             <tr key={index}>
                                 <td>{item.id}</td>
                                 <td>{item.name}</td>
-                                <td><img src={item.image} style={{ width: "50px", height: "50px" }} /></td>
+                                <td><img src={item.image} alt="gambar" style={{ width: "50px", height: "50px" }} /></td>
                                 <td>{item.stock}</td>
                                 <td>{item.price}</td>
                                 <td>{item.name_category}</td>
@@ -176,6 +176,7 @@ class AddProduct extends Component {
                     {/* modal edit */}
                     <ModalEdit show={this.state.showEdit} onHide={this.handleCloseEdit} onClick={this.selectProductEdit} idProduct={this.state.idProduct} products={this.selectProductEdit} />
                 </Table>
+                <Button variant="success" size="sm" onClick={this.handleShowAdd}>Add</Button>
                 <ul className="pagination" style={{ marginLeft: "50px" }}>
 
                     {this.props.pagination && pagination.map((pagination) => (
