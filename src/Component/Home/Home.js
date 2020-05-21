@@ -14,10 +14,12 @@ class Home extends Component {
             this.props.history.push('/login');
             return (
                 <div show={alert('wewoew')} style={{ background: 'red' }}>
-                    <p>Seng bener</p>
+                    <p>Email/Password Salah</p>
                 </div>
             )
-            // alert("woy seng bener")
+        }
+        if (!localStorage.getItem('isAuth')) {
+            this.props.history.push('/login');
         }
     }
 

@@ -14,6 +14,12 @@ class Login extends Component {
         };
     }
 
+    componentDidMount() {
+        if (!localStorage) {
+            this.props.history('/login')
+        }
+    }
+
     onChange = (e) => {
         this.setState({ [e.target.name]: e.target.value })
     }
