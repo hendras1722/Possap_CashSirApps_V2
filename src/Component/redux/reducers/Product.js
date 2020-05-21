@@ -65,11 +65,13 @@ const product = (state = initialState, action) => {
 
         case 'GET_PRODUCTS_PENDING':
             return {
-                ...state
+                ...state,
+                isLoading: false
             }
         case 'GET_PRODUCTS_REJECTED':
             return {
-                ...state
+                ...state,
+                isLoading: false
             }
         case 'GET_PRODUCTS_FULFILLED':
             // console.log(action.payload.data.result);

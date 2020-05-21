@@ -71,7 +71,7 @@ class Login extends Component {
                                             {/* <label>Password</label> */}
                                             <input type="password" className="form-control" id="password-field" placeholder="Enter password" name="password" onChange={this.onChange} style={{ width: "300px" }} required />
                                         </div>
-                                        <button type="submit" className="btn btn-primary" style={{ width: "300px" }}>{this.state.Loading ? "Loading..." : "Login"}</button>
+                                        <button type="submit" className="btn btn-primary" style={{ width: "300px" }}>{this.state.Loading ? <div><div class="spinner-border text-white" style={{ width: 20, height: 20 }}></div></div> : "Login"}</button>
                                     </form>
                                     <div style={{ marginTop: 30, marginBottom: -50, justifyContent: 'center', alignItems: 'center', display: 'flex' }}>
                                         <p>Versi 1.01</p>

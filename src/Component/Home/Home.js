@@ -13,8 +13,7 @@ class Home extends Component {
             localStorage.setItem('Status', "");
             this.props.history.push('/login');
             return (
-                <div show={alert('wewoew')} style={{ background: 'red' }}>
-                    <p>Email/Password Salah</p>
+                <div show={alert('Email/Password Salah')} style={{ background: 'red' }}>
                 </div>
             )
         }

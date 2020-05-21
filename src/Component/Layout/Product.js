@@ -77,14 +77,12 @@ class Product extends Component {
     }
 
     async componentWillMount() {
-        // console.log(this.props.products === [0])
         await this.getProducts();
 
     }
 
     // modal
     handleShowEdit = (e) => {
-        // console.log(e)
         this.setState({
             idProduct: e,
             showEdit: true
@@ -129,11 +127,6 @@ class Product extends Component {
         })
     }
 
-    // onLoading = () => {
-    //     this.setState({
-    //         loading: true
-    //     })
-    // }
     render() {
         const { products, pagination } = this.props;
         console.log("ini porps", this.props.products)
@@ -157,7 +150,7 @@ class Product extends Component {
                             <div style={{
                                 display: "flex", flexWrap: "wrap", position: "relative", height: "350px", width: '90%'
                             }}>
-                                {this.props.products.length === 0 ?
+                                {this.props.products.length === 0 && this.props.pagination.length === 0 ?
                                     (
                                         <>
                                             <ContactSkeletonLoading />
@@ -191,9 +184,16 @@ class Product extends Component {
                                             )
                                             }
                                         </>
-                                    )
-                                }
+                                    )}
+                                {this.props.products.length === 0 && this.props.pagination.length === 1 ? (
+                                    <div style={{ display: "flex", marginLeft: '300px', alignItems: 'center', justifyContent: 'center' }}>
+                                        <h2>Product Not Found</h2>
+                                    </div>
+                                ) : (
+                                        <>
 
+                                        </>
+                                    )}
 
                                 <ModalDelete show={this.state.showDelete} onHide={this.handleCloseDelete} onClick={this.onSelectProductDelete} id={this.state.id} />
 
