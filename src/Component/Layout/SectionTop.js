@@ -24,18 +24,15 @@ class SectionTop extends Component {
     }
 
     onDeleteCart = (id) => {
-        console.log(id)
         this.props.dispatch(deleteCart(id))
     }
 
     paginationProduct = async (event) => {
-        // console.log('hello', event.target.id)
         await this.props.dispatch(paginationProduct(event))
     }
 
     // modal add
     handleShowAdd = (e) => {
-        // console.log(e)
         this.setState({
             idProduct: e.target.value,
             showAdd: true
@@ -78,10 +75,7 @@ class SectionTop extends Component {
         this.props.dispatch(addQty(id))
     }
     reduceQuantity = (id) => {
-        // console.log(qty)
-
         this.props.dispatch(reduceQty(id))
-
     }
 
     deleteQuantitiy = (id) => {

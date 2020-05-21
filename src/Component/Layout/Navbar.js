@@ -8,20 +8,33 @@ import { Link } from 'react-router-dom'
 import { connect } from 'react-redux';
 import { orderCheckout } from '../redux/actions/order'
 import NumberFormat from 'react-number-format';
+import { deleteCart } from '../redux/actions/carts'
 
 class NavbarPage extends Component {
     state = {
         count: parseInt(this.props.cart.length) || 0
     }
 
-    onSubmit = async () => {
+    onSubmit = async (id) => {
         const data = {
             idBuyer: parseInt(localStorage.getItem('id')),
             products: this.props.cart
         }
+        // await this.props.dispatch(deleteCart())
+        // console.log("saldas;d", data)
         await this.props.dispatch(orderCheckout(data))
+        await this.props.dispatch(deleteCart(id))
     }
 
+    onLogout = async () => {
+        localStorage.removeItem('user-id');
+        localStorage.removeItem('token');
+        localStorage.removeItem('isAuth');
+        localStorage.removeItem('Status');
+        if (localStorage.getItem('token') === undefined) {
+            await this.props.history.push('/login');
+        }
+    }
     render() {
         // console.log(this.props.cart.length === 1, "dsakdasld")
 
@@ -50,7 +63,7 @@ class NavbarPage extends Component {
             }
         }
 
-        const { logout, cart, total } = this.props
+        const { cart, total } = this.props
         console.log(this.props)
         return (
             <div className="container-fluid">
@@ -58,7 +71,7 @@ class NavbarPage extends Component {
                     <div className="col-lg-8 p-0" style={{ backgroundColor: '#3346A8' }}>
                         <Navbar className="ml-2" style={{ backgroundColor: "#3346A8", height: "60px", boxShadow: "0px 19px 8px -13px rgba(0,0,0,1)" }}>
                             <ValidasiFrom />
-                            <Link to="/login" onClick={logout}><button style={{ backgroundColor: "#3346A8", border: "none" }}> <img src={log_out} style={{ width: "30px", height: "30px" }} alt="logout" /></button></Link>
+                            <Link to="/login" onClick={() => this.onLogout()}><button style={{ backgroundColor: "#3346A8", border: "none" }}> <img src={log_out} style={{ width: "30px", height: "30px" }} alt="logout" /></button></Link>
                         </Navbar>
                     </div>
                     <div className="col-lg-4 p-0">

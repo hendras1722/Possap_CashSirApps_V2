@@ -3,22 +3,15 @@ import axios from 'axios';
 import background from '../img/user.png'
 import './login.css'
 
-
 class Login extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
             email: '',
-            password: ''
+            password: '',
+            Loading: false
         };
-    }
-
-
-    componentDidMount() {
-        if (localStorage.getItem('token')) {
-            this.props.history.push('/');
-        }
     }
 
     onChange = (e) => {
@@ -27,7 +20,9 @@ class Login extends Component {
 
     onSubmit = (e) => {
         e.preventDefault();
-
+        this.setState({
+            Loading: true
+        })
         axios
             .post("http://18.232.100.68/user/login", this.state)
             .then(res => {
@@ -38,10 +33,9 @@ class Login extends Component {
                 this.props.history.push('/');
             })
             .catch(err => {
-                console.log(err);
+                alert(err)
             })
     }
-
 
     render() {
         return (
@@ -71,7 +65,7 @@ class Login extends Component {
                                             {/* <label>Password</label> */}
                                             <input type="password" className="form-control" id="password-field" placeholder="Enter password" name="password" onChange={this.onChange} style={{ width: "300px" }} required />
                                         </div>
-                                        <button type="submit" className="btn btn-primary" style={{ width: "300px" }}>Login</button>
+                                        <button type="submit" className="btn btn-primary" style={{ width: "300px" }}>{this.state.Loading ? "Loading..." : "Login"}</button>
                                     </form>
                                     <div style={{ marginTop: 30, marginBottom: -50, justifyContent: 'center', alignItems: 'center', display: 'flex' }}>
                                         <p>Versi 1.01</p>

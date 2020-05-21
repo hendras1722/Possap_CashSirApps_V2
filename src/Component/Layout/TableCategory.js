@@ -149,8 +149,6 @@ class TableCategory extends Component {
     //edit
     // modal
     handleShowEdit = (e) => {
-        console.log("kasdkmasd")
-        console.log(e.target.value)
         this.setState({
             idCategory: e.target.value,
             showEdit: true
@@ -165,8 +163,6 @@ class TableCategory extends Component {
 
 
     onSelectProductEdit = (e) => {
-        // console.log("kelqwk")
-        // console.log(e.target.value)
         this.setState({
             // selectProductEdit: product,
             showEdit: true
@@ -199,7 +195,6 @@ class TableCategory extends Component {
     }
 
     async componentDidMount() {
-
         await this.getCategory();
         await this.getUser();
         await this.readCheckout();
