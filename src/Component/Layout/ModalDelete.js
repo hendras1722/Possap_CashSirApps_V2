@@ -16,11 +16,9 @@ const ModalDelete = (props) => {
 
     const onDeleteHandle = async (event) => {
         event.preventDefault();
-        // console.log(this.state.value)
 
         await dispatch(deleteProducts(id));
         onHide();
-        // console.log(deleteProducts)
     }
 
     return (

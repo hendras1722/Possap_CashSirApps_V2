@@ -59,7 +59,6 @@ const order = (state = initialState, action) => {
             }
 
         case 'GET_ORDER_FULFILLED':
-            // console.log(this.state.orders)
             return {
                 ...state,
                 order: action.payload.data.result

@@ -12,12 +12,12 @@ export const orderCheckout = (data) => {
     }
 }
 
-export const readCheckout = () => {
+export const readCheckout = (id) => {
     return {
         type: 'GET_ORDER',
         payload: axios({
             method: "GET",
-            url: `${process.env.REACT_APP_API_URL}/order`
+            url: `${process.env.REACT_APP_API_URL}/order/${id}`
         })
     }
 }

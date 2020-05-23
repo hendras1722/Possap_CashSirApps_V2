@@ -57,7 +57,7 @@ class SectionTop extends Component {
         this.setState({
             searchName: event.target.value,
         })
-        this.props.history.push(`?name=${event.target.value}&idCat=${event}&orderBy=ASC`);
+        this.props.history.push(`/?name=${event.target.value}`);
         this.props.dispatch(searchProduct(event.target.value, this.state.idCategory, this.state.paginationProduct));
     }
 

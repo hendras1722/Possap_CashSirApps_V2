@@ -24,6 +24,7 @@ class TableCategory extends Component {
         selectProductEdit: null,
         selectProductDelete: null,
         products: [],
+        idHistory: "",
         Data: {
             labels: ["januari", "february"],
             datasets: [
@@ -42,8 +43,6 @@ class TableCategory extends Component {
             ]
         }
     }
-
-
 
     onChange = (e) => {
         console.log(e.target.value)
@@ -80,11 +79,9 @@ class TableCategory extends Component {
         await this.props.dispatch(registerUser(data));
     }
 
-    readCheckout = async (event) => {
-        this.setState({
-            id: event
-        })
-        await this.props.dispatch(readCheckout(this.state.id))
+    readCheckout = async () => {
+        console.log("woi")
+        await this.props.dispatch(readCheckout(this.state.History))
     }
 
     readHistory = async () => {
@@ -132,7 +129,6 @@ class TableCategory extends Component {
 
     // modal delete user
     handleShowDeleteUser = (id) => {
-        console.log("sadas")
         this.setState({
             id: id,
             showDeleteUser: true
@@ -172,7 +168,6 @@ class TableCategory extends Component {
 
     // modal
     handleShowDelete = (id) => {
-        // console.log(e.target.value)
         this.setState({
             id: id,
             showDelete: true
@@ -205,7 +200,6 @@ class TableCategory extends Component {
 
     // modal
     handleShowUpdate = (e) => {
-        console.log(e.target.value)
         this.setState({
             idUser: e.target.value,
             showUpdate: true
@@ -239,10 +233,17 @@ class TableCategory extends Component {
         this.setState({ image: e.target.files[0] })
     }
 
-
+    History = async e => {
+        this.setState({
+            History: e.target.value
+        })
+        await this.props.dispatch(readCheckout(e.target.value))
+    }
 
     render() {
-        const { categorys, users, orders } = this.props;
+        const { categorys, users, orders, order } = this.props;
+
+        console.log(this.state.History, "helloki")
         return (
             <div className="container p-5">
                 <Tabs defaultActiveKey="profile" id="uncontrolled-tab-example">
@@ -376,41 +377,33 @@ class TableCategory extends Component {
                                                 <td>{order.totalPayment}</td>
                                                 <td>{order.date_added.slice(0, 10)}</td>
                                                 <td><div style={{ marginLeft: "50px" }}>
-                                                    <Button variant="warning" size="sm" data-toggle="modal" data-target="#history" onClick={() => this.readCheckout(order.id)}>Lihat</Button>
-
-                                                    <div class="modal fade" id="history" tabindex="-1" role="dialog" aria-labelledby="history" aria-hidden="true">
-                                                        <div class="modal-dialog" role="document">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h5 class="modal-title" id="history">CheckOut</h5>
-                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                        <span aria-hidden="true">&times;</span>
-                                                                    </button>
-                                                                </div>
-                                                                <div class="modal-body">
-                                                                    {/* {cart.map((cart) =>
-                                                                        <div className="row">
-                                                                            <div className="col-4" style={{ display: 'inline' }}>
-                                                                                <p style={{ display: 'inline' }}>| {cart.name}</p>
-                                                                            </div>
-                                                                            <div className="col-4" style={{ display: 'inline' }}>
-                                                                                <p style={{ display: 'inline' }}>   <NumberFormat value={cart.price} displayType={'text'} thousandSeparator={true} prefix={'Rp'} />,-</p>
-                                                                                <p style={{ display: 'inline' }}>  x{cart.qty}</p>
-
-                                                                            </div>
-                                                                        </div>
-                                                                    )} */}
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                </div></td>
+                                                    <Button variant="warning" size="sm" data-toggle="modal" data-target="#history" onClick={this.History} value={order.idBuyer}>Lihat</Button>
+                                                </div>
+                                                </td>
                                             </tr>
                                         )}
+                                        <div class="modal fade" id="history" tabindex="-1" role="dialog" aria-labelledby="history" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="history">CheckOut</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    {order.map((item, index) =>
+                                                        <div className="row" key={index}>
+                                                            <div className="col-4" style={{ display: 'inline' }}>
+                                                                <p style={{ display: 'inline' }}>| {item.name}</p>
+                                                            </div>
+                                                        </div>
+                                                    )}
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </tbody>
                                 </Table>
                             </Col>
@@ -445,7 +438,8 @@ const searchStateToProps = (state) => {
     return {
         categorys: state.categorys.categorys,
         users: state.users.users,
-        orders: state.order.orders
+        orders: state.order.orders,
+        order: state.order.order
     }
 }
 

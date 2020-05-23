@@ -129,7 +129,6 @@ class Product extends Component {
 
     render() {
         const { products, pagination } = this.props;
-        console.log("ini porps", this.props.products)
         return (
             <div className="container-fluid">
 
