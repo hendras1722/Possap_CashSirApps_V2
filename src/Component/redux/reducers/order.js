@@ -1,6 +1,7 @@
 const initialState = {
     orders: [],
     order: [],
+    notif: '',
     isLoading: false
 
 }
@@ -8,23 +9,12 @@ const initialState = {
 const order = (state = initialState, action) => {
     // console.log(action.type);
     switch (action.type) {
-
-        case 'POST_ORDERCHECKOUT_PENDING':
+        case 'POST_ORDERCHECKOUT':
+            console.log(action.payload, 'inipayload')
             return {
                 ...state,
-                isLoading: true
-            }
-
-        case 'POST_ORDERCHECKOUT_REJECTED':
-            return {
-                ...state,
-                isLoading: true
-            }
-
-        case 'POST_ORDERCHECKOUT_FULFILLED':
-            return {
-                ...state,
-                orders: action.payload.data.result
+                orders: action.payload.data?.result,
+                notif: 'berhasil'
             }
 
         case 'GET_ORDERCHECKOUT_PENDING':

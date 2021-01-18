@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import ModalEdit from '../Layout/ModalEdit'
 import ModalDelete from '../Layout/ModalDelete'
 import ModalAdd from '../Layout/ModalAdd'
-import { searchProduct } from "../redux/actions/Product";
+// import { searchProduct } from "../redux/actions/Product";
 import { paginationProduct } from '../redux/actions/Product'
 import { Link } from 'react-router-dom';
 
@@ -29,7 +29,7 @@ class AddProduct extends Component {
         this.setState({
             searchName: event.target.value,
         })
-        this.props.dispatch(searchProduct(event.target.value, this.state.idCategory, this.state.paginationProduct));
+        // this.props.dispatch(searchProduct(event.target.value, this.state.idCategory, this.state.paginationProduct));
     }
 
     // modal
@@ -174,14 +174,14 @@ class AddProduct extends Component {
                     <ModalDelete show={this.state.showDelete} onHide={this.handleCloseDelete} onClick={this.onSelectProductDelete} id={this.state.id} />
                     <ModalAdd show={this.state.showAdd} onHide={this.handleCloseAdd} />
                     {/* modal edit */}
-                    <ModalEdit show={this.state.showEdit} onHide={this.handleCloseEdit} onClick={this.selectProductEdit} idProduct={this.state.idProduct} products={this.selectProductEdit} />
+                    <ModalEdit show={this.state.showEdit} onHide={this.handleCloseEdit} onClick={this.onSelectProductEdit} idProduct={this.state.idProduct} products={this.onSelectProductEdit} />
                 </Table>
                 <Button variant="success" size="sm" onClick={this.handleShowAdd}>Add</Button>
                 <ul className="pagination" style={{ marginLeft: "50px" }}>
 
                     {this.props.pagination && pagination.map((pagination) => (
                         <li className="page-item" key={pagination}>
-                            <Link className="page-link" onClick={this.paginationProduct} id={pagination}>{pagination}</Link>
+                            <Link className="page-link" onClick={(e) => this.paginationProduct(e)} id={pagination}>{pagination}</Link>
                         </li>
                     ))}
 

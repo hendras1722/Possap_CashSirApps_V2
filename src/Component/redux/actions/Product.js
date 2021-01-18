@@ -1,20 +1,34 @@
 import axios from 'axios';
+import { GET_USERS, USERS_ERROR } from "../types";
+
 require('dotenv').config()
 
-export const getProducts = () => {
-    const authorization = localStorage.getItem('token');
-    const userId = localStorage.getItem("user-id");
-    return {
-        type: 'GET_PRODUCTS',
-        payload: axios({
-            method: "GET",
-            url: `${process.env.REACT_APP_API_URL}/pos`,
-            headers: {
-                "authorization": authorization,
-                "user-id": userId
-            }
+export const getProducts = () => async dispatch => {
+    try {
+        const authorization = localStorage.getItem('token');
+        const userId = localStorage.getItem("user-id");
+        const res = await axios.get(`${process.env.REACT_APP_API_URL}/category`)
+        dispatch({
+            type: GET_USERS,
+            payload: res.data.result
         })
+    } catch (error) {
+        dispatch({
+            type: USERS_ERROR,
+            payload: console.log(error)
+        });
     }
+    // return {
+    //     type: GET_USERS,
+    //     payload: axios({
+    //         method: "GET",
+    //         url: `${process.env.REACT_APP_API_URL}/pos`,
+    //         headers: {
+    //             "authorization": authorization,
+    //             "user-id": userId
+    //         }
+    //     })
+    // }
 }
 
 export const postProducts = (data) => {
@@ -28,22 +42,22 @@ export const postProducts = (data) => {
     }
 }
 
-export const searchProduct = (name, idCategory, page) => {
-    console.log(searchProduct)
-    const authorization = localStorage.getItem('token');
-    const userId = localStorage.getItem("user-id");
-    return {
-        type: 'GET_SEARCHPRODUCTS',
-        payload: axios({
-            method: "GET",
-            url: `${process.env.REACT_APP_API_URL}/pos?name=${name}&idCat=${idCategory}&orderBy=ASC`,
-            headers: {
-                "authorization": authorization,
-                "user-id": userId
-            }
-        })
-    }
-}
+// export const searchProduct = (name, idCategory, page) => {
+//     console.log(searchProduct)
+//     const authorization = localStorage.getItem('token');
+//     const userId = localStorage.getItem("user-id");
+//     return {
+//         type: 'GET_SEARCHPRODUCTS',
+//         payload: axios({
+//             method: "GET",
+//             url: `${process.env.REACT_APP_API_URL}/pos?name=${name}&idCat=${idCategory}&orderBy=ASC`,
+//             headers: {
+//                 "authorization": authorization,
+//                 "user-id": userId
+//             }
+//         })
+//     }
+// }
 export const sortProduct = (data) => {
     const authorization = localStorage.getItem('token');
     const userId = localStorage.getItem("user-id");

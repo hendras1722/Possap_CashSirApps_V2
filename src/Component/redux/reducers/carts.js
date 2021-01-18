@@ -6,32 +6,49 @@ const initialState = {
 const cart = (state = initialState, action) => {
     switch (action.type) {
         case 'ADD_CART':
-            let filterCartId = state.cart.map(cart => {
-                if (cart.id === action.payload.id) {
-                    cart.qty += 1
-                    return action.payload
-                }
-                return cart
-            })
-
-            let existedCartData = state.cart.find(product => product.id === action.payload.id)
-            if (existedCartData) {
+            if (action.payload === "Selesai") {
                 return {
                     ...state,
-                    cart: filterCartId,
-                    total: state.total + action.payload.price
+                    cart: [],
+                    total: 0
                 }
-            }
-            else {
-                let newTotal = state.total + action.payload.price
-                action.payload.qty = 1
-                return {
-                    ...state,
-                    cart: [...state.cart, action.payload],
-                    total: newTotal
-                }
-            }
+            } else {
+                state.cart.push(action.payload)
+                let existedCartData = state.cart.find(product => product.id === action.payload.id)
+                let idDuplicate = state.cart.map(item => item.id)
+                let filtered = state.cart.filter((item, index) => !idDuplicate.includes(item.id, index + 1))
+                console.log(filtered, 'inifiltered')
+                let filterCartId = filtered.map(cart => {
+                    return cart.price * cart.qty
+                })
+                console.log(existedCartData, 'iniredux')
 
+                // @ts-ignore
+                const NumberData = filterCartId.map(item => parseInt(item))
+                var total = 0;
+
+                for (var i = 0; i < NumberData.length; ++i) {
+                    total += NumberData[i];
+                }
+                let price = action.payload.price * action.payload.qty
+                if (existedCartData) {
+                    return {
+                        ...state,
+                        cart: filtered,
+                        total: total
+                    }
+                }
+                else {
+                    let newTotal = state.total + action.payload.price
+                    action.payload.qty = 1
+                    return {
+                        ...state,
+                        // cart: [...state.cart, push],
+                        cart: filtered,
+                        total: total
+                    }
+                }
+            }
         case 'ADD_QTY':
             const addQty = state.cart.map(product => {
                 if (product.id === action.payload) {

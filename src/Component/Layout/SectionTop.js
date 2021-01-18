@@ -1,7 +1,8 @@
+// @ts-nocheck
 import React, { Component } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Dropdown from 'react-bootstrap/Dropdown'
-import { searchProduct } from "../redux/actions/Product";
+// import { searchProduct } from "../redux/actions/Product";
 import { connect } from 'react-redux';
 import { getCategory } from '../redux/actions/Category'
 import { withRouter } from "react-router";
@@ -45,22 +46,23 @@ class SectionTop extends Component {
         })
     }
 
-    sortProduct = (event) => {
-        this.setState({
-            idCategory: event
-        })
+    // sortProduct = (event) => {
+    //     this.setState({
+    //         idCategory: event
+    //     })
 
-        this.props.dispatch(searchProduct(this.state.searchName, event, this.state.paginationProduct));
-    }
+    //     this.props.dispatch(searchProduct(this.state.searchName, event, this.state.paginationProduct));
+    // }
 
     searchProduct = (event) => {
         this.setState({
             searchName: event.target.value,
         })
-        this.props.history.push(`/?name=${event.target.value}`);
-        this.props.dispatch(searchProduct(event.target.value, this.state.idCategory, this.state.paginationProduct));
+        // this.props.history.push(`/?name=${event.target.value}`);
+        // this.props.dispatch(searchProduct(event.target.value, this.state.idCategory, this.state.paginationProduct));
     }
 
+    // @ts-ignore
     getCategory = async (event) => {
         await this.props.dispatch(getCategory())
     }
@@ -88,16 +90,22 @@ class SectionTop extends Component {
         return (
             <div className="container-fluid">
                 <div className="row p-4">
-                    <div className="col-sm-8">
+                    <div className="col-sm-8"
+                    // @ts-ignore
+                    >
                         <Dropdown style={{ marginLeft: "20px", display: "inline" }}>
-                            <Dropdown.Toggle variant="white" id="dropdown-basic" style={{ border: "1px solid rgba(0, 0, 0, 0.3)", boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)", boxSizing: "border-box", width: "150px" }}>
+                            <Dropdown.Toggle
+                                // @ts-ignore
+                                variant="white" id="dropdown-basic" style={{ border: "1px solid rgba(0, 0, 0, 0.3)", boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)", boxSizing: "border-box", width: "150px" }}>
                                 Category
                </Dropdown.Toggle>
 
                             <Dropdown.Menu>
                                 <Dropdown.Item onClick={() => this.sortProduct('')} >All</Dropdown.Item>
                                 {categorys.map((category, index) =>
-                                    <Dropdown.Item onClick={() => this.sortProduct(category.id)} key={index} value={category.id}>{category.name_category}</Dropdown.Item>
+                                    <Dropdown.Item onClick={() => this.sortProduct(category.id)} key={index}
+                                        // @ts-ignore
+                                        value={category.id}>{category.name_category}</Dropdown.Item>
                                 )}
                             </Dropdown.Menu>
                         </Dropdown>
@@ -117,7 +125,11 @@ class SectionTop extends Component {
                                     <div style={{ paddingTop: 20, border: '1px solid rgb(7,8,17,0.18)', height: 180, borderRadius: 15 }}>
                                         <img src={rmv} alt="iconremove" style={{ width: "15px", height: "15px", position: 'absolute', marginLeft: 10 }} onClick={() => this.onDeleteCart(cart.id)} />
                                         <img src={cart.image} alt="cart" style={{ display: "inline", width: "100px", height: "100px", marginTop: "10px", padding: 10 }} />
-                                        <h5 style={{ display: "inline", maginTop: "-800px", left: 10 }}>{cart.name}</h5>
+                                        <h5 style={{
+                                            display: "inline",
+                                            // @ts-ignore
+                                            maginTop: "-800px", left: 10
+                                        }}>{cart.name}</h5>
                                         <p style={{ display: "block", marginLeft: "100px", marginTop: "-30px" }}> <NumberFormat value={cart.price} displayType={'text'} thousandSeparator={true} prefix={'Rp'} />,-</p>
 
                                         <div style={{ marginLeft: "230px", marginTop: "-120px" }}>

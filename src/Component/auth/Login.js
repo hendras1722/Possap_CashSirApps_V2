@@ -29,17 +29,35 @@ class Login extends Component {
         this.setState({
             Loading: true
         })
+        const data = {
+            email: this.state.email,
+            password: this.state.password
+        }
+        const { REACT_APP_API_URL } = process.env
         axios
-            .post("http://18.232.100.68/user/login", this.state)
+            .post(`${REACT_APP_API_URL}/user/login`, data)
             .then(res => {
-                localStorage.setItem('token', res.data.token);
-                localStorage.setItem('user-id', res.data.id);
-                localStorage.setItem('isAuth', true);
-                localStorage.setItem('Status', res.data.Status)
-                this.props.history.push('/');
+                console.log(res)
+                if (res.data.status === 400) {
+                    alert("Data Tidak di Temukan")
+                } else {
+                    localStorage.setItem('token', res.data.token);
+                    this.props.history.push('/user/' + res.data.id);
+                    this.setState({
+                        Loading: false
+                    })
+                }
             })
             .catch(err => {
                 alert(err)
+                this.setState({
+                    Loading: false
+                })
+            }).finally(e => {
+                console.log(e, 'inie')
+                this.setState({
+                    Loading: false
+                })
             })
     }
 
@@ -71,10 +89,10 @@ class Login extends Component {
                                             {/* <label>Password</label> */}
                                             <input type="password" className="form-control" id="password-field" placeholder="Enter password" name="password" onChange={this.onChange} style={{ width: "300px" }} required />
                                         </div>
-                                        <button type="submit" className="btn btn-primary" style={{ width: "300px" }}>{this.state.Loading ? <div><div class="spinner-border text-white" style={{ width: 20, height: 20 }}></div></div> : "Login"}</button>
+                                        <button type="submit" className="btn btn-primary" style={{ width: "300px" }}>{this.state.Loading ? <div><div className="spinner-border text-white" style={{ width: 20, height: 20 }}></div></div> : "Login"}</button>
                                     </form>
                                     <div style={{ marginTop: 30, marginBottom: -50, justifyContent: 'center', alignItems: 'center', display: 'flex' }}>
-                                        <p>Versi 1.01</p>
+                                        <p>Versi 2.00</p>
                                     </div>
                                     <div style={{ marginTop: 30, marginBottom: -50, justifyContent: 'center', alignItems: 'center', display: 'flex' }}>
                                         <p style={{ fontSize: 12, marginTop: 5 }}>Cash Sir</p>
