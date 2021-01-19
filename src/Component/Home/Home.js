@@ -4,7 +4,8 @@ import NavbarIn from '../Layout/NavbarSlide'
 import { connect } from 'react-redux'
 import Product from '../Layout/Product'
 import { getData, getUser } from '../../utils/getUser'
-import { Row, Col, Button } from 'antd'
+import { Tooltip, Row, Col, Button } from 'antd'
+import { AiOutlinePoweroff } from 'react-icons/ai'
 
 class Home extends Component {
     constructor(props) {
@@ -24,7 +25,9 @@ class Home extends Component {
         return JSON.parse(jsonPayload);
     };
     userName = async () => {
-        const tokenId = localStorage.getItem("token") ? this.parseJwt(localStorage.getItem("token")).id : 'tidak valid'
+        const tokenId = sessionStorage.getItem("token") ? this.parseJwt(sessionStorage.getItem("token")).id : 'tidak valid'
+        // this.props.history.setIdDetail(tokenId)
+        console.log(this.props.history)
         if (tokenId === 'tidak valid') {
             this.props.history.push('/login')
         } else {
@@ -36,11 +39,11 @@ class Home extends Component {
     }
     async componentDidMount() {
         console.log(localStorage.length)
-        if (localStorage.getItem("token") === undefined || localStorage.length === 0 || !localStorage.getItem("token")) {
-            this.props.history.push('/login')
-        } else {
-            this.props.history.push('/user/' + this.parseJwt(localStorage.getItem("token")).id)
-        }
+        // if (localStorage.getItem("token") === undefined || localStorage.length === 0 || !localStorage.getItem("token")) {
+        //     this.props.history.push('/login')
+        // } else {
+        //     this.props.history.push('/user/' + this.parseJwt(localStorage.getItem("token")).id)
+        // }
         this.userName()
     }
     showModal = () => {
@@ -79,8 +82,7 @@ class Home extends Component {
     componentDidUpdate() {
     }
 
-    onLogout() {
-        localStorage.removeItem('user-id');
+    onLogout = () => {
         localStorage.removeItem('token');
         this.props.history.push('/login');
     }
@@ -92,24 +94,31 @@ class Home extends Component {
     }
 
     render() {
+        const text = <span>Keluar</span>;
+        const myName = String(this.state.nameAkun).substring(0, 6).toUpperCase()
         return (
             <>
                 <div>
                     <Row>
-                        <Col xs={5} style={{ height: "100vh" }}>
+                        <Col xs={5} style={{ height: "100vh", background: '#70A9A4' }}>
                             <div style={{ height: 70, background: '#66AFA9' }} className="d-flex justify-content-center align-items-center slideLeft">
-                                <div style={{ width: "100%", maxWidth: 220, flexWrap: 'wrap' }}>
-                                    <div style={{ color: '#000', fontSize: 28 }} className="text-center">Hi, {String(this.state.nameAkun).toUpperCase()} </div>
-                                </div>
+                                <Tooltip placement="bottomLeft" title={text}>
+                                    <a onClick={() => this.onLogout()}>
+                                        <div style={{ width: "100%", maxWidth: 220, flexWrap: 'wrap' }} className="d-flex align-items-center">
+                                            <AiOutlinePoweroff style={{ fontSize: 18 }} className="mr-3" />
+                                            <div style={{ color: '#000', fontSize: 28 }} className="text-center">Hi, {myName.length > 6 ? myName + "..." : myName} </div>
+                                        </div>
+                                    </a>
+                                </Tooltip>
                             </div>
-                            <NavbarIn ChildItem={this.ChildItem} />
+                            <NavbarIn ChildItem={this.ChildItem} parseJWT={this.parseJwt(sessionStorage.getItem("token")).id} />
                         </Col>
                         <Col xs={19}>
-                            <NavbarPage logout={this.onLogout.bind(this)} />
+                            <NavbarPage />
                             <div className="p-3" style={{ width: "100%", height: '77%', maxHeight: '77%' }}>
                                 <Product send={this.state.send} setIsModalVisible={this.state.setIsModalVisible} handleCancel={this.handleCancel} />
                             </div>
-                            <div className="d-flex justify-content-center align-items-center" style={{ background: '#66AFA9', width: '100%', height: '11.8%', position: 'fixed' }}>
+                            <div className="d-flex justify-content-center align-items-center" style={{ background: '#70A9A4', width: '100%', height: '11.8%', position: 'absolute', bottom: 0 }}>
                                 <div className="d-flex" style={{ width: 500 }}>
                                     {this.buttonPembayaran()}
                                 </div>

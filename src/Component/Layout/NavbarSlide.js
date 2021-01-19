@@ -1,6 +1,7 @@
+// @ts-nocheck
 import React, { Fragment, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import { getData } from '../../utils/getUser'
+import { getData, formatDate } from '../../utils/getUser'
 import { Input, Button, Dropdown, Menu } from 'antd'
 import { AiOutlineSearch } from 'react-icons/ai'
 import { FaSort } from 'react-icons/fa'
@@ -9,7 +10,7 @@ import './style.css'
 
 const NavbarIn = (props) => {
     const history = useHistory()
-    const [nameUser, setNameUser] = useState()
+    const [nameUserNya, setNameUser] = useState()
     const [prodcutItems, setProductItems] = useState([])
     const NameUser = async () => {
         const pathname = history.location.pathname
@@ -19,8 +20,16 @@ const NavbarIn = (props) => {
         const { data } = await getData(`/user?detail=${result}`)
         setNameUser(data.result)
     }
-    const itemDetail = (e) => {
-        props.ChildItem(e)
+    const itemDetail = async (e) => {
+        const datas = await getData('/user?detail=' + props.parseJWT)
+        const statusUser = datas.data.result.Status
+        if (statusUser === 1) {
+            const { data } = await getData('/order/' + e.idBuyer)
+            // setDetailOrderIn(data.result)
+            props.ChildItem(data.result)
+        } else {
+            props.ChildItem(e)
+        }
     }
     const enterSearch = (e) => {
         const { event } = e
@@ -45,29 +54,105 @@ const NavbarIn = (props) => {
                 setProductItems(sortAZ)
                 break;
             case "Semua":
-                getDataProduct()
                 break;
             default:
                 break;
         }
     }
+    const listItemNya = () => {
+        if (nameUserNya?.Status === 1) {
+            return (
+                <div style={{ maxHeight: 505, height: "100%", overflowY: 'scroll' }} className="listProduct">
+                    <div >
+                        {prodcutItems.length === 0 ? (
+                            <div className="p-3">
+                                <div className="text-center">Menu Tidak Tersedia</div>
+                            </div>
+                        ) : (
+                                <>
+                                    {prodcutItems && prodcutItems.map((item, index) =>
+                                        <a key={index} onClick={() => itemDetail(item)}>
+                                            <div style={{ backgroundColor: 'rgb(138 191 187)', width: '100%' }} className="bg-product d-flex align-items-start p-2">
+                                                {/* <img src={item.image ? item.image : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"} style={{ width: 50, height: 50, borderRadius: 5 }} /> */}
+                                                <div className="ml-3">
+                                                    <div>#MSA{String(item.idBuyer).substring(0, 8)}</div>
+                                                    <div className="mt-2">
+                                                        <div>Total Harga Rp.{parseInt(item.totalPayment).toLocaleString("id-ID")}</div>
+                                                        <div className="d-flex justify-content-between align-items-center" style={{ width: 230 }}>
+                                                            <div>{formatDate(item.date_added)}</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    )}
+                                </>
+                            )}
+                    </div>
+                </div>
+            )
+        } else {
+            return (
+                <div style={{ maxHeight: 505, height: "100%", overflowY: 'scroll' }} className="listProduct">
+                    <div >
+                        {prodcutItems.length === 0 ? (
+                            <div className="p-3">
+                                <div className="text-center">Menu Tidak Tersedia</div>
+                            </div>
+                        ) : (
+                                <>
+                                    {prodcutItems && prodcutItems.map((item, index) =>
+                                        <a key={index} onClick={() => itemDetail(item)}>
+                                            <div style={{ backgroundColor: 'rgb(138 191 187)', width: '100%' }} className="bg-product d-flex align-items-center p-2">
+                                                <img src={item.image ? item.image : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"} style={{ width: 50, height: 50, borderRadius: 5 }} />
+                                                <div className="ml-3">
+                                                    <div>{item.name}</div>
+                                                    <div>Harga Rp.{parseInt(item.price).toLocaleString("id-ID")}</div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    )}
+                                </>
+                            )}
+                    </div>
+                </div>
+            )
+        }
+    }
     const getDataProduct = async () => {
-        const { data } = await getData('/pos')
-        setProductItems(data.result)
+        const datas = await getData('/user?detail=' + props.parseJWT)
+        const statusUser = datas.data.result.Status
+        if (statusUser === 1) {
+            const status1 = await getData('/order/api')
+            setProductItems(status1.data.result.sort((a, b) => a.date_added - b.date_added))
+        } else {
+            const { data } = await getData('/pos')
+            setProductItems(data.result)
+        }
     }
     useEffect(() => {
-        // NameUser()
+        NameUser()
+        // if(nameUserNya.Status === 2){
         getDataProduct()
+        // }status1.data.result
     }, [])
-    return (
-        <Fragment>
-            <div style={{ width: "100%" }} className="listProduct-bg" >
-                <div style={{ background: 'rgb(112 169 164)', width: "100%", maxHeight: 50 }} className="d-flex align-items-center justify-content-between p-3">
+    const SearchButton = () => {
+        if (nameUserNya?.Status === 1) {
+            return (
+                <div style={{ background: 'rgb(112 169 164)', width: "100%", maxHeight: 50 }} className="d-flex justify-content-center align-items-center p-3">
                     <div style={{ background: 'rgb(112 169 164)' }} className="d-flex align-items-center">
+                        <Button style={{ borderRadius: 5, width: 200 }} onClick={() => getDataProduct()}>Refresh</Button>
+                    </div>
+                </div>
+            )
+        } else {
+            return (
+                <div style={{ background: 'rgb(112 169 164)', width: "100%", maxHeight: 50 }} className="d-flex align-items-center justify-content-center">
+                    <div style={{ background: 'rgb(112 169 164)' }} className="d-flex align-items-center justify-content-between">
                         <div className="p-1">
                             <AiOutlineSearch style={{ fontSize: 18, color: '#FFF' }} />
                         </div>
-                        <Input style={{ width: 180, border: 'none' }} placeholder="Cari Disini" className="input-search ml-3" onChange={(e) => !e.target.value && getDataProduct()} onPressEnter={(e) => enterSearch({ event: e.target.value })} />
+                        <Input style={{ width: 182, border: 'none' }} placeholder="Cari Disini" className="input-search" onChange={(e) => !e.target.value && getDataProduct()} onPressEnter={(e) => enterSearch({ event: e.target.value })} />
                         <div className="d-flex">
                             <Dropdown
                                 // @ts-ignore
@@ -93,28 +178,17 @@ const NavbarIn = (props) => {
                         </div>
                     </div>
                 </div>
-                <div style={{ maxHeight: 505, height: "100%", overflowY: 'scroll' }} className="listProduct">
-                    <div >
-                        {prodcutItems.length === 0 ? (
-                            <div className="p-3">
-                                <div className="text-center">Menu Tidak Tersedia</div>
-                            </div>
-                        ) : (
-                                <>
-                                    {prodcutItems && prodcutItems.map((item, index) =>
-                                        <a key={index} onClick={() => itemDetail(item)}>
-                                            <div style={{ backgroundColor: 'rgb(138 191 187)', width: '100%' }} className="bg-product d-flex align-items-center p-2">
-                                                <img src={item.image ? item.image : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"} style={{ width: 50, height: 50, borderRadius: 5 }} />
-                                                <div className="ml-3">
-                                                    <div>{item.name}</div>
-                                                    <div>Harga Rp.{parseInt(item.price).toLocaleString("id-ID")}</div>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    )}
-                                </>
-                            )}
-                    </div>
+            )
+        }
+    }
+    return (
+        <Fragment>
+            <div style={{ width: "100%", height: '100%' }} className="listProduct-bg" >
+                <div style={{ background: 'rgb(112 169 164)', width: "100%", maxHeight: 50 }} className="d-flex align-items-center justify-content-between p-3">
+                    {SearchButton()}
+                </div>
+                <div style={{ height: '80.8vh', maxHeight: '80.8vh', background: '#70A9A4' }}>
+                    {listItemNya()}
                 </div>
             </div>
         </Fragment>
