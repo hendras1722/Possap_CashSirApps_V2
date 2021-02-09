@@ -83,26 +83,38 @@
     outline: 0 !important;
     background: #8CC2B9 !important;
   }
+  .btn-active:hover{
+    outline: none;
+    border: none;
+  }
+  .btn-active:focus{
+    outline: none;
+  }
   .btn-active:active{
     transform: translateY(2px) translateX(3px);
   }
   .Cart:active{
     transform: translateY(2px);
   }
-  @media print {
-    #printPageButton {
-      display: none;
+  @media print and (width: 21cm) and (height: 13.7cm) {
+    @page {
+       margin: 12cm !important;
     }
-    html,body{
-      font-size: 5pt;
+    body * {
+      visibility: hidden !important;
     }
-  }
-  @media screen {
-    body { font-size: 30px }
-  }
-  @page {
-    size: 10 x 16 cm;
+    .section-to-print, .section-to-print * {
+      visibility: visible !important;
     }
-  /* .button-icon:hover{
+    .section-to-print {
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+}
 
-  } */
+.ant-form-item-explain.ant-form-item-explain-error {
+  color: #ff4d4f;
+  width: 346px;
+  margin-left: auto;
+}

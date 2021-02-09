@@ -1,10 +1,10 @@
 // @ts-nocheck
-import React, { useEffect, useState, Fragment } from 'react'
+import React, { useEffect, useState, Fragment, useCallback } from 'react'
 import { getProducts } from '../redux/actions/Product'
 import { addCart, deleteCart } from '../redux/actions/carts'
 import { useDispatch } from 'react-redux'
 import { connect } from 'react-redux'
-import { postData, getData } from '../../utils/getUser'
+import { postData, getData, notaDate } from '../../utils/getUser'
 import { FaArrowAltCircleUp, FaArrowAltCircleDown } from 'react-icons/fa'
 import Swal from 'sweetalert2'
 import { useHistory } from 'react-router-dom'
@@ -14,33 +14,42 @@ import { Image, Row, Col, Button, Input, Modal, notification } from 'antd'
 import './style.css'
 
 const { TextArea } = Input
-const Product = (props) => {
+const Product = React.memo((props) => {
     const [catatan, setCatatan] = useState('')
     const [qty, setCount] = useState(0);
-    const [nameUserNya, setNameUser] = useState()
-    const [idUsernya, setIdUsernya] = useState()
+    const [nameUserNya, setNameUser] = useState([])
+    const [modalPrint, setModalPrint] = useState(false)
     const history = useHistory()
     const dispatch = useDispatch()
-    useEffect(() => {
+
+    const NameUser = async () => {
+        const pathname = history.location.pathname
+        const split = pathname.split('/')
+        const result = sessionStorage.getItem('ID')
+        const { data } = await getData(`/user?detail=${result}`)
+        const resultData = data.result
+        setNameUser(resultData)
+    }
+    const getOut = () => {
         if (!sessionStorage) {
             history.push('/login')
         }
+    }
+    useEffect(() => {
+        getOut()
         NameUser()
     }, [])
-    console.log(props, 'inpros')
+    const ModalPrintnya = () => {
+        setModalPrint(true)
+    }
+    const closeHandle = () => {
+        setModalPrint(false)
+    }
     const { send, product, setIsModalVisible, handleCancel } = props
     const catatanData = {
         catatan
     }
-    const NameUser = async () => {
-        const pathname = history.location.pathname
-        const split = pathname.split('/')
-        const result = split[split.length - 1]
-        console.log(result)
-        setIdUsernya(result)
-        const { data } = await getData(`/user?detail=${result}`)
-        setNameUser(data.result)
-    }
+
     const addPlus = () => {
         if (nameUserNya?.Status === 1) {
             if (send) {
@@ -51,6 +60,20 @@ const Product = (props) => {
             }
         }
     }
+    // const printContent = (el) => {
+    //     console.log(el, 'ininins')
+    //     var restorepage = document.body.innerHTML;
+    //     var printcontent = document.getElementById(el).innerHTML;
+    //     // document.body.innerHTML = printcontent;
+    //     window.print();
+    //     // document.body.innerHTML = restorepage;
+    // }
+
+
+    const addCount = useCallback(() => {
+        setCount(() => qty + 1)
+    }, [qty])
+    console.log(nameUserNya, 'ininiend')
     const productIsi = () => {
         if (nameUserNya?.Status === 1) {
             return (
@@ -59,7 +82,7 @@ const Product = (props) => {
                         <Col xs={24}>
                             <div className="d-flex justify-content-center">
                                 <div style={{ width: 300 }}>
-                                    <div style={{ display: send ? 'block' : 'none' }}>
+                                    <div style={{ display: send.length > 0 ? 'block' : 'none' }}>
                                         <div className="text-center">
                                             list Menu
                            </div>
@@ -87,44 +110,54 @@ const Product = (props) => {
                                                     <div>Rp.{addPlus()?.toLocaleString('id-ID')}</div>
                                                 </div>
                                             </div>
-                                            <button onClick={() => window.print()}>print</button>
+                                            <Button style={{ display: send ? 'block' : 'none' }} onClick={() => ModalPrintnya()}>Selesai Cek</Button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </Col>
                     </Row>
-                    <Modal title={false} visible={setIsModalVisible} footer={null} closable={false} onCancel={() => handleCancel()} style={{ borderRadius: "10px" }}>
+                    <Modal title={false} visible={modalPrint} footer={null} closable={false} onCancel={() => closeHandle()} style={{ borderRadius: "10px" }} id="p1">
                         <Fragment>
-                            <div className="page">
-                                <div className="text-center">List Pesan</div>
-                                {product.cart.cart.map((item, index) =>
-                                    <div className="d-flex mt-3 row align-items-center" key={index}>
-                                        <div className="col-10 d-flex justify-content-between">
-                                            <div> {item.name} </div>
-                                            <div>
-                                                Rp.{Number(item.price).toLocaleString('id-ID')}*{item.qty}
+                            <div className="page" >
+                                <div className="mt-3">
+                                    <div className="d-flex justify-content-center">
+                                        <div style={{ width: 300 }}>
+                                            <div className="d-flex justify-content-between">
+                                                <div>MSA Food</div>
+                                                <div>{notaDate(send[0]?.date_added)}</div>
                                             </div>
-                                        </div>
-                                        <div className="col-2 justify-content-end">
-                                            <Button style={{ background: '#66AFA9', border: 'none', borderRadius: 5, color: '#FFF' }} id="printPageButton" className="btn-active" onClick={() => dispatch(deleteCart(item.id))}>Hapus</Button>
+                                            <div>======================================</div>
                                         </div>
                                     </div>
-                                )}
-                                <div className="mt-3">-------------------------------------------------------------------------------------------</div>
-                                <div className="d-flex justify-content-between" style={{ paddingRight: 90 }}>
-                                    <div>
-                                        Jumlah:
-                    </div>
-                                    <div>
-                                        Rp.{Number(product.cart.total).toLocaleString("id-ID")}
+                                    {send && send.map((item, index) =>
+                                        <>
+                                            <div key={index} className="d-flex justify-content-center">
+                                                <div style={{ width: 300 }} className=" d-flex justify-content-between">
+                                                    <div>{item.name}</div>
+                                                    <div>Rp.{item.price?.toLocaleString('id-ID')} ({item.stock})</div>
+                                                </div>
+                                            </div>
+                                            <div className="d-flex justify-content-center">
+                                                <div className="d-flex justify-content-start" style={{ width: 300 }}>
+                                                    <div>Catatan :</div>&nbsp;<q style={{ fontWeight: 600 }} className="ml-1">{item.catatan}
+                                                    </q>
+                                                </div>
+                                            </div>
+                                        </>
+                                    )}
+                                    <div className="d-flex justify-content-center">
+                                        <div style={{ width: 300 }} >----------------------------------------------------------</div>
                                     </div>
-                                </div>
-                                <div className="mt-3 d-flex justify-content-center" >
-                                    <Button style={{ background: '#66AFA9', border: 'none', borderRadius: 5, color: '#FFF', display: product.cart.total === 0 ? 'none' : 'block' }} onClick={() => order()}>Selesai Memesan</Button>
-                                </div>
+                                    <div className=" d-flex justify-content-center">
+                                        <div style={{ width: 300 }} className="d-flex justify-content-between pr-4">
+                                            <div>Total harga</div>
+                                            <div>Rp.{addPlus()?.toLocaleString('id-ID')}</div>
+                                        </div>
+                                    </div>
 
-                                {/* <button id="printPageButton" onClick={() => window.print()}>Print</button> */}
+                                    {/* <Button id="section-to-print" onClick={() => printContent('p1')}>Print</Button> */}
+                                </div>
                             </div>
                         </Fragment>
                     </Modal>
@@ -155,14 +188,14 @@ const Product = (props) => {
                                     <div style={{ display: send.image ? 'block' : 'none', width: '100%', maxWidth: 300 }}>
                                         <div className="d-flex">
                                             <div>
-                                                <a onClick={() => setCount(qty + 1)} className="Cart" style={{ display: send.image ? 'block' : 'none' }}>
+                                                <a onClick={() => addCount()} className="Cart" style={{ display: send.image ? 'block' : 'none' }} href>
                                                     <FaArrowAltCircleUp style={{ fontSize: 25 }} />
                                                 </a>
                                                 <div className=" d-flex justify-content-center mt-1" style={{ fontSize: 25, width: '100%' }}>
-                                                    <div style={{ display: send.image ? 'block' : 'none' }}>
+                                                    <div style={{ display: send.image ? 'block' : 'none', userSelect: 'none' }}>
                                                         {countStock() < 0 ? 0 : countStock()}</div>
                                                 </div>
-                                                <a onClick={() => setCount(qty - 1)} className="Cart" style={{ display: send.image ? 'block' : 'none' }}>
+                                                <a href onClick={() => setCount(qty - 1)} className="Cart" style={{ display: send.image ? 'block' : 'none' }}>
                                                     <FaArrowAltCircleDown style={{ fontSize: 25 }} />
                                                 </a>
                                             </div>
@@ -179,9 +212,9 @@ const Product = (props) => {
                             </div>
                         </Col>
                     </Row>
-                    <Modal title={false} visible={setIsModalVisible} footer={null} closable={false} onCancel={() => handleCancel()} style={{ borderRadius: "10px" }}>
+                    <Modal title={false} visible={setIsModalVisible} footer={null} closable={false} onCancel={() => handleCancel()} style={{ borderRadius: "10px" }} id="p1">
                         <Fragment>
-                            <div className="page">
+                            <div className="page" id="p1">
                                 <div className="text-center">List Pesan</div>
                                 {product.cart.cart.map((item, index) =>
                                     <div className="d-flex mt-3 row align-items-center" key={index}>
@@ -272,7 +305,8 @@ const Product = (props) => {
         return JSON.parse(jsonPayload);
     };
     const JWT = sessionStorage.getItem("token") != undefined ? parseJwt(sessionStorage.getItem("token")).id : ""
-    const order = () => {
+    const order = (e) => {
+        // e.preventDefault()
         const products = product.cart.cart.map(item => {
             return {
                 "idUser": JWT,
@@ -311,7 +345,7 @@ const Product = (props) => {
             {productIsi()}
         </div>
     )
-}
+})
 
 const mapStateToProps = (state) => ({
     product: state

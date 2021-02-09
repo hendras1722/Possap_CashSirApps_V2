@@ -9,7 +9,7 @@ const NavbarPage = (props) => {
         console.log(getUser(), 'iniget')
     })
     return (
-        <div style={{ backgroundColor: '#66AFA9', border: "none", height: 70, boxShadow: '6px 8px 5px 2px rgba(0,0,0,0.16)' }}>
+        <div style={{ backgroundColor: '#66AFA9', border: "none", height: 70 }}>
 
         </div>
     )

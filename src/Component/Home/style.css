@@ -1,0 +1,14 @@
+.d-flex.justify-content-center.yes:after {
+    content: "";
+    /* z-index: 2; */
+    right: 0px;
+    top: 0;
+    border-left: solid 20px rgb(78, 131, 126);
+    border-top: solid 20px transparent;
+    border-bottom: solid 20px transparent;
+    background: white;
+    right: 0px;
+    /* display: flex; */
+    /* justify-content: center; */
+    margin-left: auto;
+}

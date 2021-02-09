@@ -44,6 +44,24 @@ export const formatDate = (date) => {
     return [day, month, year].join(" ");
 }
 
+export const notaDate = (date) => {
+    const monthNames = ["January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "Desember"
+    ];
+    var d = new Date(date),
+        month = '' + (monthNames[d.getMonth()]),
+        day = '' + d.getDate(),
+        year = d.getFullYear(),
+        hours = d.getHours(),
+        minute = d.getMinutes()
+
+    if (month.length < 2)
+        month = '0' + month;
+    if (day.length < 2)
+        day = '0' + day;
+    return [day, month, year].join(" ") + "," + [hours, minute].join(":");
+}
+
 export const resultIdDetail = (params) => {
     return idDetailIn
 }

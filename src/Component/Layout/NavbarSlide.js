@@ -1,6 +1,6 @@
 // @ts-nocheck
-import React, { Fragment, useEffect, useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import React, { Fragment, useCallback, useEffect, useState } from 'react'
+import { useHistory, withRouter } from 'react-router-dom'
 import { getData, formatDate } from '../../utils/getUser'
 import { Input, Button, Dropdown, Menu } from 'antd'
 import { AiOutlineSearch } from 'react-icons/ai'
@@ -12,16 +12,17 @@ const NavbarIn = (props) => {
     const history = useHistory()
     const [nameUserNya, setNameUser] = useState()
     const [prodcutItems, setProductItems] = useState([])
+    const [query, setQuery] = useState(false)
     const NameUser = async () => {
         const pathname = history.location.pathname
         const split = pathname.split('/')
         const result = split[split.length - 1]
-        console.log(result)
-        const { data } = await getData(`/user?detail=${result}`)
+        const { data } = await getData(`/user?detail=` + sessionStorage.getItem('ID'))
         setNameUser(data.result)
     }
     const itemDetail = async (e) => {
-        const datas = await getData('/user?detail=' + props.parseJWT)
+        console.log(e, 'ininnameUserNya')
+        const datas = await getData('/user?detail=' + sessionStorage.getItem('ID'))
         const statusUser = datas.data.result.Status
         if (statusUser === 1) {
             const { data } = await getData('/order/' + e.idBuyer)
@@ -54,6 +55,7 @@ const NavbarIn = (props) => {
                 setProductItems(sortAZ)
                 break;
             case "Semua":
+                getDataProduct()
                 break;
             default:
                 break;
@@ -62,7 +64,7 @@ const NavbarIn = (props) => {
     const listItemNya = () => {
         if (nameUserNya?.Status === 1) {
             return (
-                <div style={{ maxHeight: 505, height: "100%", overflowY: 'scroll' }} className="listProduct">
+                <div style={{ height: "100%", overflowY: 'scroll' }} className="listProduct">
                     <div >
                         {prodcutItems.length === 0 ? (
                             <div className="p-3">
@@ -119,22 +121,26 @@ const NavbarIn = (props) => {
             )
         }
     }
-    const getDataProduct = async () => {
-        const datas = await getData('/user?detail=' + props.parseJWT)
-        const statusUser = datas.data.result.Status
-        if (statusUser === 1) {
-            const status1 = await getData('/order/api')
-            setProductItems(status1.data.result.sort((a, b) => a.date_added - b.date_added))
+    const getDataProduct = useCallback(async () => {
+        if (sessionStorage.getItem('ID')) {
+            const datas = await getData('/user?detail=' + sessionStorage.getItem('ID'))
+            const statusUser = datas?.data?.result?.Status
+            if (statusUser === 1) {
+                const status1 = await getData('/order/api')
+                setProductItems(status1.data.result.sort((a, b) => a.date_added - b.date_added))
+            } else {
+                const { data } = await getData('/pos')
+                console.log(data, 'iniwoi')
+                setProductItems(data.result)
+            }
         } else {
-            const { data } = await getData('/pos')
-            setProductItems(data.result)
+            history.push('/login')
         }
-    }
+    }, [prodcutItems])
+
     useEffect(() => {
         NameUser()
-        // if(nameUserNya.Status === 2){
         getDataProduct()
-        // }status1.data.result
     }, [])
     const SearchButton = () => {
         if (nameUserNya?.Status === 1) {
@@ -187,7 +193,7 @@ const NavbarIn = (props) => {
                 <div style={{ background: 'rgb(112 169 164)', width: "100%", maxHeight: 50 }} className="d-flex align-items-center justify-content-between p-3">
                     {SearchButton()}
                 </div>
-                <div style={{ height: '80.8vh', maxHeight: '80.8vh', background: '#70A9A4' }}>
+                <div style={{ height: '68%', background: '#70A9A4' }}>
                     {listItemNya()}
                 </div>
             </div>
@@ -195,4 +201,4 @@ const NavbarIn = (props) => {
     )
 }
 
-export default NavbarIn
+export default withRouter(NavbarIn)
