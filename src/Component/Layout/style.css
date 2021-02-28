@@ -85,12 +85,13 @@
   }
   .btn-active:hover{
     outline: none;
-    border: none;
+    border: 1px solid transparent !important;
   }
   .btn-active:focus{
     outline: none;
   }
   .btn-active:active{
+    box-shadow: none !important;
     transform: translateY(2px) translateX(3px);
   }
   .Cart:active{

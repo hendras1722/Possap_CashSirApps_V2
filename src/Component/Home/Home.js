@@ -141,7 +141,7 @@ class Home extends Component {
                                         <Link to="" className="d-flex justify-content-center" >
                                             <div className="text-center d-flex  align-items-center" style={{ fontSize: 15, width: 150, height: 40 }}>
                                                 <div className={"ml-3 text-white"}>Logo</div>
-                                                <div className="ml-3 text-white" style={this.state.responsive ? { display: 'none', transitionDuration: '5s ease' } : { display: 'block' }}>Grafik</div>
+                                                <div className="ml-3 text-white" style={this.state.responsive ? { display: 'none', transitionDuration: '5s ease' } : { display: 'block' }}>Akun</div>
                                             </div>
                                         </Link>
                                         <div style={{ height: 1, backgroundColor: 'rgb(118 199 192)' }}></div>

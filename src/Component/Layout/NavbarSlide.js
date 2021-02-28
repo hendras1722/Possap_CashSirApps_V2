@@ -189,11 +189,11 @@ const NavbarIn = (props) => {
     }
     return (
         <Fragment>
-            <div style={{ width: "100%", height: '100%' }} className="listProduct-bg" >
+            <div style={{ width: "100%", height: 'auto' }} className="listProduct-bg" >
                 <div style={{ background: 'rgb(112 169 164)', width: "100%", maxHeight: 50 }} className="d-flex align-items-center justify-content-between p-3">
                     {SearchButton()}
                 </div>
-                <div style={{ height: '68%', background: '#70A9A4' }}>
+                <div style={{ height: '69vh', background: '#70A9A4' }}>
                     {listItemNya()}
                 </div>
             </div>

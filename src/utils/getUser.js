@@ -28,6 +28,14 @@ export const postData = (params, params1) => {
     return axios.post(`${REACT_APP_API_URL}${params}`, params1)
 }
 
+export const updateData = (params, params1) => {
+    return axios.patch(`${REACT_APP_API_URL}${params}`, params1)
+}
+
+export const deleteData = (params, params1) => {
+    return axios.delete(`${REACT_APP_API_URL}${params}`)
+}
+
 export const formatDate = (date) => {
     const monthNames = ["January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "Desember"
